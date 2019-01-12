@@ -12533,11 +12533,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\xampp\\htdocs\\pas\\pas_pertamina.csproj",
+      "projectUniqueName": "D:\\ASP\\pertamina-pas\\pas_pertamina.csproj",
       "projectName": "pas_pertamina",
-      "projectPath": "C:\\xampp\\htdocs\\pas\\pas_pertamina.csproj",
+      "projectPath": "D:\\ASP\\pertamina-pas\\pas_pertamina.csproj",
       "packagesPath": "C:\\Users\\AQ\\.nuget\\packages\\",
-      "outputPath": "C:\\xampp\\htdocs\\pas\\obj\\",
+      "outputPath": "D:\\ASP\\pertamina-pas\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

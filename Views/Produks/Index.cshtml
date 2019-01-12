@@ -4,80 +4,52 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<ol class="breadcrumb">
+    <li><a href="#">Settings</a></li>
+    <li class="active">Produk</li>
+</ol>
+<h4 class="c-grey-900 mB-20">Data Produk</h4>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-info pull-right"><i class="fa fa-plus"></i> Tambah Data</a><br /><br />
 </p>
-<table class="table">
+<table class="table table table-striped table-hover table-bordered" cellspacing="0" width="100%" role="grid" aria-describedby="dataTable_info" style="width: 100%">
     <thead>
-        <tr>
+        <tr class="header-table">
+            <th class="col-md-1">
+                No.
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Namaproduk)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Jenisproduk)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeletedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeletedTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SoftDelete)
-            </th>
-            <th></th>
+            
+            <th>Aksi</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @{ var i = 0; }
+        @foreach (var item in Model)
+        {
+            { i = i + 1; }
         <tr>
+            <td>
+                @i
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Namaproduk)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Jenisproduk)
             </td>
+
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeletedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeletedTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SoftDelete)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Idproduk">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Idproduk">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Idproduk">Delete</a>
+                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Idproduk"><i class="fa fa-edit"></i>Ubah</a>
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Idproduk"><i class="fa fa-remove"></i>Hapus</a>
             </td>
         </tr>
-}
+        }
     </tbody>
 </table>

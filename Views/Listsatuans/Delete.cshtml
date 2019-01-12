@@ -4,72 +4,38 @@
     ViewData["Title"] = "Delete";
 }
 
-<h2>Delete</h2>
+<ol class="breadcrumb">
+    <li><a href="#">Settings</a></li>
+    <li><a href="#">List Satuan</a></li>
+    <li class="active">Hapus Satuan</li>
+</ol>
+<h3 class="header-form">Hapus Satuan  <i class="fa fa-pencil pull-right"></i> </h3>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Yakin Untuk Menghapus Data ini?</h3>
 <div>
     <h4>Listsatuan</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.NamaSatuan)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.NamaSatuan)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.SimbolSatuan)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.SimbolSatuan)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CreatedBy)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedTime)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CreatedTime)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedBy)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedBy)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedTime)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedTime)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DeletedBy)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DeletedBy)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DeletedTime)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DeletedTime)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.SoftDelete)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.SoftDelete)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="IdListsatuan" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Delete">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="IdListsatuan" />
+                <div class="form-group">
+                    <label asp-for="NamaSatuan" class="control-label"></label>
+                    <input asp-for="NamaSatuan" class="form-control" readonly />
+                    <span asp-validation-for="NamaSatuan" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SimbolSatuan" class="control-label"></label>
+                    <input asp-for="SimbolSatuan" class="form-control" readonly />
+                    <span asp-validation-for="SimbolSatuan" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-info"> <i class="fa fa-trash"></i> Hapus</button>
+                
+            </form>
+        </div>
+    </div>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
 </div>

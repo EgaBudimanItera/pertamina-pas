@@ -4,9 +4,12 @@
     ViewData["Title"] = "Edit";
 }
 
-<h2>Edit</h2>
-
-<h4>Listsatuan</h4>
+<ol class="breadcrumb">
+    <li><a href="#">Settings</a></li>
+    <li><a href="#">List Satuan</a></li>
+    <li class="active">Ubah Satuan</li>
+</ol>
+<h3 class="header-form">Ubah Satuan  <i class="fa fa-pencil pull-right"></i> </h3>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,59 +17,59 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="IdListsatuan" />
             <div class="form-group">
-                <label asp-for="NamaSatuan" class="control-label"></label>
+                <label asp-for="NamaSatuan" class="control-label">Nama Satuan</label>
                 <input asp-for="NamaSatuan" class="form-control" />
                 <span asp-validation-for="NamaSatuan" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SimbolSatuan" class="control-label"></label>
+                <label asp-for="SimbolSatuan" class="control-label">Simbol Satuan</label>
                 <input asp-for="SimbolSatuan" class="form-control" />
                 <span asp-validation-for="SimbolSatuan" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CreatedBy" class="control-label"></label>
-                <input asp-for="CreatedBy" class="form-control" />
+                @*<label asp-for="CreatedBy" class="control-label"></label>*@
+                <input type="hidden" asp-for="CreatedBy" class="form-control" />
                 <span asp-validation-for="CreatedBy" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CreatedTime" class="control-label"></label>
-                <input asp-for="CreatedTime" class="form-control" />
+                @*<label asp-for="CreatedTime" class="control-label"></label>*@
+                <input type="hidden" asp-for="CreatedTime" class="form-control" />
                 <span asp-validation-for="CreatedTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UpdatedBy" class="control-label"></label>
-                <input asp-for="UpdatedBy" class="form-control" />
+                @*<label asp-for="UpdatedBy" class="control-label"></label>*@
+                <input type="hidden" asp-for="UpdatedBy" class="form-control" />
                 <span asp-validation-for="UpdatedBy" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UpdatedTime" class="control-label"></label>
-                <input asp-for="UpdatedTime" class="form-control" />
+                @*<label asp-for="UpdatedTime" class="control-label"></label>*@
+                <input type="hidden" asp-for="UpdatedTime" class="form-control" />
                 <span asp-validation-for="UpdatedTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DeletedBy" class="control-label"></label>
-                <input asp-for="DeletedBy" class="form-control" />
+                @* <label asp-for="DeletedBy" class="control-label"></label>*@
+                <input type="hidden" asp-for="DeletedBy" class="form-control" />
                 <span asp-validation-for="DeletedBy" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DeletedTime" class="control-label"></label>
-                <input asp-for="DeletedTime" class="form-control" />
+                @*<label asp-for="DeletedTime" class="control-label"></label>*@
+                <input type="hidden" asp-for="DeletedTime" class="form-control" />
                 <span asp-validation-for="DeletedTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SoftDelete" class="control-label"></label>
-                <input asp-for="SoftDelete" class="form-control" />
+                @*<label asp-for="SoftDelete" class="control-label"></label>*@
+                <input type="hidden" asp-for="SoftDelete" class="form-control" />
                 <span asp-validation-for="SoftDelete" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <button type="submit" class="btn btn-info"> <i class="fa fa-save"></i> Ubah</button>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Kembali</a>
 </div>
 
 @section Scripts {
