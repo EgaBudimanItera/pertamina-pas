@@ -1,0 +1,105 @@
+﻿@model pas_pertamina.Models.Kapal
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Kapal</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Namakapal)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Namakapal)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Kapasitas)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Kapasitas)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Flowrate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Flowrate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Jenisangkut)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Jenisangkut)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreatedTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdatedBy)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UpdatedBy)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdatedTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UpdatedTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DeletedBy)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DeletedBy)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DeletedTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DeletedTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SoftDelete)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SoftDelete)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IdlisttipekapalNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IdlisttipekapalNavigation.Idlisttipekapal)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SatuanflowrateNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SatuanflowrateNavigation.IdListsatuan)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SatuankapasitasNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SatuankapasitasNavigation.IdListsatuan)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Idkapal" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>
