@@ -26,17 +26,17 @@ namespace pas_pertamina
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
+             services.Configure<CookiePolicyOptions>(options =>
+             {
+                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                 options.CheckConsentNeeded = context => true;
+                 options.MinimumSameSitePolicy = SameSiteMode.None;
+             });
 
-            
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            var connection = @"Server=DESKTOP-IK66D93\BUDIMAN;Database=db_penjadwalan_pelabuhan;Trusted_Connection=True;ConnectRetryCount=0";
-            services.AddDbContext<db_penjadwalan_pelabuhanContext>(options => options.UseSqlServer(connection));
+
+             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+             services.AddDbContext<db_penjadwalan_pelabuhanContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("penjadwalan")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

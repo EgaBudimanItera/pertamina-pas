@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1",
-    "signature": "248f3f03e92bf2d35ae599bdc84d9104bba5266f"
+    "signature": "4397626375ae35014d012b75c14a96ad25728010"
   },
   "compilationOptions": {
     "defines": [
@@ -27,13 +27,20 @@
           "Microsoft.AspNetCore.App": "2.1.1",
           "Microsoft.AspNetCore.Razor.Design": "2.1.2",
           "Microsoft.NETCore.App": "2.1.0",
-          "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.1.6"
+          "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.1.6",
+          "jquery.datatables": "1.10.15"
         },
         "runtime": {
           "pas_pertamina.dll": {}
         },
         "compile": {
           "pas_pertamina.dll": {}
+        }
+      },
+      "jQuery/1.7.0": {},
+      "jquery.datatables/1.10.15": {
+        "dependencies": {
+          "jQuery": "1.7.0"
         }
       },
       "Microsoft.AspNetCore.Razor.Design/2.1.2": {},
@@ -3461,6 +3468,20 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "jQuery/1.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-eMhk7Ow7BTaxEHPkHkm9matBLBHXbnktHM34F7JWLepcqCKm1La43+dIa1YoBiM4nTW0XE8iXvEr5x77FRdrhg==",
+      "path": "jquery/1.7.0",
+      "hashPath": "jquery.1.7.0.nupkg.sha512"
+    },
+    "jquery.datatables/1.10.15": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-MtXvtbGict/wmTl1BX+qwK8sUqC1Knxjeew54/6OLt+rXiDnJ/pwoRwlKqble8c72JWoYAvGY+rA++pkRht8Dw==",
+      "path": "jquery.datatables/1.10.15",
+      "hashPath": "jquery.datatables.1.10.15.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Razor.Design/2.1.2": {
       "type": "package",
