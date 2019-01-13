@@ -17,5 +17,7 @@ namespace pas_pertamina.Models
         public string DeletedBy { get; set; }
         public DateTime? DeletedTime { get; set; }
         public string SoftDelete { get; set; }
+
+        public Pelabuhan IdPelabuhanNavigation { get; set; }
     }
 }

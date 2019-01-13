@@ -965,6 +965,11 @@ namespace pas_pertamina.Models
                 entity.Property(e => e.UpdatedTime)
                     .HasColumnName("updated_time")
                     .HasColumnType("datetime");
+
+                entity.HasOne(d => d.IdPelabuhanNavigation)
+                    .WithMany(p => p.Userlogin)
+                    .HasForeignKey(d => d.IdPelabuhan)
+                    .HasConstraintName("FK_userlogin_pelabuhan");
             });
         }
     }

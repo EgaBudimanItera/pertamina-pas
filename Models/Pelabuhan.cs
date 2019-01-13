@@ -14,6 +14,7 @@ namespace pas_pertamina.Models
             ShipmentIdpelabuhanbantuanNavigation = new HashSet<Shipment>();
             ShipmentIdtujuanNavigation = new HashSet<Shipment>();
             Stok = new HashSet<Stok>();
+            Userlogin = new HashSet<Userlogin>();
         }
 
         public int Idlistpelabuhan { get; set; }
@@ -36,5 +37,6 @@ namespace pas_pertamina.Models
         public ICollection<Shipment> ShipmentIdpelabuhanbantuanNavigation { get; set; }
         public ICollection<Shipment> ShipmentIdtujuanNavigation { get; set; }
         public ICollection<Stok> Stok { get; set; }
+        public ICollection<Userlogin> Userlogin { get; set; }
     }
 }
