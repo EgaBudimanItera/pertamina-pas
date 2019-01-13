@@ -4,102 +4,49 @@
     ViewData["Title"] = "Delete";
 }
 
-<h2>Delete</h2>
+<ol class="breadcrumb">
+    <li><a href="#">Settings</a></li>
+    <li><a href="#">List Kapal</a></li>
+    <li class="active">Hapus Kapal</li>
+</ol>
+<h3 class="header-form">Hapus Kapal  <i class="fa fa-pencil pull-right"></i> </h3>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Yakin Untuk Menghapus Data ini?</h3>
 <div>
     <h4>Kapal</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Namakapal)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Namakapal)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Kapasitas)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Kapasitas)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Flowrate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Flowrate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Jenisangkut)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Jenisangkut)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CreatedBy)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedTime)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CreatedTime)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedBy)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedBy)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedTime)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedTime)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DeletedBy)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DeletedBy)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DeletedTime)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DeletedTime)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.SoftDelete)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.SoftDelete)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.IdlisttipekapalNavigation)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.IdlisttipekapalNavigation.Idlisttipekapal)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.SatuanflowrateNavigation)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.SatuanflowrateNavigation.IdListsatuan)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.SatuankapasitasNavigation)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.SatuankapasitasNavigation.IdListsatuan)
-        </dd>
-    </dl>
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Delete">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Idkapal" />
+                <div class="form-group">
+                    <label asp-for="Namakapal" class="control-label">Nama Kapal</label>
+                    <input asp-for="Namakapal" class="form-control" readonly />
+                    <span asp-validation-for="Namakapal" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="IdlisttipekapalNavigation.Namalisttipekapal" class="control-label">Tipe Kapal</label>
+                    <input asp-for="IdlisttipekapalNavigation.Namalisttipekapal" class="form-control" readonly />
+                    <span asp-validation-for="IdlisttipekapalNavigation.Namalisttipekapal" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Flowrate" class="control-label">Flowrate</label>
+                    <input asp-for="Flowrate" class="form-control" readonly />
+                    <span asp-validation-for="Flowrate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SatuanflowrateNavigation.NamaSatuan" class="control-label">Satuan Flowrate</label>
+                    <input asp-for="SatuanflowrateNavigation.NamaSatuan" class="form-control" readonly />
+                    <span asp-validation-for="SatuanflowrateNavigation.NamaSatuan" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-info"> <i class="fa fa-trash"></i> Hapus</button>
+            </form>
+        </div>
+    </div>
+
     
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Idkapal" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
 </div>

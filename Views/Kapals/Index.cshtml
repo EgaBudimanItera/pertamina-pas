@@ -4,110 +4,72 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<ol class="breadcrumb">
+    <li><a href="#">Settings</a></li>
+    <li class="active">List Kapal</li>
+</ol>
+<h4 class="c-grey-900 mB-20">Data Kapal</h4>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-info pull-right"><i class="fa fa-plus"></i> Tambah Data</a><br /><br />
 </p>
-<table class="table">
+<table class="table table table-striped table-hover table-bordered" cellspacing="0" width="100%" role="grid" aria-describedby="dataTable_info" style="width: 100%">
     <thead>
-        <tr>
+        <tr class="header-table">
+            <th class="col-md-1">
+                No.
+            </th>
             <th>
-                @Html.DisplayNameFor(model => model.Namakapal)
+                Nama Kapal
+            </th>
+            <th>
+                Tipe Kapal
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Kapasitas)
             </th>
+            
             <th>
                 @Html.DisplayNameFor(model => model.Flowrate)
             </th>
+            
             <th>
-                @Html.DisplayNameFor(model => model.Jenisangkut)
+                Jenis Muatan
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeletedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeletedTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SoftDelete)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdlisttipekapalNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SatuanflowrateNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SatuankapasitasNavigation)
-            </th>
-            <th></th>
+
+
+            <th>Aksi</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @{ var i = 0; }
+        @foreach (var item in Model)
+        {
+            { i = i + 1; }
         <tr>
+            <td>
+                @i
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Namakapal)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Kapasitas)
+                @Html.DisplayFor(modelItem => item.IdlisttipekapalNavigation.Namalisttipekapal)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Flowrate)
+                @Html.DisplayFor(modelItem => item.Kapasitas) @Html.DisplayFor(modelItem => item.SatuankapasitasNavigation.NamaSatuan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Flowrate)  @Html.DisplayFor(modelItem => item.SatuanflowrateNavigation.NamaSatuan)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Jenisangkut)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeletedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeletedTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SoftDelete)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdlisttipekapalNavigation.Idlisttipekapal)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SatuanflowrateNavigation.IdListsatuan)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SatuankapasitasNavigation.IdListsatuan)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Idkapal">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Idkapal">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Idkapal">Delete</a>
+                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Idkapal"><i class="fa fa-edit"></i>Ubah</a>
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Idkapal"><i class="fa fa-remove"></i>Hapus</a>
             </td>
         </tr>
-}
+        }
     </tbody>
 </table>

@@ -49,9 +49,9 @@ namespace pas_pertamina.Controllers
         // GET: Kapals/Create
         public IActionResult Create()
         {
-            ViewData["Idlisttipekapal"] = new SelectList(_context.Listtipekapal, "Idlisttipekapal", "Idlisttipekapal");
-            ViewData["Satuanflowrate"] = new SelectList(_context.Listsatuan, "IdListsatuan", "IdListsatuan");
-            ViewData["Satuankapasitas"] = new SelectList(_context.Listsatuan, "IdListsatuan", "IdListsatuan");
+            ViewData["Idlisttipekapal"] = new SelectList(_context.Listtipekapal, "Idlisttipekapal", "Namalisttipekapal");
+            ViewData["Satuanflowrate"] = new SelectList(_context.Listsatuan, "IdListsatuan", "NamaSatuan");
+            ViewData["Satuankapasitas"] = new SelectList(_context.Listsatuan, "IdListsatuan", "NamaSatuan");
             return View();
         }
 
@@ -68,9 +68,9 @@ namespace pas_pertamina.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Idlisttipekapal"] = new SelectList(_context.Listtipekapal, "Idlisttipekapal", "Idlisttipekapal", kapal.Idlisttipekapal);
-            ViewData["Satuanflowrate"] = new SelectList(_context.Listsatuan, "IdListsatuan", "IdListsatuan", kapal.Satuanflowrate);
-            ViewData["Satuankapasitas"] = new SelectList(_context.Listsatuan, "IdListsatuan", "IdListsatuan", kapal.Satuankapasitas);
+            ViewData["Idlisttipekapal"] = new SelectList(_context.Listtipekapal, "Idlisttipekapal", "Namalisttipekapal", kapal.Idlisttipekapal);
+            ViewData["Satuanflowrate"] = new SelectList(_context.Listsatuan, "IdListsatuan", "NamaSatuan", kapal.Satuanflowrate);
+            ViewData["Satuankapasitas"] = new SelectList(_context.Listsatuan, "IdListsatuan", "NamaSatuan", kapal.Satuankapasitas);
             return View(kapal);
         }
 
@@ -87,9 +87,9 @@ namespace pas_pertamina.Controllers
             {
                 return NotFound();
             }
-            ViewData["Idlisttipekapal"] = new SelectList(_context.Listtipekapal, "Idlisttipekapal", "Idlisttipekapal", kapal.Idlisttipekapal);
-            ViewData["Satuanflowrate"] = new SelectList(_context.Listsatuan, "IdListsatuan", "IdListsatuan", kapal.Satuanflowrate);
-            ViewData["Satuankapasitas"] = new SelectList(_context.Listsatuan, "IdListsatuan", "IdListsatuan", kapal.Satuankapasitas);
+            ViewData["Idlisttipekapal"] = new SelectList(_context.Listtipekapal, "Idlisttipekapal", "Namalisttipekapal", kapal.Idlisttipekapal);
+            ViewData["Satuanflowrate"] = new SelectList(_context.Listsatuan, "IdListsatuan", "NamaSatuan", kapal.Satuanflowrate);
+            ViewData["Satuankapasitas"] = new SelectList(_context.Listsatuan, "IdListsatuan", "NamaSatuan", kapal.Satuankapasitas);
             return View(kapal);
         }
 
@@ -125,9 +125,9 @@ namespace pas_pertamina.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Idlisttipekapal"] = new SelectList(_context.Listtipekapal, "Idlisttipekapal", "Idlisttipekapal", kapal.Idlisttipekapal);
-            ViewData["Satuanflowrate"] = new SelectList(_context.Listsatuan, "IdListsatuan", "IdListsatuan", kapal.Satuanflowrate);
-            ViewData["Satuankapasitas"] = new SelectList(_context.Listsatuan, "IdListsatuan", "IdListsatuan", kapal.Satuankapasitas);
+            ViewData["Idlisttipekapal"] = new SelectList(_context.Listtipekapal, "Idlisttipekapal", "Namalisttipekapal", kapal.Idlisttipekapal);
+            ViewData["Satuanflowrate"] = new SelectList(_context.Listsatuan, "IdListsatuan", "NamaSatuan", kapal.Satuanflowrate);
+            ViewData["Satuankapasitas"] = new SelectList(_context.Listsatuan, "IdListsatuan", "NamaSatuan", kapal.Satuankapasitas);
             return View(kapal);
         }
 
