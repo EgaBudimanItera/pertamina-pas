@@ -49,9 +49,9 @@ namespace pas_pertamina.Controllers
         // GET: Rutes/Create
         public IActionResult Create()
         {
-            ViewData["Idasal"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Idlistpelabuhan");
-            ViewData["Idkapal"] = new SelectList(_context.Kapal, "Idkapal", "Idkapal");
-            ViewData["Idtujuan"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Idlistpelabuhan");
+            ViewData["Idasal"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Namapelabuhan");
+            ViewData["Idkapal"] = new SelectList(_context.Kapal, "Idkapal", "Namakapal");
+            ViewData["Idtujuan"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Namapelabuhan");
             return View();
         }
 
@@ -68,9 +68,9 @@ namespace pas_pertamina.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Idasal"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Idlistpelabuhan", rute.Idasal);
-            ViewData["Idkapal"] = new SelectList(_context.Kapal, "Idkapal", "Idkapal", rute.Idkapal);
-            ViewData["Idtujuan"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Idlistpelabuhan", rute.Idtujuan);
+            ViewData["Idasal"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Namapelabuhan", rute.Idasal);
+            ViewData["Idkapal"] = new SelectList(_context.Kapal, "Idkapal", "Namakapal", rute.Idkapal);
+            ViewData["Idtujuan"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Namapelabuhan", rute.Idtujuan);
             return View(rute);
         }
 
@@ -87,9 +87,9 @@ namespace pas_pertamina.Controllers
             {
                 return NotFound();
             }
-            ViewData["Idasal"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Idlistpelabuhan", rute.Idasal);
-            ViewData["Idkapal"] = new SelectList(_context.Kapal, "Idkapal", "Idkapal", rute.Idkapal);
-            ViewData["Idtujuan"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Idlistpelabuhan", rute.Idtujuan);
+            ViewData["Idasal"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Namapelabuhan", rute.Idasal);
+            ViewData["Idkapal"] = new SelectList(_context.Kapal, "Idkapal", "Namakapal", rute.Idkapal);
+            ViewData["Idtujuan"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Namapelabuhan", rute.Idtujuan);
             return View(rute);
         }
 
@@ -125,9 +125,9 @@ namespace pas_pertamina.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Idasal"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Idlistpelabuhan", rute.Idasal);
-            ViewData["Idkapal"] = new SelectList(_context.Kapal, "Idkapal", "Idkapal", rute.Idkapal);
-            ViewData["Idtujuan"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Idlistpelabuhan", rute.Idtujuan);
+            ViewData["Idasal"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Namapelabuhan", rute.Idasal);
+            ViewData["Idkapal"] = new SelectList(_context.Kapal, "Idkapal", "Namakapal", rute.Idkapal);
+            ViewData["Idtujuan"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Namapelabuhan", rute.Idtujuan);
             return View(rute);
         }
 

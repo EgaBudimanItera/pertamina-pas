@@ -4,84 +4,49 @@
     ViewData["Title"] = "Delete";
 }
 
-<h2>Delete</h2>
+<ol class="breadcrumb">
+    <li><a href="#">Settings</a></li>
+    <li><a href="#">List Rute</a></li>
+    <li class="active">Hapus Rute</li>
+</ol>
+<h3 class="header-form">Hapus Rute  <i class="fa fa-pencil pull-right"></i> </h3>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Yakin Untuk Menghapus Data ini?</h3>
 <div>
     <h4>Rute</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CreatedBy)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedTime)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CreatedTime)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedBy)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedBy)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedTime)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedTime)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DeletedBy)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DeletedBy)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DeletedTime)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DeletedTime)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.SoftDelete)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.SoftDelete)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Seatime)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Seatime)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.IdasalNavigation)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.IdasalNavigation.Idlistpelabuhan)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.IdkapalNavigation)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.IdkapalNavigation.Idkapal)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.IdtujuanNavigation)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.IdtujuanNavigation.Idlistpelabuhan)
-        </dd>
-    </dl>
+
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Delete">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Idrute" />
+                <div class="form-group">
+                    <label asp-for="IdkapalNavigation.Namakapal" class="control-label">Simbol Satuan</label>
+                    <input asp-for="IdkapalNavigation.Namakapal" class="form-control" readonly />
+                    <span asp-validation-for="IdkapalNavigation.Namakapal" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="IdasalNavigation.Namapelabuhan" class="control-label">Simbol Satuan</label>
+                    <input asp-for="IdasalNavigation.Namapelabuhan" class="form-control" readonly />
+                    <span asp-validation-for="IdasalNavigation.Namapelabuhan" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="IdtujuanNavigation.Namapelabuhan" class="control-label">Simbol Satuan</label>
+                    <input asp-for="IdtujuanNavigation.Namapelabuhan" class="form-control" readonly />
+                    <span asp-validation-for="IdtujuanNavigation.Namapelabuhan" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Seatime" class="control-label">Simbol Satuan</label>
+                    <input asp-for="Seatime" class="form-control" readonly />
+                    <span asp-validation-for="Seatime" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-info"> <i class="fa fa-trash"></i> Hapus</button>
+            </form>
+        </div>
+    </div>
     
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Idrute" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+</div>
+<div>
+    <a asp-action="Index">Kembali</a>
 </div>
