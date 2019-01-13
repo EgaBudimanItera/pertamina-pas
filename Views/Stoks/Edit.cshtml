@@ -4,9 +4,12 @@
     ViewData["Title"] = "Edit";
 }
 
-<h2>Edit</h2>
-
-<h4>Stok</h4>
+<ol class="breadcrumb">
+    <li><a href="#">Planner</a></li>
+    <li><a href="#">List Stok Produk</a></li>
+    <li class="active">Ubah Produk</li>
+</ol>
+<h3 class="header-form">Ubah Produk  <i class="fa fa-pencil pull-right"></i> </h3>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,79 +17,77 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Idstock" />
             <div class="form-group">
-                <label asp-for="Idlistpelabuhan" class="control-label"></label>
+                <label asp-for="Idlistpelabuhan" class="control-label">Nama Pelabuhan</label>
                 <select asp-for="Idlistpelabuhan" class="form-control" asp-items="ViewBag.Idlistpelabuhan"></select>
-                <span asp-validation-for="Idlistpelabuhan" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Idproduk" class="control-label"></label>
+                <label asp-for="Idproduk" class="control-label">Nama Produk</label>
                 <select asp-for="Idproduk" class="form-control" asp-items="ViewBag.Idproduk"></select>
-                <span asp-validation-for="Idproduk" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Pumpable" class="control-label"></label>
+                <label asp-for="Pumpable" class="control-label">Pumpable</label>
                 <input asp-for="Pumpable" class="form-control" />
                 <span asp-validation-for="Pumpable" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Dot" class="control-label"></label>
+                <label asp-for="Dot" class="control-label">DOT</label>
                 <input asp-for="Dot" class="form-control" />
                 <span asp-validation-for="Dot" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Safestok" class="control-label"></label>
+                <label asp-for="Safestok" class="control-label">Safestock</label>
                 <input asp-for="Safestok" class="form-control" />
                 <span asp-validation-for="Safestok" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Deadstok" class="control-label"></label>
+                <label asp-for="Deadstok" class="control-label">Deadstock</label>
                 <input asp-for="Deadstok" class="form-control" />
                 <span asp-validation-for="Deadstok" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CreatedBy" class="control-label"></label>
-                <input asp-for="CreatedBy" class="form-control" />
+                @* <label asp-for="CreatedBy" class="control-label"></label>*@
+                <input type="hidden" asp-for="CreatedBy" class="form-control" />
                 <span asp-validation-for="CreatedBy" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CreatedTime" class="control-label"></label>
-                <input asp-for="CreatedTime" class="form-control" />
+                @*<label asp-for="CreatedTime" class="control-label"></label>*@
+                <input type="hidden" asp-for="CreatedTime" class="form-control" />
                 <span asp-validation-for="CreatedTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UpdatedBy" class="control-label"></label>
-                <input asp-for="UpdatedBy" class="form-control" />
+                @* <label asp-for="UpdatedBy" class="control-label"></label>*@
+                <input type="hidden" asp-for="UpdatedBy" class="form-control" />
                 <span asp-validation-for="UpdatedBy" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UpdatedTime" class="control-label"></label>
-                <input asp-for="UpdatedTime" class="form-control" />
+                @* <label asp-for="UpdatedTime" class="control-label"></label>*@
+                <input type="hidden" asp-for="UpdatedTime" class="form-control" />
                 <span asp-validation-for="UpdatedTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DeletedBy" class="control-label"></label>
-                <input asp-for="DeletedBy" class="form-control" />
+                @* <label asp-for="DeletedBy" class="control-label"></label>*@
+                <input type="hidden" asp-for="DeletedBy" class="form-control" />
                 <span asp-validation-for="DeletedBy" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DeletedTime" class="control-label"></label>
-                <input asp-for="DeletedTime" class="form-control" />
+                @* <label asp-for="DeletedTime" class="control-label"></label>*@
+                <input type="hidden" asp-for="DeletedTime" class="form-control" />
                 <span asp-validation-for="DeletedTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SoftDelete" class="control-label"></label>
-                <input asp-for="SoftDelete" class="form-control" />
+                @* <label asp-for="SoftDelete" class="control-label"></label>*@
+                <input type="hidden" asp-for="SoftDelete" class="form-control" />
                 <span asp-validation-for="SoftDelete" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <button type="submit" class="btn btn-info"> <i class="fa fa-save"></i> Simpan</button>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Kembali</a>
 </div>
 
 @section Scripts {

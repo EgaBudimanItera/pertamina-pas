@@ -48,8 +48,8 @@ namespace pas_pertamina.Controllers
         // GET: Stoks/Create
         public IActionResult Create()
         {
-            ViewData["Idlistpelabuhan"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Idlistpelabuhan");
-            ViewData["Idproduk"] = new SelectList(_context.Produk, "Idproduk", "Idproduk");
+            ViewData["Idlistpelabuhan"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Namapelabuhan");
+            ViewData["Idproduk"] = new SelectList(_context.Produk, "Idproduk", "Namaproduk");
             return View();
         }
 
@@ -66,8 +66,8 @@ namespace pas_pertamina.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Idlistpelabuhan"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Idlistpelabuhan", stok.Idlistpelabuhan);
-            ViewData["Idproduk"] = new SelectList(_context.Produk, "Idproduk", "Idproduk", stok.Idproduk);
+            ViewData["Idlistpelabuhan"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Namapelabuhan", stok.Idlistpelabuhan);
+            ViewData["Idproduk"] = new SelectList(_context.Produk, "Idproduk", "Namaproduk", stok.Idproduk);
             return View(stok);
         }
 
@@ -84,8 +84,8 @@ namespace pas_pertamina.Controllers
             {
                 return NotFound();
             }
-            ViewData["Idlistpelabuhan"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Idlistpelabuhan", stok.Idlistpelabuhan);
-            ViewData["Idproduk"] = new SelectList(_context.Produk, "Idproduk", "Idproduk", stok.Idproduk);
+            ViewData["Idlistpelabuhan"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Namapelabuhan", stok.Idlistpelabuhan);
+            ViewData["Idproduk"] = new SelectList(_context.Produk, "Idproduk", "Namaproduk", stok.Idproduk);
             return View(stok);
         }
 
@@ -121,8 +121,8 @@ namespace pas_pertamina.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Idlistpelabuhan"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Idlistpelabuhan", stok.Idlistpelabuhan);
-            ViewData["Idproduk"] = new SelectList(_context.Produk, "Idproduk", "Idproduk", stok.Idproduk);
+            ViewData["Idlistpelabuhan"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Namapelabuhan", stok.Idlistpelabuhan);
+            ViewData["Idproduk"] = new SelectList(_context.Produk, "Idproduk", "Namaproduk", stok.Idproduk);
             return View(stok);
         }
 

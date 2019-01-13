@@ -477,3 +477,8 @@ D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\pas_pertamina.Views.pdb
 D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\pas_pertamina.dll
 D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\pas_pertamina.pdb
 D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\pas_pertamina.csproj.CopyComplete
+D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Userlogins\Create.g.cshtml.cs
+D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Userlogins\Delete.g.cshtml.cs
+D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Userlogins\Details.g.cshtml.cs
+D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Userlogins\Edit.g.cshtml.cs
+D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Userlogins\Index.g.cshtml.cs

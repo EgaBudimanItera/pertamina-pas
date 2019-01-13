@@ -4,96 +4,59 @@
     ViewData["Title"] = "Delete";
 }
 
-<h2>Delete</h2>
+<ol class="breadcrumb">
+    <li><a href="#">Planner</a></li>
+    <li><a href="#">List Stok Produk</a></li>
+    <li class="active">Hapus Produk</li>
+</ol>
+<h3 class="header-form">Hapus Produk  <i class="fa fa-pencil pull-right"></i> </h3>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Yakin Untuk Menghapus Data ini?</h3>
 <div>
     <h4>Stok</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Pumpable)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Pumpable)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Dot)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Dot)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Safestok)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Safestok)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Deadstok)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Deadstok)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CreatedBy)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedTime)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CreatedTime)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedBy)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedBy)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedTime)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedTime)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DeletedBy)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DeletedBy)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DeletedTime)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DeletedTime)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.SoftDelete)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.SoftDelete)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.IdlistpelabuhanNavigation)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.IdlistpelabuhanNavigation.Idlistpelabuhan)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.IdprodukNavigation)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.IdprodukNavigation.Idproduk)
-        </dd>
-    </dl>
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Idstock" />
+                <div class="form-group">
+                    <label asp-for="IdlistpelabuhanNavigation.Namapelabuhan" class="control-label">Nama Pelabuhan</label>
+                    <input asp-for="IdlistpelabuhanNavigation.Namapelabuhan" class="form-control" readonly />
+                    <span asp-validation-for="IdlistpelabuhanNavigation.Namapelabuhan" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="IdprodukNavigation.Namaproduk" class="control-label">Simbol Produk</label>
+                    <input asp-for="IdprodukNavigation.Namaproduk" class="form-control" readonly />
+                    <span asp-validation-for="IdprodukNavigation.Namaproduk" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Pumpable" class="control-label">Pumpable</label>
+                    <input asp-for="Pumpable" class="form-control" readonly />
+                    <span asp-validation-for="Pumpable" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Dot" class="control-label">DOT</label>
+                    <input asp-for="Dot" class="form-control" readonly />
+                    <span asp-validation-for="Dot" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Safestok" class="control-label">Safestok</label>
+                    <input asp-for="Safestok" class="form-control" readonly />
+                    <span asp-validation-for="Safestok" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Deadstok" class="control-label">Deadstok</label>
+                    <input asp-for="Deadstok" class="form-control" readonly />
+                    <span asp-validation-for="Deadstok" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-info"> <i class="fa fa-trash"></i> Hapus</button>
+            </form>
+        </div>
+    </div>
+
     
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Idstock" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+</div>
+<div>
+    <a asp-action="Index">Kembali</a>
 </div>
