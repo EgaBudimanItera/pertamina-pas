@@ -19,6 +19,7 @@ namespace pas_pertamina.Models
         public string SoftDelete { get; set; }
 
         public Produk IdprodukNavigation { get; set; }
+        public Listsatuan IdsatuanNavigation { get; set; }
         public Shipment IdshipmentNavigation { get; set; }
     }
 }

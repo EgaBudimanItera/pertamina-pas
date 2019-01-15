@@ -1,0 +1,80 @@
+﻿@model IEnumerable<pas_pertamina.Models.ViewShipmenDetail>
+
+@{
+    ViewData["Title"] = "Index";
+}
+@*
+<ol class="breadcrumb">
+    <li><a href="#">Planner</a></li>
+    <li class="active">Simulasi Planner</li>
+</ol>
+<div class="row">
+    <div class="col-md-12">
+        <div class="bgc-white bd bdrs-3 p-20 mB-20">
+            <h4 class="c-grey-900 mB-20">Simulasi Planner</h4>
+            <div class="alert alert-danger">
+                <strong>Perhatian, </strong>pilih terlebih dahulu kapal, asal, tujuan, produk, jumlah produk, satuan sebelum memilih waktu datang
+            </div>
+            <div id="dataTable_wrapper" class="dataTables_wrapper">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <button type="submit" class="btn btn-primary pull-right">Simpan</button>
+                    <table border="0" cellpadding="0" cellspacing="1">
+                        <tr>
+                            <td>
+                                <select asp-for="Idkapal" class="form-control" asp-items="ViewBag.Idkapal">
+                                    <option value="">Pilih Kapal</option>
+                                </select>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                <select asp-for="Idasal" class="form-control" asp-items="ViewBag.Idasal">
+                                    <option value="">Pilih Asal Pelabuhan</option>
+                                </select>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                <select asp-for="Idtujuan" class="form-control" asp-items="ViewBag.Idtujuan">
+                                    <option value="">Pilih Tujuan Pelabuhan</option>
+                                </select>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                <select asp-for="Proses" class="form-control">
+                                    <option value="">Pilih Proses</option>
+                                    <option value="0">Loading</option>
+                                    <option value="1">Discharge</option>
+                                </select>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                <select asp-for="Nojetty" class="form-control">
+                                    <option value="">Pilih Jetty</option>
+                                    <option value="1">Jetty 1</option>
+                                    <option value="2">Jetty 2</option>
+                                    <option value="3">Jetty 3</option>
+                                </select>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                <select asp-for="" class="form-control" asp-items="ViewBag.Idtujuan">
+                                    <option value="">Pilih Tujuan Pelabuhan</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+*@
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

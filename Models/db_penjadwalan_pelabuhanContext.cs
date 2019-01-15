@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using pas_pertamina.Models;
 
 namespace pas_pertamina.Models
 {
@@ -94,6 +95,11 @@ namespace pas_pertamina.Models
                     .WithMany(p => p.Detailshipment)
                     .HasForeignKey(d => d.Idproduk)
                     .HasConstraintName("FK_detailshipment_produk");
+
+                entity.HasOne(d => d.IdsatuanNavigation)
+                    .WithMany(p => p.Detailshipment)
+                    .HasForeignKey(d => d.Idsatuan)
+                    .HasConstraintName("FK_detailshipment_listsatuan");
 
                 entity.HasOne(d => d.IdshipmentNavigation)
                     .WithMany(p => p.Detailshipment)
@@ -972,5 +978,7 @@ namespace pas_pertamina.Models
                     .HasConstraintName("FK_userlogin_pelabuhan");
             });
         }
+
+        public DbSet<pas_pertamina.Models.ViewShipmenDetail> ViewShipmenDetail { get; set; }
     }
 }

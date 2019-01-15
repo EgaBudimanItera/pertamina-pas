@@ -7,6 +7,7 @@ namespace pas_pertamina.Models
     {
         public Listsatuan()
         {
+            Detailshipment = new HashSet<Detailshipment>();
             KapalSatuanflowrateNavigation = new HashSet<Kapal>();
             KapalSatuankapasitasNavigation = new HashSet<Kapal>();
         }
@@ -22,6 +23,7 @@ namespace pas_pertamina.Models
         public DateTime? DeletedTime { get; set; }
         public string SoftDelete { get; set; }
 
+        public ICollection<Detailshipment> Detailshipment { get; set; }
         public ICollection<Kapal> KapalSatuanflowrateNavigation { get; set; }
         public ICollection<Kapal> KapalSatuankapasitasNavigation { get; set; }
     }
