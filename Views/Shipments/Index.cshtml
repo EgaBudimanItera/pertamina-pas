@@ -1,0 +1,32 @@
+﻿@model IEnumerable<pas_pertamina.Models.Shipment>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<ol class="breadcrumb">
+    <li><a href="#">Planner</a></li>
+    <li class="active">Simulasi Planner</li>
+</ol>
+<div class="row">
+    <div class="col-md-12">
+        <div class="bgc-white bd bdrs-3 p-20 mB-20">
+            <h4 class="c-grey-900 mB-20">Simulasi Planner</h4>
+            <div class="alert alert-danger">
+                <strong>Perhatian, </strong>pilih terlebih dahulu kapal, asal, tujuan, produk, jumlah produk, satuan sebelum memilih waktu datang
+            </div>
+            <div>
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <button type="submit" class="btn btn-primary pull-right">Simpan</button>
+                    
+                   
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+   
+
+    
+

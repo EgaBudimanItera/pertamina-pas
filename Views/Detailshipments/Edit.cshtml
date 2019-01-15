@@ -1,0 +1,84 @@
+﻿@model pas_pertamina.Models.Detailshipment
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>Detailshipment</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Iddetailshipment" />
+            <div class="form-group">
+                <label asp-for="Idshipment" class="control-label"></label>
+                <select asp-for="Idshipment" class="form-control" asp-items="ViewBag.Idshipment"></select>
+                <span asp-validation-for="Idshipment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Idproduk" class="control-label"></label>
+                <select asp-for="Idproduk" class="form-control" asp-items="ViewBag.Idproduk"></select>
+                <span asp-validation-for="Idproduk" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Jumlah" class="control-label"></label>
+                <input asp-for="Jumlah" class="form-control" />
+                <span asp-validation-for="Jumlah" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Idsatuan" class="control-label"></label>
+                <input asp-for="Idsatuan" class="form-control" />
+                <span asp-validation-for="Idsatuan" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedBy" class="control-label"></label>
+                <input asp-for="CreatedBy" class="form-control" />
+                <span asp-validation-for="CreatedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedTime" class="control-label"></label>
+                <input asp-for="CreatedTime" class="form-control" />
+                <span asp-validation-for="CreatedTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdatedBy" class="control-label"></label>
+                <input asp-for="UpdatedBy" class="form-control" />
+                <span asp-validation-for="UpdatedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdatedTime" class="control-label"></label>
+                <input asp-for="UpdatedTime" class="form-control" />
+                <span asp-validation-for="UpdatedTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeletedBy" class="control-label"></label>
+                <input asp-for="DeletedBy" class="form-control" />
+                <span asp-validation-for="DeletedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeletedTime" class="control-label"></label>
+                <input asp-for="DeletedTime" class="form-control" />
+                <span asp-validation-for="DeletedTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoftDelete" class="control-label"></label>
+                <input asp-for="SoftDelete" class="form-control" />
+                <span asp-validation-for="SoftDelete" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

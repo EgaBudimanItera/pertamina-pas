@@ -1,0 +1,236 @@
+﻿@model pas_pertamina.Models.Shipment
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<ol class="breadcrumb">
+    <li><a href="#">Planner</a></li>
+    <li class="active">Simulasi Planner</li>
+</ol>
+<div class="row">
+    <div class="col-md-12">
+        <div class="bgc-white bd bdrs-3 p-20 mB-20">
+            <h4 class="c-grey-900 mB-20">Simulasi Planner</h4>
+            <div class="alert alert-danger">
+                <strong>Perhatian, </strong>pilih terlebih dahulu kapal, asal, tujuan, produk, jumlah produk, satuan sebelum memilih waktu datang
+            </div>
+            <div id="dataTable_wrapper" class="dataTables_wrapper">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <button type="submit" class="btn btn-primary pull-right">Simpan</button>
+                    <table border="0" cellpadding="0" cellspacing="1">
+                        <tr>
+                            <td>
+                                <select asp-for="Idkapal" class="form-control" asp-items="ViewBag.Idkapal">
+                                    <option value="">Pilih Kapal</option>
+                                </select>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                <select asp-for="Idasal" class="form-control" asp-items="ViewBag.Idasal">
+                                    <option value="">Pilih Asal Pelabuhan</option>
+                                </select>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                <select asp-for="Idtujuan" class="form-control" asp-items="ViewBag.Idtujuan">
+                                    <option value="">Pilih Tujuan Pelabuhan</option>
+                                </select>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                <select asp-for="Proses" class="form-control">
+                                    <option value="">Pilih Proses</option>
+                                    <option value="0">Loading</option>
+                                    <option value="1">Discharge</option>
+                                </select>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>
+                                <select asp-for="Nojetty" class="form-control">
+                                    <option value="">Pilih Jetty</option>
+                                    <option value="1">Jetty 1</option>
+                                    <option value="2">Jetty 2</option>
+                                    <option value="3">Jetty 3</option>
+                                </select>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                <select asp-for="Idtujuan" class="form-control" asp-items="ViewBag.Idtujuan">
+                                    <option value="">Pilih Tujuan Pelabuhan</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@*
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Noshipment" class="control-label"></label>
+                <input asp-for="Noshipment" class="form-control" />
+                <span asp-validation-for="Noshipment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Idkapal" class="control-label"></label>
+                <select asp-for="Idkapal" class="form-control" asp-items="ViewBag.Idkapal"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Idasal" class="control-label"></label>
+                <select asp-for="Idasal" class="form-control" asp-items="ViewBag.Idasal"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Idtujuan" class="control-label"></label>
+                <select asp-for="Idtujuan" class="form-control" asp-items="ViewBag.Idtujuan"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Proses" class="control-label"></label>
+                <input asp-for="Proses" class="form-control" />
+                <span asp-validation-for="Proses" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Arrival" class="control-label"></label>
+                <input asp-for="Arrival" class="form-control" />
+                <span asp-validation-for="Arrival" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Berthed" class="control-label"></label>
+                <input asp-for="Berthed" class="form-control" />
+                <span asp-validation-for="Berthed" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Comm" class="control-label"></label>
+                <input asp-for="Comm" class="form-control" />
+                <span asp-validation-for="Comm" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Comp" class="control-label"></label>
+                <input asp-for="Comp" class="form-control" />
+                <span asp-validation-for="Comp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Unberthed" class="control-label"></label>
+                <input asp-for="Unberthed" class="form-control" />
+                <span asp-validation-for="Unberthed" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Departure" class="control-label"></label>
+                <input asp-for="Departure" class="form-control" />
+                <span asp-validation-for="Departure" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Waiting1" class="control-label"></label>
+                <input asp-for="Waiting1" class="form-control" />
+                <span asp-validation-for="Waiting1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Waiting2" class="control-label"></label>
+                <input asp-for="Waiting2" class="form-control" />
+                <span asp-validation-for="Waiting2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Waiting3" class="control-label"></label>
+                <input asp-for="Waiting3" class="form-control" />
+                <span asp-validation-for="Waiting3" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Waiting4" class="control-label"></label>
+                <input asp-for="Waiting4" class="form-control" />
+                <span asp-validation-for="Waiting4" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Waiting5" class="control-label"></label>
+                <input asp-for="Waiting5" class="form-control" />
+                <span asp-validation-for="Waiting5" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Antrian" class="control-label"></label>
+                <input asp-for="Antrian" class="form-control" />
+                <span asp-validation-for="Antrian" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nojetty" class="control-label"></label>
+                <input asp-for="Nojetty" class="form-control" />
+                <span asp-validation-for="Nojetty" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Idbantuan" class="control-label"></label>
+                <input asp-for="Idbantuan" class="form-control" />
+                <span asp-validation-for="Idbantuan" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Prosesbantuan" class="control-label"></label>
+                <input asp-for="Prosesbantuan" class="form-control" />
+                <span asp-validation-for="Prosesbantuan" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Idpelabuhanbantuan" class="control-label"></label>
+                <select asp-for="Idpelabuhanbantuan" class="form-control" asp-items="ViewBag.Idpelabuhanbantuan"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedBy" class="control-label"></label>
+                <input asp-for="CreatedBy" class="form-control" />
+                <span asp-validation-for="CreatedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedTime" class="control-label"></label>
+                <input asp-for="CreatedTime" class="form-control" />
+                <span asp-validation-for="CreatedTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdatedBy" class="control-label"></label>
+                <input asp-for="UpdatedBy" class="form-control" />
+                <span asp-validation-for="UpdatedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdatedTime" class="control-label"></label>
+                <input asp-for="UpdatedTime" class="form-control" />
+                <span asp-validation-for="UpdatedTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeletedBy" class="control-label"></label>
+                <input asp-for="DeletedBy" class="form-control" />
+                <span asp-validation-for="DeletedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeletedTime" class="control-label"></label>
+                <input asp-for="DeletedTime" class="form-control" />
+                <span asp-validation-for="DeletedTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoftDelete" class="control-label"></label>
+                <input asp-for="SoftDelete" class="form-control" />
+                <span asp-validation-for="SoftDelete" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+    *@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

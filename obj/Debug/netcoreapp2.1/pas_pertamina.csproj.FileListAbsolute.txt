@@ -482,3 +482,8 @@ D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Userlogins\Delete.g.csh
 D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Userlogins\Details.g.cshtml.cs
 D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Userlogins\Edit.g.cshtml.cs
 D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Userlogins\Index.g.cshtml.cs
+D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Shipments\Create.g.cshtml.cs
+D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Shipments\Delete.g.cshtml.cs
+D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Shipments\Details.g.cshtml.cs
+D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Shipments\Edit.g.cshtml.cs
+D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Shipments\Index.g.cshtml.cs
