@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,8 @@ namespace pas_pertamina.Controllers
         public async Task<IActionResult> Index()
         {
             var db_penjadwalan_pelabuhanContext = _context.Kapal.Include(k => k.IdlisttipekapalNavigation).Include(k => k.SatuanflowrateNavigation).Include(k => k.SatuankapasitasNavigation);
+            ViewData["nama"] =  HttpContext.Session.GetString("Namauser");
+            ViewData["akses"] = HttpContext.Session.GetString("Akses");
             return View(await db_penjadwalan_pelabuhanContext.ToListAsync());
         }
 

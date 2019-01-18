@@ -4632,7 +4632,6 @@
       "sha512": "eMhk7Ow7BTaxEHPkHkm9matBLBHXbnktHM34F7JWLepcqCKm1La43+dIa1YoBiM4nTW0XE8iXvEr5x77FRdrhg==",
       "type": "package",
       "path": "jquery/1.7.0",
-      "hasTools": true,
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -12802,23 +12801,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\AQ\\.nuget\\packages\\": {},
+    "C:\\Users\\Ega Budiman\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\ASP\\pertamina-pas\\pas_pertamina.csproj",
+      "projectUniqueName": "G:\\ASP\\pertamina-pas\\pas_pertamina.csproj",
       "projectName": "pas_pertamina",
-      "projectPath": "D:\\ASP\\pertamina-pas\\pas_pertamina.csproj",
-      "packagesPath": "C:\\Users\\AQ\\.nuget\\packages\\",
-      "outputPath": "D:\\ASP\\pertamina-pas\\obj\\",
+      "projectPath": "G:\\ASP\\pertamina-pas\\pas_pertamina.csproj",
+      "packagesPath": "C:\\Users\\Ega Budiman\\.nuget\\packages\\",
+      "outputPath": "G:\\ASP\\pertamina-pas\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\AQ\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Ega Budiman\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
