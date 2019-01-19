@@ -31,16 +31,16 @@ namespace pas_pertamina.Models
         public virtual DbSet<Stok> Stok { get; set; }
         public virtual DbSet<TbChat> TbChat { get; set; }
         public virtual DbSet<Userlogin> Userlogin { get; set; }
-
+        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-IK66D93\\BUDIMAN;Database=db_penjadwalan_pelabuhan;Trusted_Connection=True;");
+              
             }
         }
-
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Detailshipment>(entity =>
