@@ -38,6 +38,7 @@ namespace pas_pertamina.Controllers
                 string LoginStatus = objUser.ValidateLogin(user);
                 string _akses = UserDataAccessLayer._akses;
                 string _idpelabuhan = UserDataAccessLayer._idpelabuhan;
+                string _namapelabuhan = UserDataAccessLayer._namapelabuhan;
                 if (LoginStatus == "Success")
                 {
                     var claims = new List<Claim>
@@ -55,7 +56,8 @@ namespace pas_pertamina.Controllers
                     HttpContext.Session.SetString("Namauser", user.Namauser);
                     HttpContext.Session.SetString("Akses", _akses);
                     HttpContext.Session.SetString("Idpelabuhan", _idpelabuhan);
-                    return RedirectToAction("Index", "Kapals");
+                    HttpContext.Session.SetString("Namapelabuhan", _namapelabuhan);
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -71,7 +73,7 @@ namespace pas_pertamina.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("UserLogin", "Login");
         }
     }
 }

@@ -67,7 +67,7 @@ namespace pas_pertamina
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Login}/{action=UserLogin}/{id?}");
             });
         }
     }

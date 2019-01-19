@@ -26,6 +26,7 @@ namespace pas_pertamina.Models
 
         public static string _akses;
         public static string _idpelabuhan;
+        public static string _namapelabuhan;
         public string ValidateLogin(UserDetails user)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -34,7 +35,6 @@ namespace pas_pertamina.Models
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@LoginNamauser", user.Namauser);
                 cmd.Parameters.AddWithValue("@LoginPassword", user.Password);
-                cmd.Parameters.AddWithValue("@Akses",user.Akses);
                 con.Open();
                 string result = cmd.ExecuteScalar().ToString();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -42,6 +42,7 @@ namespace pas_pertamina.Models
                 {
                     _akses = reader["akses"].ToString();
                     _idpelabuhan = reader["idpelabuhan"].ToString();
+                    _namapelabuhan = reader["namapelabuhan"].ToString();
                 }
                 con.Close();
                 return result;
