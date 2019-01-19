@@ -12801,23 +12801,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Ega Budiman\\.nuget\\packages\\": {},
+    "C:\\Users\\AQ\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "G:\\ASP\\pertamina-pas\\pas_pertamina.csproj",
+      "projectUniqueName": "D:\\ASP\\pertamina-pas\\pas_pertamina.csproj",
       "projectName": "pas_pertamina",
-      "projectPath": "G:\\ASP\\pertamina-pas\\pas_pertamina.csproj",
-      "packagesPath": "C:\\Users\\Ega Budiman\\.nuget\\packages\\",
-      "outputPath": "G:\\ASP\\pertamina-pas\\obj\\",
+      "projectPath": "D:\\ASP\\pertamina-pas\\pas_pertamina.csproj",
+      "packagesPath": "C:\\Users\\AQ\\.nuget\\packages\\",
+      "outputPath": "D:\\ASP\\pertamina-pas\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Ega Budiman\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\AQ\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
