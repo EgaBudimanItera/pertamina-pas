@@ -10,6 +10,8 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/lib/fontawesome/css/font-awesome.min.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/jquery.datetimepicker.css" />
+
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -71,7 +73,7 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Planner <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a asp-area="" asp-controller="Stoks" asp-action="Index">List Stok</a></li>
-                                    <li><a asp-area="" asp-controller="Simulasi" asp-action="Create">Simulasi</a></li>
+                                    <li><a asp-area="" asp-controller="Simulasi" asp-action="Index">Simulasi</a></li>
 
                                 </ul>
                             </li>
@@ -98,8 +100,11 @@
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
+        
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/jquery.datetimepicker.full.min.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
+
     </environment>
     <environment exclude="Development">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"

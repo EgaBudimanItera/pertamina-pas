@@ -5,10 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Bootstrap.v3.Datetimepicker.CSS" Version="4.17.45" />
+    <PackageReference Include="jQuery-datetimepicker" Version="2.4.5" />
     <PackageReference Include="jquery.datatables" Version="1.10.15" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.6" />
+    <PackageReference Include="Moment.js" Version="2.23.0" />
   </ItemGroup>
 
 </Project>

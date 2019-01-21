@@ -27,12 +27,50 @@ jQuery("#_clickProdukToInput").click(function () {
     }
 
     jQuery("#listProdukToInput").append(
-        "<div class='row'>"+
-            "<input type='hidden' name='idproduk[]' value=" + idproduk + " />" +
-            "<input type='text' readonly name='namaproduk[]' value=" + namaproduk + " />" +
-            "<input type='text' readonly name='jumlah[]' value=" + jumlah + " />" +
-            "<input type='text' readonly name='satuan[]' value=" + satuan + " />" +
+        "<div class='row'>" +
+        "<input type='hidden' name='idproduk[]' value=" + idproduk + " />" +
+        "<input type='text' readonly name='namaproduk[]' value=" + namaproduk + " />" +
+        "<input type='text' readonly name='jumlah[]' value=" + jumlah + " />" +
+        "<input type='text' readonly name='satuan[]' value=" + satuan + " />" +
         "</div>"
     );
 
-})
+});
+jQuery('#arrivaldt').datetimepicker();
+
+jQuery(function ($) {
+    $('.form-control.arrival').each(function () {
+        var startDate = $(this).data("initial-datetime");
+        $(this).datetimepicker({});
+    });
+});
+jQuery(function ($) {
+    $('.form-control.berthed').each(function () {
+        var startDate = $(this).data("initial-datetime");
+        $(this).datetimepicker({});
+    });
+});
+jQuery(function ($) {
+    $('.form-control.comm').each(function () {
+        var startDate = $(this).data("initial-datetime");
+        $(this).datetimepicker({});
+    });
+});
+jQuery(function ($) {
+    $('.form-control.comp').each(function () {
+        var startDate = $(this).data("initial-datetime");
+        $(this).datetimepicker({});
+    });
+});
+jQuery(function ($) {
+    $('.form-control.unberthed').each(function () {
+        var startDate = $(this).data("initial-datetime");
+        $(this).datetimepicker({});
+    });
+});
+jQuery(function ($) {
+    $('.form-control.departure').each(function () {
+        var startDate = $(this).data("initial-datetime");
+        $(this).datetimepicker({});
+    });
+});

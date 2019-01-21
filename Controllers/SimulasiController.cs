@@ -19,12 +19,18 @@ namespace pas_pertamina.Controllers
         }
 
         // GET: Simulasi
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var db_penjadwalan_pelabuhanContext = _context.ViewShipmenDetail.Include(v => v.IdkapalNavigation).Include(v => v.IdprodukNavigation).Include(v => v.IdshipmentNavigation);
-            return View(await db_penjadwalan_pelabuhanContext.ToListAsync());
+            //var db_penjadwalan_pelabuhanContext = _context.ViewShipmenDetail.Include(v => v.IdkapalNavigation).Include(v => v.IdprodukNavigation).Include(v => v.IdshipmentNavigation);
+            //return View(await db_penjadwalan_pelabuhanContext.ToListAsync());
 
-            
+            ViewData["Idkapal"] = new SelectList(_context.Kapal, "Idkapal", "Namakapal");
+            ViewData["Idproduk"] = new SelectList(_context.Produk, "Idproduk", "Namaproduk");
+            ViewData["Idshipment"] = new SelectList(_context.Shipment, "Idshipment", "Idshipment");
+            ViewData["Idasal"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Namapelabuhan");
+            ViewData["Idtujuan"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Namapelabuhan");
+            ViewData["Idsatuan"] = new SelectList(_context.Listsatuan, "IdListsatuan", "NamaSatuan");
+            return View();
         }
 
         // GET: Simulasi/Details/5

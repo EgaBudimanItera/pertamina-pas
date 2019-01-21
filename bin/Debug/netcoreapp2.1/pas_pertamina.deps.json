@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1",
-    "signature": "4397626375ae35014d012b75c14a96ad25728010"
+    "signature": "d30ab32223d0bbf85d4e41ff410c90904ef858cb"
   },
   "compilationOptions": {
     "defines": [
@@ -24,10 +24,13 @@
     ".NETCoreApp,Version=v2.1": {
       "pas_pertamina/1.0.0": {
         "dependencies": {
+          "Bootstrap.v3.Datetimepicker.CSS": "4.17.45",
           "Microsoft.AspNetCore.App": "2.1.1",
           "Microsoft.AspNetCore.Razor.Design": "2.1.2",
           "Microsoft.NETCore.App": "2.1.0",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.1.6",
+          "Moment.js": "2.23.0",
+          "jQuery-datetimepicker": "2.4.5",
           "jquery.datatables": "1.10.15"
         },
         "runtime": {
@@ -37,10 +40,22 @@
           "pas_pertamina.dll": {}
         }
       },
-      "jQuery/1.7.0": {},
+      "bootstrap/3.3.0": {
+        "dependencies": {
+          "jQuery": "1.9.0"
+        }
+      },
+      "Bootstrap.v3.Datetimepicker.CSS/4.17.45": {
+        "dependencies": {
+          "Moment.js": "2.23.0",
+          "bootstrap": "3.3.0"
+        }
+      },
+      "jQuery/1.9.0": {},
+      "jQuery-datetimepicker/2.4.5": {},
       "jquery.datatables/1.10.15": {
         "dependencies": {
-          "jQuery": "1.7.0"
+          "jQuery": "1.9.0"
         }
       },
       "Microsoft.AspNetCore.Razor.Design/2.1.2": {},
@@ -365,6 +380,7 @@
           "lib/netstandard2.0/Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll": {}
         }
       },
+      "Moment.js/2.23.0": {},
       "NETStandard.Library/2.0.3": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0"
@@ -3469,12 +3485,33 @@
       "serviceable": false,
       "sha512": ""
     },
-    "jQuery/1.7.0": {
+    "bootstrap/3.3.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-eMhk7Ow7BTaxEHPkHkm9matBLBHXbnktHM34F7JWLepcqCKm1La43+dIa1YoBiM4nTW0XE8iXvEr5x77FRdrhg==",
-      "path": "jquery/1.7.0",
-      "hashPath": "jquery.1.7.0.nupkg.sha512"
+      "sha512": "sha512-BeFmQgpmPCUwWzibAqAMuK2Jit+NRxrRFfZb0bNOdjXtlj4o8tl0P1JrcHm+a7G5SPx7GxfY71b+XclFrVwxNg==",
+      "path": "bootstrap/3.3.0",
+      "hashPath": "bootstrap.3.3.0.nupkg.sha512"
+    },
+    "Bootstrap.v3.Datetimepicker.CSS/4.17.45": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-CLNTxJbb6gP52h0j6k1bJQbRwviKw9lkkUiYbvPXCgu1K1Cpc8gqvOO2LphOj0exu7Y1BZ9NzxxuLAAffmUJKg==",
+      "path": "bootstrap.v3.datetimepicker.css/4.17.45",
+      "hashPath": "bootstrap.v3.datetimepicker.css.4.17.45.nupkg.sha512"
+    },
+    "jQuery/1.9.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-rl82HRANOh4pSAzCfGUl/7kpKsa1FfyndY/YwC+wm1yBPFgBjmulU6MHba8V8htYnVaT8YfeDtHm1ZifcJGR/w==",
+      "path": "jquery/1.9.0",
+      "hashPath": "jquery.1.9.0.nupkg.sha512"
+    },
+    "jQuery-datetimepicker/2.4.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-qxz1ICRT3DfiOGGotmo4P4e8KhtYgsZ7OOQSzqznHfZAuCOfqOwpYkkAMu/WJQUZ6GL27jUtcCzedE0Jk3uz+w==",
+      "path": "jquery-datetimepicker/2.4.5",
+      "hashPath": "jquery-datetimepicker.2.4.5.nupkg.sha512"
     },
     "jquery.datatables/1.10.15": {
       "type": "package",
@@ -3601,6 +3638,13 @@
       "sha512": "sha512-afw8BL6XcCeVjIlExUmaSh/zuPzmCqmgYvcQ2x7e+kO+BR8X4Kp/JGqq9mnw2Ivh4Ii/YSU0KTWRLzhEvC0jxQ==",
       "path": "microsoft.visualstudio.web.codegenerators.mvc/2.1.6",
       "hashPath": "microsoft.visualstudio.web.codegenerators.mvc.2.1.6.nupkg.sha512"
+    },
+    "Moment.js/2.23.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-S5r8uL5aumVY0LQGvFn922aW1I1+QN1NSeF+W8QQvN9afIdiLnT8V6fG3Q+pux24FQuldH8f8bpTkte89hTySg==",
+      "path": "moment.js/2.23.0",
+      "hashPath": "moment.js.2.23.0.nupkg.sha512"
     },
     "NETStandard.Library/2.0.3": {
       "type": "package",
