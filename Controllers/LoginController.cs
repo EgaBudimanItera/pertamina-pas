@@ -12,22 +12,26 @@ using Microsoft.AspNetCore.Http;
 
 namespace pas_pertamina.Controllers
 {
+    [Route("Login")]
     public class LoginController : Controller
     {
         UserDataAccessLayer objUser = new UserDataAccessLayer();
-
+       
         // GET: /<controller>/
         public IActionResult Index()
         {
             return View();
         }
-
+        
         [HttpGet]
+        [Route("")]
+        [Route("index")]
+        [Route("~/")]
         public IActionResult UserLogin()
         {
             return View();
         }
-
+        [Route("UserLogin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UserLogin([Bind] UserDetails user)

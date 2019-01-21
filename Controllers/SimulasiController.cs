@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ namespace pas_pertamina.Controllers
     public class SimulasiController : Controller
     {
         private readonly db_penjadwalan_pelabuhanContext _context;
+        private readonly ViewShipmenDetail _viewshipment;
 
         public SimulasiController(db_penjadwalan_pelabuhanContext context)
         {
@@ -20,9 +22,9 @@ namespace pas_pertamina.Controllers
         }
 
         // GET: Simulasi
-        [Route("")]
+        
         [Route("index")]
-        [Route("~/")]
+       
         public IActionResult Index()
         {
             //var db_penjadwalan_pelabuhanContext = _context.ViewShipmenDetail.Include(v => v.IdkapalNavigation).Include(v => v.IdprodukNavigation).Include(v => v.IdshipmentNavigation);
@@ -36,13 +38,17 @@ namespace pas_pertamina.Controllers
             ViewData["Idsatuan"] = new SelectList(_context.Listsatuan, "IdListsatuan", "NamaSatuan");
             return View();
         }
-
+       
         [HttpPost]
         [Route("GetWaktu")]
         public ActionResult GetWaktu()
         {
-            return Content("Deleted Successfully!");
+            return Content("A");
         }
 
+        public class Waktu
+        {
+            private DateTime arrival_ { get; set; }
+        }
     }
 }
