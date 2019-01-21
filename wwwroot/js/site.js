@@ -36,7 +36,31 @@ jQuery("#_clickProdukToInput").click(function () {
     );
 
 });
-jQuery('#arrivaldt').datetimepicker();
+
+jQuery("#arrival_").change(function () {
+    var _arrival = jQuery("#arrival_").val();
+    var _idproduk = jQuery("#Idproduk").val();
+    var _jumlah = jQuery("#Jumlah").val();
+
+    if (_idproduk == "" || _jumlah == "") {
+        alert("Silahkan pilih Produk dan Isi Jumlah Dahulu.");
+
+    } else {
+        var data = jQuery("#form_simulasi").serialize();
+
+        jQuery.ajax({
+            type: "POST",
+            data: data,
+            url: "/Simulasi/GetWaktu",
+            dataType: "JSON",
+            success: function (msg) {
+                console.log(msg);
+            }
+        });
+    }
+
+})
+
 
 jQuery(function ($) {
     $('.form-control.arrival').each(function () {
@@ -46,30 +70,6 @@ jQuery(function ($) {
 });
 jQuery(function ($) {
     $('.form-control.berthed').each(function () {
-        var startDate = $(this).data("initial-datetime");
-        $(this).datetimepicker({});
-    });
-});
-jQuery(function ($) {
-    $('.form-control.comm').each(function () {
-        var startDate = $(this).data("initial-datetime");
-        $(this).datetimepicker({});
-    });
-});
-jQuery(function ($) {
-    $('.form-control.comp').each(function () {
-        var startDate = $(this).data("initial-datetime");
-        $(this).datetimepicker({});
-    });
-});
-jQuery(function ($) {
-    $('.form-control.unberthed').each(function () {
-        var startDate = $(this).data("initial-datetime");
-        $(this).datetimepicker({});
-    });
-});
-jQuery(function ($) {
-    $('.form-control.departure').each(function () {
         var startDate = $(this).data("initial-datetime");
         $(this).datetimepicker({});
     });

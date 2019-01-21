@@ -19,7 +19,7 @@
                 <strong>Perhatian, </strong>pilih terlebih dahulu kapal, asal, tujuan, produk, jumlah produk, satuan sebelum memilih waktu datang
             </div>
             <div id="dataTable_wrapper" class="dataTables_wrapper">
-                <form asp-action="Create">
+                <form asp-action="Create" id="form_simulasi">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <button type="submit" class="btn btn-primary pull-right">Simpan</button>
                     <div class="table-responsive">
@@ -124,22 +124,22 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <input type="text" class="form-control arrival" asp-for="Arrival">
+                                        <input type="text" class="form-control arrival" id="arrival_" asp-for="Arrival">
                                     </td>
                                     <td> 
                                         <input type="text" class="form-control berthed" asp-for="Berthed">
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control comm" asp-for="Comm" readonly>
+                                        <input type="text" class="form-control" asp-for="Comm" readonly>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control comp" asp-for="Comp" readonly>
+                                        <input type="text" class="form-control" asp-for="Comp" readonly>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control unberthed" asp-for="Unberthed" readonly>
+                                        <input type="text" class="form-control" asp-for="Unberthed" readonly>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control departure" asp-for="Departure" readonly>
+                                        <input type="text" class="form-control" asp-for="Departure" readonly>
                                     </td>
                                     <td>
                                         <input asp-for="ipt" class="form-control" value="00:00:00" readonly />
