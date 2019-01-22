@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using pas_pertamina.Models;
+using Newtonsoft.Json;
 
 namespace pas_pertamina.Controllers
 {
@@ -15,6 +16,7 @@ namespace pas_pertamina.Controllers
     {
         private readonly db_penjadwalan_pelabuhanContext _context;
         private readonly ViewShipmenDetail _viewshipment;
+        SimulasiDataAccessLayer objSimulasi = new SimulasiDataAccessLayer();
 
         public SimulasiController(db_penjadwalan_pelabuhanContext context)
         {
@@ -40,15 +42,38 @@ namespace pas_pertamina.Controllers
         }
        
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Route("GetWaktu")]
-        public ActionResult GetWaktu()
+        public IActionResult GetWaktu(ViewShipmenDetail viewShipmen)
         {
-            return Content("A");
+           
+            return Json(new
+            {
+                success = true,
+                jumlah=viewShipmen.Jumlah.ToString(),
+                arrival =viewShipmen.Arrival,
+                berthed=objSimulasi.Berthed(viewShipmen)
+            });
+           
         }
-
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("Simpan")]
+        public IActionResult Simpan(ViewShipmenDetail viewShipmen)
+        {
+            return Json(new
+            {
+                success = true,
+                jumlah = viewShipmen.Jumlah.ToString(),
+                arrival = viewShipmen.Arrival,
+                berthed = viewShipmen.Berthed
+            });
+        }
         public class Waktu
         {
-            private DateTime arrival_ { get; set; }
+            
+            public string Berthed_ { get; set; }
+           
         }
     }
 }

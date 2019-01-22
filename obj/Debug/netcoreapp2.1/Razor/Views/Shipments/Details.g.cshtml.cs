@@ -644,7 +644,7 @@ using pas_pertamina.Models;
             WriteLiteral("\r\n        </dd>\r\n    </dl>\r\n</div>\r\n<div>\r\n    ");
             EndContext();
             BeginContext(5363, 62, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "49270b25b2564ac494dcf6d9e136f335", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "28b3b81d553342fb817fd70a8facf631", async() => {
                 BeginContext(5417, 4, true);
                 WriteLiteral("Edit");
                 EndContext();
@@ -679,7 +679,7 @@ using pas_pertamina.Models;
             WriteLiteral(" |\r\n    ");
             EndContext();
             BeginContext(5433, 38, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "68c0e6dfeb184d549f5e8941f409d040", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "db8ed924f93c471ca97a08455f2d522e", async() => {
                 BeginContext(5455, 12, true);
                 WriteLiteral("Back to List");
                 EndContext();

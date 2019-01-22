@@ -68,7 +68,7 @@ using pas_pertamina.Models;
             WriteLiteral("\r\n<ol class=\"breadcrumb\">\r\n    <li><a href=\"#\">Settings</a></li>\r\n    <li class=\"active\">List Rute</li>\r\n</ol>\r\n<h4 class=\"c-grey-900 mB-20\">Data Rute</h4>\r\n\r\n<p>\r\n    ");
             EndContext();
             BeginContext(258, 97, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c50e6de3fda84e07adc2e3df47d29121", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "e350cc020e4b455a8c611d363a454bce", async() => {
                 BeginContext(313, 38, true);
                 WriteLiteral("<i class=\"fa fa-plus\"></i> Tambah Data");
                 EndContext();
@@ -187,7 +187,7 @@ using pas_pertamina.Models;
             WriteLiteral("\r\n            </td>\r\n            <td>\r\n                ");
             EndContext();
             BeginContext(1703, 107, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "135af7ad40054cebbe4bd92f113f84b0", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "40a9259541d04fda9df2fd37a85738fb", async() => {
                 BeginContext(1776, 30, true);
                 WriteLiteral("<i class=\"fa fa-edit\"></i>Ubah");
                 EndContext();
@@ -223,7 +223,7 @@ using pas_pertamina.Models;
             WriteLiteral("\r\n                ");
             EndContext();
             BeginContext(1828, 111, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "1f7d162da5f94130826237e999c8daba", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "ade33d96a1754b5bbcd4a8bbf542d932", async() => {
                 BeginContext(1902, 33, true);
                 WriteLiteral("<i class=\"fa fa-remove\"></i>Hapus");
                 EndContext();

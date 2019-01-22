@@ -47,14 +47,15 @@ jQuery("#arrival_").change(function () {
 
     } else {
         var data = jQuery("#form_simulasi").serialize();
-
+        
         jQuery.ajax({
             type: "POST",
             data: data,
             url: "/Simulasi/GetWaktu",
+            
             dataType: "JSON",
             success: function (msg) {
-                console.log(msg);
+                jQuery("#berthed_").val(msg.berthed);
             }
         });
     }

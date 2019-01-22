@@ -19,7 +19,7 @@
                 <strong>Perhatian, </strong>pilih terlebih dahulu kapal, asal, tujuan, produk, jumlah produk, satuan sebelum memilih waktu datang
             </div>
             <div id="dataTable_wrapper" class="dataTables_wrapper">
-                <form asp-action="Create" id="form_simulasi">
+                <form asp-action="Simpan" id="form_simulasi">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <button type="submit" class="btn btn-primary pull-right">Simpan</button>
                     <div class="table-responsive">
@@ -127,7 +127,7 @@
                                         <input type="text" class="form-control arrival" id="arrival_" asp-for="Arrival">
                                     </td>
                                     <td> 
-                                        <input type="text" class="form-control berthed" asp-for="Berthed">
+                                        <input type="text" class="form-control berthed" id="berthed_" asp-for="Berthed">
                                     </td>
                                     <td>
                                         <input type="text" class="form-control" asp-for="Comm" readonly>
