@@ -46,13 +46,14 @@ namespace pas_pertamina.Controllers
         [Route("GetWaktu")]
         public IActionResult GetWaktu(ViewShipmenDetail viewShipmen)
         {
-           
+            string berthed = objSimulasi.Berthed(viewShipmen); 
             return Json(new
             {
                 success = true,
                 jumlah=viewShipmen.Jumlah.ToString(),
                 arrival =viewShipmen.Arrival,
-                berthed=objSimulasi.Berthed(viewShipmen)
+                berthed=objSimulasi.Berthed(viewShipmen),
+                comm = objSimulasi.Comm(viewShipmen, berthed)
             });
            
         }
@@ -61,12 +62,15 @@ namespace pas_pertamina.Controllers
         [Route("Simpan")]
         public IActionResult Simpan(ViewShipmenDetail viewShipmen)
         {
+           
+           
             return Json(new
             {
                 success = true,
                 jumlah = viewShipmen.Jumlah.ToString(),
                 arrival = viewShipmen.Arrival,
-                berthed = viewShipmen.Berthed
+                berthed = objSimulasi.Berthed(viewShipmen),
+                
             });
         }
         public class Waktu

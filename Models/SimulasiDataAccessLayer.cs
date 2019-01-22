@@ -24,13 +24,16 @@ namespace pas_pertamina.Models
         string connectionString = GetConnectionString();
         string Query;
         string Query2;
-        DateTime Arr;
-        DateTime Berthed_;
-        TimeSpan est;
+        DateTime Arr;//menampung nilai arrival dari textbox
+        DateTime _Berthed;//menampung nilai berthed dari textbox
+        DateTime Berthed_;//menampung nilai berthed dari perhitungan arrival-berthed
+        DateTime Comm_;//menampung nilai comm dari perhitungan berthed-comm
+        TimeSpan est;//menampung estimasi waktu dari table
         string result;
         string[] result_;
         public string Berthed(ViewShipmenDetail shipmenDetail)
         {
+           
             using (SqlConnection con = new SqlConnection(connectionString))
             {
 
@@ -102,6 +105,28 @@ namespace pas_pertamina.Models
                 return Berthed_.ToString("yyyy/MM/dd HH:mm");
             }
           
+        }
+        public string Comm(ViewShipmenDetail shipmenDetail,string Bertheds)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                Query2 = "SELECT top 1* FROM estimasiwaktu where idlistket = 2 ";
+                SqlCommand cmd2 = new SqlCommand(Query2, con);
+                con.Open();
+                SqlDataReader reader2 = cmd2.ExecuteReader();
+                while (reader2.Read())
+                {
+                    result = reader2["estimasiwaktu"].ToString();
+                }
+                _Berthed = DateTime.ParseExact(Bertheds,"yyyy/MM/dd HH:mm",CultureInfo.InvariantCulture);
+                result_ = result.Split(':');//conversi jam menit
+                string jam = result_[0];
+                string menit = result_[1];
+                est = new TimeSpan(Convert.ToInt32(jam), Convert.ToInt32(menit), 0);
+                Comm_ = _Berthed.Add(est);
+                return Comm_.ToString("yyyy/MM/dd HH:mm");
+            }
+                
         }
     }
 }

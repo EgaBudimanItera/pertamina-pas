@@ -56,6 +56,7 @@ jQuery("#arrival_").change(function () {
             dataType: "JSON",
             success: function (msg) {
                 jQuery("#berthed_").val(msg.berthed);
+                jQuery("#comm").val(msg.comm);
             }
         });
     }
