@@ -31,6 +31,8 @@ namespace pas_pertamina.Models
         TimeSpan est;//menampung estimasi waktu dari table
         string result;
         string[] result_;
+
+        //proses menghitung jam berthed berdasarkan arrival 
         public string Berthed(ViewShipmenDetail shipmenDetail)
         {
            
@@ -106,6 +108,8 @@ namespace pas_pertamina.Models
             }
           
         }
+       
+        //proses menghitung waktu comm berdasarkan berthed
         public string Comm(ViewShipmenDetail shipmenDetail,string Bertheds)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -125,8 +129,28 @@ namespace pas_pertamina.Models
                 est = new TimeSpan(Convert.ToInt32(jam), Convert.ToInt32(menit), 0);
                 Comm_ = _Berthed.Add(est);
                 return Comm_.ToString("yyyy/MM/dd HH:mm");
+            }   
+        }
+
+        //proses menghitung comp berdasarkan comm
+        public string Comp(ViewShipmenDetail shipmenDetail,string Comms)
+        {
+            //get flowrate kapal berdasarkan ID Kapalnya
+            string QUeryflowrate = "SELECT * FROM kapal where idkapal='"+shipmenDetail.Idkapal+"'";
+            string FlowrateKapal;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmdflowrate = new SqlCommand(QUeryflowrate,con);
+                con.Open();
+                SqlDataReader readerflowrate = cmdflowrate.ExecuteReader();
+                while (readerflowrate.Read())
+                {
+                    FlowrateKapal = readerflowrate["flowrate"].ToString(); ;
+                }
+                int jumlah = 0;
+
             }
-                
+                return "A";
         }
     }
 }

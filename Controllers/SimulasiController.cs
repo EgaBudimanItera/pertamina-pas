@@ -46,15 +46,20 @@ namespace pas_pertamina.Controllers
         [Route("GetWaktu")]
         public IActionResult GetWaktu(ViewShipmenDetail viewShipmen)
         {
-            string berthed = objSimulasi.Berthed(viewShipmen); 
-            return Json(new
+            string berthed = objSimulasi.Berthed(viewShipmen);
+            string comm = objSimulasi.Comm(viewShipmen, berthed);
+            /*return Json(new
             {
                 success = true,
                 jumlah=viewShipmen.Jumlah.ToString(),
                 arrival =viewShipmen.Arrival,
-                berthed=objSimulasi.Berthed(viewShipmen),
-                comm = objSimulasi.Comm(viewShipmen, berthed)
-            });
+                berthed=berthed,
+                comm = comm,
+                model=viewShipmen.idprodukapp
+
+            });*/
+
+            return Json(new { viewShipmen.produk });
            
         }
         [HttpPost]

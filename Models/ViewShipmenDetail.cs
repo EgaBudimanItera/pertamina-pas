@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -37,9 +38,13 @@ namespace pas_pertamina.Models
         [Key]
         public int Iddetailshipment { get; set; }
         public int? Idproduk { get; set; }
+        public List<ViewProduk> produk { get; set; }
         public int? Jumlah { get; set; }
         public int? Idsatuan { get; set; }
         public string ipt { get; set; }
+
+        [NotMapped]
+        public string[] idprodukapp { get; set; }
 
         public Pelabuhan IdasalNavigation { get; set; }
         public Kapal IdkapalNavigation { get; set; }
@@ -48,5 +53,11 @@ namespace pas_pertamina.Models
         public Produk IdprodukNavigation { get; set; }
         public Listsatuan IdsatuanNavigation { get; set; }
         public Shipment IdshipmentNavigation { get; set; }
+    }
+
+    public class ViewProduk
+    {
+        [Key]
+        public int _idproduk { get; set; }
     }
 }

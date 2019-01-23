@@ -11,7 +11,7 @@ jQuery("#_clickProdukToInput").click(function () {
     var idproduk = jQuery("#Idproduk").val();
     var namaproduk = jQuery("#Idproduk option:selected").text();
     var jumlah = jQuery("#Jumlah").val();
-    var satuan = jQuery("#Idsatuan").val();
+    var satuan = jQuery("#Idsatuan option:selected").text();
 
     if (idproduk == "") {
         alert("Silahkan pilih Produk terlebih dulu.");
@@ -28,10 +28,10 @@ jQuery("#_clickProdukToInput").click(function () {
 
     jQuery("#listProdukToInput").append(
         "<div class='row'>" +
-        "<input type='hidden' name='idproduk[]' value=" + idproduk + " />" +
-        "<input type='text' readonly name='namaproduk[]' value=" + namaproduk + " />" +
-        "<input type='text' readonly name='jumlah[]' value=" + jumlah + " />" +
-        "<input type='text' readonly name='satuan[]' value=" + satuan + " />" +
+        "<input type='hidden' name='_idproduk' value=" + idproduk + " />" +
+        "<input type='text' readonly name='namaproduk' value=" + namaproduk + " />" +
+        "<input type='text' readonly name='jumlah' value=" + jumlah + " />" +
+        "<input type='text' readonly name='satuan' value=" + satuan + " />" +
         "</div>"
     );
 
@@ -42,19 +42,22 @@ jQuery("#arrival_").change(function () {
     var _idproduk = jQuery("#Idproduk").val();
     var _jumlah = jQuery("#Jumlah").val();
 
+    
     if (_idproduk == "" || _jumlah == "") {
         alert("Silahkan pilih Produk dan Isi Jumlah Dahulu.");
 
     } else {
         var data = jQuery("#form_simulasi").serialize();
-        
+        var listproduk = jQuery("#listProdukToInput").serialize();
+        console.log(data);    
         jQuery.ajax({
             type: "POST",
-            data: data,
+            data: { data, listproduk },
             url: "/Simulasi/GetWaktu",
             
             dataType: "JSON",
             success: function (msg) {
+                console.log(msg)
                 jQuery("#berthed_").val(msg.berthed);
                 jQuery("#comm").val(msg.comm);
             }
