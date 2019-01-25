@@ -2,11 +2,11 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-
+var NUMPRODUCT = 0;
 
 //Simulasi
-jQuery("#_clickProdukToInput").click(function () {
-
+jQuery("#_clickProdukToInput").click(function (e) {
+    e.preventDefault();
     jQuery("#listProdukToInput").show();
     var idproduk = jQuery("#Idproduk").val();
     var namaproduk = jQuery("#Idproduk option:selected").text();
@@ -26,14 +26,11 @@ jQuery("#_clickProdukToInput").click(function () {
         return;
     }
 
+    var productInput = '<div class="row"><div class="col-md-12"><div class="col-md-3"><input class="form-control" type="hidden" name="produk[' + NUMPRODUCT + '].produk" value="' + idproduk + '"><input type="text" readonly class="form-control" value="'+namaproduk+'"></div><div class="col-md-3"><input type="text" class="form-control" name="produk[' + NUMPRODUCT + '].jumlah" value="' + jumlah + '"></div></div></div>';
     jQuery("#listProdukToInput").append(
-        "<div class='row'>" +
-        "<input type='hidden' name='_idproduk' value=" + idproduk + " />" +
-        "<input type='text' readonly name='namaproduk' value=" + namaproduk + " />" +
-        "<input type='text' readonly name='jumlah' value=" + jumlah + " />" +
-        "<input type='text' readonly name='satuan' value=" + satuan + " />" +
-        "</div>"
+        productInput
     );
+    NUMPRODUCT = NUMPRODUCT + 1;
 
 });
 
@@ -48,18 +45,33 @@ jQuery("#arrival_").change(function () {
 
     } else {
         var data = jQuery("#form_simulasi").serialize();
-        var listproduk = jQuery("#listProdukToInput").serialize();
-        console.log(data);    
+        
         jQuery.ajax({
             type: "POST",
-            data: { data, listproduk },
+            data: data,
             url: "/Simulasi/GetWaktu",
-            
-            dataType: "JSON",
+            dataType: "json",
             success: function (msg) {
                 console.log(msg)
                 jQuery("#berthed_").val(msg.berthed);
                 jQuery("#comm").val(msg.comm);
+                jQuery("#comp").val(msg.comp);
+                jQuery("#unberthed").val(msg.unberthed);
+                jQuery("#departure").val(msg.departure);
+
+                var ipt = msg.ipt.split(":");
+                var h = ipt[0];
+                var m = ipt[1];
+                if (ipt[0] < 10) {
+                    h = "0" + ipt[0];
+                }
+                if (ipt[1] < 10) {
+                    m = "0" + ipt[1];
+                }
+                jQuery("#ipt").val(h + ":" + m);
+            },
+            error: function (err) {
+                console.log(err)
             }
         });
     }

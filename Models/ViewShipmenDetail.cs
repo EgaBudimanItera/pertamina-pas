@@ -58,6 +58,8 @@ namespace pas_pertamina.Models
     public class ViewProduk
     {
         [Key]
-        public int _idproduk { get; set; }
+        public int? produk { get; set; }
+        public int? jumlah { get; set; }
     }
+    
 }
