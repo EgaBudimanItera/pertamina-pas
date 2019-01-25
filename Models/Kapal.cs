@@ -34,5 +34,6 @@ namespace pas_pertamina.Models
         public ICollection<Estimasiwaktu> Estimasiwaktu { get; set; }
         public ICollection<Rute> Rute { get; set; }
         public ICollection<Shipment> Shipment { get; set; }
+        public ICollection<PortSchedule> PortSchedules { get; set; }
     }
 }

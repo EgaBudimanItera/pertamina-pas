@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace pas_pertamina.Models
 {
-    public class ViewShipmenDetail
+    public class PortActivityJetty1
     {
         public int Idshipment { get; set; }
         public string Noshipment { get; set; }
@@ -16,7 +15,6 @@ namespace pas_pertamina.Models
         public int? Idtujuan { get; set; }
         public string Proses { get; set; }
         [Display(Name = "Arrival")]
-       
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:MM:ss}", ApplyFormatInEditMode = true)]
         public DateTime? Arrival { get; set; }
         public DateTime? Berthed { get; set; }
@@ -50,11 +48,5 @@ namespace pas_pertamina.Models
         public Produk IdprodukNavigation { get; set; }
         public Listsatuan IdsatuanNavigation { get; set; }
         public Shipment IdshipmentNavigation { get; set; }
-    }
-
-    public class ViewProduk
-    {
-        [Key]
-        public int _idproduk { get; set; }
     }
 }

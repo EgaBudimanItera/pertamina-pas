@@ -1,4 +1,5 @@
-﻿@{
+﻿@model pas_pertamina.Models.HomeSimulasi
+@{
     ViewData["Title"] = "Home Page";
 }
 <br />
@@ -61,6 +62,23 @@
                 <div class="col-md-12">
                     <div class="bgc-white bd bdrs-3 p-20 mB-20">
                         <h3 style="margin-top: 0px">Port Schedule</h3>
+                        <div id="dataTable_wrapper" class="dataTables_wrapper">
+                            <table>
+                                
+
+                                @foreach (var portschedule in Model.PortSchedules)
+                                {
+                                    <tr>
+                                        <td>@portschedule.NamaKapal From @portschedule.NamaAsalPelabuhan (@portschedule.Produk)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Antrian : @portschedule.Antrian , Jetty : @portschedule.Nojetty 
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
