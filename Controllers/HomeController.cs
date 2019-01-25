@@ -60,7 +60,6 @@ namespace pas_pertamina.Controllers
                                 NamaAsalPelabuhan=reader["namaasal"].ToString(),
                                 Produk=reader["produk"].ToString(),
                                 Antrian=Int32.Parse(reader["antrian"].ToString()),
-                                
                             }
                        );
                     }
