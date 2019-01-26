@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace pas_pertamina.Controllers
 {
-    [Route("Login")]
+    //[Route("Login")]
     public class LoginController : Controller
     {
         UserDataAccessLayer objUser = new UserDataAccessLayer();
@@ -24,15 +24,16 @@ namespace pas_pertamina.Controllers
         }
         
         [HttpGet]
-        [Route("")]
-        [Route("index")]
-        [Route("~/")]
+        //[Route("")]
+        //[Route("UserLogin")]
+        //[Route("~/")]
         public IActionResult UserLogin()
         {
             return View();
         }
-        [Route("UserLogin")]
+        
         [HttpPost]
+        //[Route("UserLogin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UserLogin([Bind] UserDetails user)
         {
@@ -72,12 +73,12 @@ namespace pas_pertamina.Controllers
             else
                 return View();
         }
-
+        
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
-            return RedirectToAction("UserLogin", "Login");
+            return RedirectToAction("UserLogin","Login");
         }
     }
 }

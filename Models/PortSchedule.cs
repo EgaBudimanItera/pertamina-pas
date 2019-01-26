@@ -16,6 +16,7 @@ namespace pas_pertamina.Models
         public int? Idasal { get; set; }
         public string NamaAsalPelabuhan { get; set; }
         public int? Idtujuan { get; set; }
+        public string NamaTujuanPelabuhan { get; set; }
         public string Proses { get; set; }
         [Display(Name = "Arrival")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:MM:ss}", ApplyFormatInEditMode = true)]
@@ -33,10 +34,6 @@ namespace pas_pertamina.Models
         public string Prosesbantuan { get; set; }
         public int Idpelabuhanbantuan { get; set; }
         public string Produk { get; set; }
-        public string ipt { get; set; }
-
-        
-        
-
+        public string Ipt { get; set; }
     }
 }
