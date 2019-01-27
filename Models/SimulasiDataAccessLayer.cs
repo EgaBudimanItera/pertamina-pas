@@ -27,7 +27,13 @@ namespace pas_pertamina.Models
         DateTime Arr;//menampung nilai arrival dari textbox
         DateTime _Berthed;//menampung nilai berthed dari textbox
         DateTime Berthed_;//menampung nilai berthed dari perhitungan arrival-berthed
+        DateTime _Comm;
         DateTime Comm_;//menampung nilai comm dari perhitungan berthed-comm
+        DateTime _Comp;
+        DateTime Comp_;//menampung nilai comp dari perhitungan comm-comp
+        DateTime _Unberthed;
+        DateTime Unberthed_;
+        DateTime Departure_;
         TimeSpan est;//menampung estimasi waktu dari table
         string result;
         string[] result_;
@@ -137,7 +143,8 @@ namespace pas_pertamina.Models
         {
             //get flowrate kapal berdasarkan ID Kapalnya
             string QUeryflowrate = "SELECT * FROM kapal where idkapal='"+shipmenDetail.Idkapal+"'";
-            string FlowrateKapal;
+            string FlowrateKapal = "";
+            float hitung = 0;
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 SqlCommand cmdflowrate = new SqlCommand(QUeryflowrate,con);
@@ -147,10 +154,73 @@ namespace pas_pertamina.Models
                 {
                     FlowrateKapal = readerflowrate["flowrate"].ToString(); ;
                 }
-                int jumlah = 0;
+
+                int? jumlah = 0;
+                foreach (var jml in shipmenDetail.produk)
+                {
+                    jumlah = jml.jumlah + jumlah;
+                }
+
+                 hitung = float.Parse(jumlah.ToString(), CultureInfo.InvariantCulture.NumberFormat) / float.Parse(FlowrateKapal, CultureInfo.InvariantCulture.NumberFormat);
+
+                hitung = (float)Math.Round(hitung);
+
+                est = new TimeSpan(Convert.ToInt32(hitung), Convert.ToInt32("00"), 0);
+                _Comm = DateTime.ParseExact(Comms, "yyyy/MM/dd HH:mm", CultureInfo.InvariantCulture);
+                Comp_ = _Comm.Add(est);
+                return Comp_.ToString("yyyy/MM/dd HH:mm");
 
             }
-                return "A";
+        }
+
+        //proses menghitung jam berthed berdasarkan arrival 
+        public string Unberthed(ViewShipmenDetail shipmenDetail, string Comps)
+        {
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                Query2 = "SELECT top 1* FROM estimasiwaktu where idlistket = 4 ";
+                SqlCommand cmd2 = new SqlCommand(Query2, con);
+                con.Open();
+                SqlDataReader reader2 = cmd2.ExecuteReader();
+                while (reader2.Read())
+                {
+                    result = reader2["estimasiwaktu"].ToString();
+                }
+                _Comp = DateTime.ParseExact(Comps, "yyyy/MM/dd HH:mm", CultureInfo.InvariantCulture);
+                result_ = result.Split(':');//conversi jam menit
+                string jam = result_[0];
+                string menit = result_[1];
+                est = new TimeSpan(Convert.ToInt32(jam), Convert.ToInt32(menit), 0);
+                Unberthed_ = _Comp.Add(est);
+                return Unberthed_.ToString("yyyy/MM/dd HH:mm");
+            }
+
+        }
+
+        //proses menghitung jam berthed berdasarkan arrival 
+        public string Departure(ViewShipmenDetail shipmenDetail, string Unbertheds)
+        {
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                Query2 = "SELECT top 1* FROM estimasiwaktu where idlistket = 5 ";
+                SqlCommand cmd2 = new SqlCommand(Query2, con);
+                con.Open();
+                SqlDataReader reader2 = cmd2.ExecuteReader();
+                while (reader2.Read())
+                {
+                    result = reader2["estimasiwaktu"].ToString();
+                }
+                _Unberthed = DateTime.ParseExact(Unbertheds, "yyyy/MM/dd HH:mm", CultureInfo.InvariantCulture);
+                result_ = result.Split(':');//conversi jam menit
+                string jam = result_[0];
+                string menit = result_[1];
+                est = new TimeSpan(Convert.ToInt32(jam), Convert.ToInt32(menit), 0);
+                Departure_ = _Unberthed.Add(est);
+                return Departure_.ToString("yyyy/MM/dd HH:mm");
+            }
+
         }
     }
 }

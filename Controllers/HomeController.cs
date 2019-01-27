@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using pas_pertamina.Models;
 using Microsoft.AspNetCore.Http;
-
+using System.Globalization;
 
 namespace pas_pertamina.Controllers
 {
@@ -32,7 +32,7 @@ namespace pas_pertamina.Controllers
         public ActionResult Index()
         {
             string idpel = HttpContext.Session.GetString("Idpelabuhan");
-            String QueryPortSchedule = "SELECT s.*,namakapal,(select namapelabuhan from pelabuhan plasal where s.idasal=plasal.idlistpelabuhan) as namaasal,"+
+            String QueryPortSchedule = "SELECT s.*,CONVERT(TIME,CONVERT(datetime,departure)-CONVERT(datetime,arrival)) as ipthitung,namakapal,(select namapelabuhan from pelabuhan plasal where s.idasal=plasal.idlistpelabuhan) as namaasal," +
                                        "(select namapelabuhan from pelabuhan pltujuan where s.idtujuan = pltujuan.idlistpelabuhan) as namatujuan,"+
                                        "STUFF((SELECT ',' + namaproduk + '  ' + convert(varchar(20), jumlah), '  ' + nama_satuan FROM detailshipment "+
                                        "join produk on(detailshipment.idproduk = produk.idproduk) join listsatuan on(detailshipment.idsatuan = listsatuan.id_listsatuan) "+
@@ -48,19 +48,29 @@ namespace pas_pertamina.Controllers
                 {
                     while (reader.Read())
                     {
+                        DateTime a = reader.GetDateTime(reader.GetOrdinal("arrival")) ;
+                        string format = "dd/MM/yyyy HH:mm";
+                        string b = a.ToString(format);
                         _portSchedules.Add(
                             new PortSchedule
                             {
                                 Idshipment = reader["idshipment"].ToString(),
                                 Noshipment = reader["noshipment"].ToString(),
                                 Idkapal = Int32.Parse(reader["idkapal"].ToString()),
-                                Idpelabuhanbantuan=Int32.Parse(reader["idpelabuhanbantuan"].ToString()),
-                                Nojetty= Int32.Parse(reader["nojetty"].ToString()),
-                                NamaKapal=reader["namakapal"].ToString(),
-                                NamaAsalPelabuhan=reader["namaasal"].ToString(),
-                                Produk=reader["produk"].ToString(),
-                                Antrian=Int32.Parse(reader["antrian"].ToString()),
-                            }
+                                Idpelabuhanbantuan = Int32.Parse(reader["idpelabuhanbantuan"].ToString()),
+                                Nojetty = Int32.Parse(reader["nojetty"].ToString()),
+                                NamaKapal = reader["namakapal"].ToString(),
+                                NamaAsalPelabuhan = reader["namaasal"].ToString(),
+                                Produk = reader["produk"].ToString(),
+                                Arrival = DateTime.ParseExact(reader["arrival"].ToString(),"dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy HH:mm"),
+                                Berthed = b,
+                                Comm = reader["comm"].ToString(),
+                                Comp = reader["comp"].ToString(),
+                                Unberthed = reader["unberthed"].ToString(),
+                                Departure=reader["departure"].ToString(),
+                                Ipt=reader["ipthitung"].ToString(),
+                                NamaTujuanPelabuhan=reader["namatujuan"].ToString(),
+                    }       
                        );
                     }
                 }

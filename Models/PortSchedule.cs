@@ -18,14 +18,13 @@ namespace pas_pertamina.Models
         public int? Idtujuan { get; set; }
         public string NamaTujuanPelabuhan { get; set; }
         public string Proses { get; set; }
-        [Display(Name = "Arrival")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:MM:ss}", ApplyFormatInEditMode = true)]
-        public DateTime? Arrival { get; set; }
-        public DateTime? Berthed { get; set; }
-        public DateTime? Comm { get; set; }
-        public DateTime? Comp { get; set; }
-        public DateTime? Unberthed { get; set; }
-        public DateTime? Departure { get; set; }
+        
+        public string Arrival { get; set; }
+        public string Berthed { get; set; }
+        public string Comm { get; set; }
+        public string Comp { get; set; }
+        public string Unberthed { get; set; }
+        public string Departure { get; set; }
        
         public string Status { get; set; }
         public int? Antrian { get; set; }
