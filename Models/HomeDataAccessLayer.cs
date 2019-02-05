@@ -191,7 +191,7 @@ namespace pas_pertamina.Models
                         _activityJetty2s.Add(
                            new PortActivityJetty2
                            {
-                               /*Idshipment = reader["idshipment"].ToString(),
+                               Idshipment = reader["idshipment"].ToString(),
                                Noshipment = reader["noshipment"].ToString(),
                                Idkapal = Int32.Parse(reader["idkapal"].ToString()),
                                Idpelabuhanbantuan = Int32.Parse(reader["idpelabuhanbantuan"].ToString()),
@@ -216,7 +216,7 @@ namespace pas_pertamina.Models
                                waiting5 = Int32.Parse(reader["waiting5"].ToString()),
                                JumlahProduk = Int32.Parse(reader["jumlahproduk"].ToString()),
                                Antrian = Int32.Parse(reader["antrian"].ToString()),
-                               */
+                               
                            }
                         );
 
