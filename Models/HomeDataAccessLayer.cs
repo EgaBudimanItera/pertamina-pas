@@ -158,12 +158,12 @@ namespace pas_pertamina.Models
             int nojetty = 2;
             int idpel_ = Int32.Parse(idpel);
             string Queryjetty2 = "SELECT s.*,CONVERT(TIME,CONVERT(datetime,departure)-CONVERT(datetime,arrival)) as ipthitung,namakapal,(select namapelabuhan from pelabuhan plasal where s.idasal=plasal.idlistpelabuhan) as namaasal," +
-                                 "(select namapelabuhan from pelabuhan pltujuan where s.idtujuan = pltujuan.idlistpelabuhan) as namatujuan," +
-                                 "STUFF((SELECT ',' + namaproduk + '  ' + convert(varchar(20), jumlah), '  ' + nama_satuan FROM detailshipment " +
-                                 "join produk on(detailshipment.idproduk = produk.idproduk) join listsatuan on(detailshipment.idsatuan = listsatuan.id_listsatuan) " +
-                                 "where detailshipment.idshipment = s.idshipment FOR XML PATH('')),1,1,'') as produk, " +
-                                 "(select sum(jumlah) from detailshipment where detailshipment.idshipment = s.idshipment) as jumlahproduk " +
-                                 "FROM shipment s join kapal k on(s.idkapal = k.idkapal) join pelabuhan pl on(s.idpelabuhanbantuan= pl.idlistpelabuhan) where status= 'Proses' and nojetty='"+nojetty+"' and idpelabuhanbantuan='" + idpel_ + "'";
+                                       "(select namapelabuhan from pelabuhan pltujuan where s.idtujuan = pltujuan.idlistpelabuhan) as namatujuan," +
+                                       "STUFF((SELECT ',' + namaproduk + '  ' + convert(varchar(20), jumlah), '  ' + nama_satuan FROM detailshipment " +
+                                       "join produk on(detailshipment.idproduk = produk.idproduk) join listsatuan on(detailshipment.idsatuan = listsatuan.id_listsatuan) " +
+                                       "where detailshipment.idshipment = s.idshipment FOR XML PATH('')),1,1,'') as produk, " +
+                                       "(select sum(jumlah) from detailshipment where detailshipment.idshipment = s.idshipment) as jumlahproduk " +
+                                       "FROM shipment s join kapal k on(s.idkapal = k.idkapal) join pelabuhan pl on(s.idpelabuhanbantuan= pl.idlistpelabuhan) where status= 'Proses' and nojetty='" + nojetty + "' and idpelabuhanbantuan='" + idpel + "'";
             List<PortActivityJetty2> _activityJetty2s = new List<PortActivityJetty2>();
             using (SqlConnection con = new SqlConnection(connectionString))
             {
@@ -191,7 +191,7 @@ namespace pas_pertamina.Models
                         _activityJetty2s.Add(
                            new PortActivityJetty2
                            {
-                               Idshipment = reader["idshipment"].ToString(),
+                               /*Idshipment = reader["idshipment"].ToString(),
                                Noshipment = reader["noshipment"].ToString(),
                                Idkapal = Int32.Parse(reader["idkapal"].ToString()),
                                Idpelabuhanbantuan = Int32.Parse(reader["idpelabuhanbantuan"].ToString()),
@@ -199,7 +199,7 @@ namespace pas_pertamina.Models
                                NamaKapal = reader["namakapal"].ToString(),
                                NamaAsalPelabuhan = reader["namaasal"].ToString(),
                                Produk = reader["produk"].ToString(),
-
+                               
                                Arrival = DateTime.ParseExact(reader["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                                Berthed = DateTime.ParseExact(reader["berthed"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                                Comm = DateTime.ParseExact(reader["comm"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
@@ -216,6 +216,7 @@ namespace pas_pertamina.Models
                                waiting5 = Int32.Parse(reader["waiting5"].ToString()),
                                JumlahProduk = Int32.Parse(reader["jumlahproduk"].ToString()),
                                Antrian = Int32.Parse(reader["antrian"].ToString()),
+                               */
                            }
                         );
 
