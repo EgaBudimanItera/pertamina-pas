@@ -17,7 +17,7 @@ namespace pas_pertamina.Models
         public string Proses { get; set; }
         [Display(Name = "Arrival")]
        
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:MM:ss}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:MM}", ApplyFormatInEditMode = true)]
         public DateTime? Arrival { get; set; }
         public DateTime? Berthed { get; set; }
         public DateTime? Comm { get; set; }
@@ -56,5 +56,7 @@ namespace pas_pertamina.Models
     {
         [Key]
         public int _idproduk { get; set; }
+        
+        public int jumlah { get; set; }
     }
 }

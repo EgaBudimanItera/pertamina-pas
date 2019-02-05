@@ -1,110 +1,127 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Mvc;
 using pas_pertamina.Models;
 using Microsoft.AspNetCore.Http;
-using System.Globalization;
 
 namespace pas_pertamina.Controllers
 {
     public class HomeController : Controller
     {
-        public static IConfiguration Configuration { get; set; }
-        
-        
-        private static string GetConnectionString()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json");
-            Configuration = builder.Build();
-            string connectionString = Configuration["ConnectionStrings:penjadwalan"];
-            return connectionString;
-        }
-        string connectionString = GetConnectionString();
-
+       
+        HomeDataAccessLayer objSimulasi = new HomeDataAccessLayer();
+       
         public ActionResult Index()
         {
             string idpel = HttpContext.Session.GetString("Idpelabuhan");
-            String QueryPortSchedule = "SELECT s.*,CONVERT(TIME,CONVERT(datetime,departure)-CONVERT(datetime,arrival)) as ipthitung,namakapal,(select namapelabuhan from pelabuhan plasal where s.idasal=plasal.idlistpelabuhan) as namaasal," +
-                                       "(select namapelabuhan from pelabuhan pltujuan where s.idtujuan = pltujuan.idlistpelabuhan) as namatujuan,"+
-                                       "STUFF((SELECT ',' + namaproduk + '  ' + convert(varchar(20), jumlah), '  ' + nama_satuan FROM detailshipment "+
-                                       "join produk on(detailshipment.idproduk = produk.idproduk) join listsatuan on(detailshipment.idsatuan = listsatuan.id_listsatuan) "+
-                                       "where detailshipment.idshipment = s.idshipment FOR XML PATH('')),1,1,'') as produk "+
-                                       "FROM shipment s join kapal k on(s.idkapal = k.idkapal) join pelabuhan pl on(s.idpelabuhanbantuan= pl.idlistpelabuhan) where status= 'On Shipment'";
-            List<PortSchedule> _portSchedules = new List<PortSchedule>();
-            using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                SqlCommand cmd = new SqlCommand(QueryPortSchedule, con);
-                con.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        DateTime a = reader.GetDateTime(reader.GetOrdinal("arrival")) ;
-                        string format = "dd/MM/yyyy HH:mm";
-                        string b = a.ToString(format);
-                        _portSchedules.Add(
-                            new PortSchedule
-                            {
-                                Idshipment = reader["idshipment"].ToString(),
-                                Noshipment = reader["noshipment"].ToString(),
-                                Idkapal = Int32.Parse(reader["idkapal"].ToString()),
-                                Idpelabuhanbantuan = Int32.Parse(reader["idpelabuhanbantuan"].ToString()),
-                                Nojetty = Int32.Parse(reader["nojetty"].ToString()),
-                                NamaKapal = reader["namakapal"].ToString(),
-                                NamaAsalPelabuhan = reader["namaasal"].ToString(),
-                                Produk = reader["produk"].ToString(),
-                                Arrival = DateTime.ParseExact(reader["arrival"].ToString(),"dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy HH:mm"),
-                                Berthed = b,
-                                Comm = reader["comm"].ToString(),
-                                Comp = reader["comp"].ToString(),
-                                Unberthed = reader["unberthed"].ToString(),
-                                Departure=reader["departure"].ToString(),
-                                Ipt=reader["ipthitung"].ToString(),
-                                NamaTujuanPelabuhan=reader["namatujuan"].ToString(),
-                    }       
-                       );
-                    }
-                }
-                con.Close();
-            }
+
+           
             HomeSimulasi homeSimulasi = new HomeSimulasi();
-            homeSimulasi.PortSchedules = _portSchedules;
-
+            homeSimulasi.PortSchedules = objSimulasi.GetPortSchedules(idpel);
+            homeSimulasi.portActivityJetty1s = objSimulasi.GetPortActivityJetty1s(idpel);
+            homeSimulasi.portActivityJetty2s = objSimulasi.GetPortActivityJetty2s(idpel);
+            homeSimulasi.listwaitings = objSimulasi.GetListwaitings();
             return View(homeSimulasi);
+            
         }
 
-        public IActionResult About()
+        [HttpPost]
+        public ActionResult Proses_jetty(string idshipment, string nojetty)
         {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
+            string idpel = HttpContext.Session.GetString("Idpelabuhan");
+            bool status = objSimulasi.ProsesKeJetty(idpel,idshipment);
+            return Json(new { success = status });
         }
 
-        public IActionResult Contact()
+        public ActionResult Batal_jetty()
         {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
+            string id = (string)RouteData.Values["id"];
+            string hasil = objSimulasi.BatalDariJetty(id);
+            return RedirectToAction("Index", "Home");
         }
 
-        public IActionResult Privacy()
+        public ActionResult Selesai_shipment()
         {
-            return View();
+            string id = (string)RouteData.Values["id"];
+            string hasil = objSimulasi.SelesaiShipment(id);
+            return RedirectToAction("Index", "Home");
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public ActionResult Update_Waktu(string idshipment,string nojetty,string proses, string arrival,string berthed,string comm,string comp,string unberthed, string departure)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            string pesan = "gagal";
+            string update = objSimulasi.UpdateWaktu(idshipment,nojetty,proses,arrival,berthed,comm,comp,unberthed,departure);
+            if(update== "arrival sukses")
+            {
+                pesan = "sukses";
+            }
+            if(update=="berthed sukses")
+            {
+                pesan = "sukses";
+            }
+            if (update == "comm sukses")
+            {
+                pesan = "sukses";
+            }
+            if (update == "comp sukses")
+            {
+                pesan = "sukses";
+            }
+            if (update == "unberthed sukses")
+            {
+                pesan = "sukses";
+            }
+            if (update == "departure sukses")
+            {
+                pesan = "sukses";
+            }
+            return Json(new { status = pesan, idshipment = idshipment, nojetty = nojetty, proses = proses, arrival = arrival,berthed=berthed });
         }
+
+        public ActionResult Update_Status_Waiting(string idshipment, string nojetty, string proses,string waiting)
+        {
+            string pesan = "gagal";
+            string simpanwaiting = objSimulasi.UpdateStatusWaiting(idshipment, nojetty, proses, waiting);
+            if (simpanwaiting == "_waiting11_ sukses")
+            {
+                pesan = "sukses";
+            }
+            else if (simpanwaiting == "_waiting12_ sukses")
+            {
+                pesan = "sukses";
+            }
+            else if (simpanwaiting == "_waiting13_ sukses")
+            {
+                pesan = "sukses";
+            }
+            else if (simpanwaiting == "_waiting14_ sukses")
+            {
+                pesan = "sukses";
+            }
+            else if (simpanwaiting == "_waiting15_ sukses")
+            {
+                pesan = "sukses";
+            }
+            else if (simpanwaiting == "_waiting21_ sukses")
+            {
+                pesan = "sukses";
+            }
+            else if (simpanwaiting == "_waiting22_ sukses")
+            {
+                pesan = "sukses";
+            }
+            else if (simpanwaiting == "_waiting23_ sukses")
+            {
+                pesan = "sukses";
+            }
+            else if (simpanwaiting == "_waiting24_ sukses")
+            {
+                pesan = "sukses";
+            }
+            else if (simpanwaiting == "_waiting25_ sukses")
+            {
+                pesan = "sukses";
+            }
+            return Json(new { status = pesan,idshipment=idshipment,nojetty=nojetty,proses=proses,waiting=waiting});
+        }
+
     }
 }

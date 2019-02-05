@@ -31,7 +31,9 @@ namespace pas_pertamina.Models
         public virtual DbSet<Stok> Stok { get; set; }
         public virtual DbSet<TbChat> TbChat { get; set; }
         public virtual DbSet<Userlogin> Userlogin { get; set; }
-        
+        public virtual DbSet<ViewShipmenDetail> ViewShipmenDetail { get; set; }
+        public virtual DbSet<PortActivityJetty1> PortActivityJetty1s { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -979,6 +981,6 @@ namespace pas_pertamina.Models
             });
         }
 
-        public DbSet<pas_pertamina.Models.ViewShipmenDetail> ViewShipmenDetail { get; set; }
+        
     }
 }

@@ -8,45 +8,46 @@ namespace pas_pertamina.Models
 {
     public class PortActivityJetty1
     {
-        public int Idshipment { get; set; }
+        [Key]
+        public string Idshipment { get; set; }
         public string Noshipment { get; set; }
         public int? Idkapal { get; set; }
+        public string NamaKapal { get; set; }
         public int? Idasal { get; set; }
+        public string NamaAsalPelabuhan { get; set; }
         public int? Idtujuan { get; set; }
+        public string NamaTujuanPelabuhan { get; set; }
         public string Proses { get; set; }
-        [Display(Name = "Arrival")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:MM:ss}", ApplyFormatInEditMode = true)]
+        public int waiting1 { get; set; }
+        public int waiting2 { get; set; }
+        public int waiting3 { get; set; }
+        public int waiting4 { get; set; }
+        public int waiting5 { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime? Arrival { get; set; }
-        public DateTime? Berthed { get; set; }
-        public DateTime? Comm { get; set; }
-        public DateTime? Comp { get; set; }
-        public DateTime? Unberthed { get; set; }
-        public DateTime? Departure { get; set; }
-        public int? Waiting1 { get; set; }
-        public int? Waiting2 { get; set; }
-        public int? Waiting3 { get; set; }
-        public int? Waiting4 { get; set; }
-        public int? Waiting5 { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
+        public DateTime Berthed { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
+        public DateTime Comm { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
+        public DateTime Comp { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
+        public DateTime Unberthed { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
+        public DateTime Departure { get; set; }
+        [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
+        public string Ipt { get; set; }
+
         public string Status { get; set; }
         public int? Antrian { get; set; }
         public int? Nojetty { get; set; }
         public int? Idbantuan { get; set; }
         public string Prosesbantuan { get; set; }
         public int Idpelabuhanbantuan { get; set; }
-        [Key]
-        public int Iddetailshipment { get; set; }
-        public int? Idproduk { get; set; }
-        public List<ViewProduk> produk { get; set; }
-        public int? Jumlah { get; set; }
-        public int? Idsatuan { get; set; }
-        public string ipt { get; set; }
+        public string Produk { get; set; }
+        public int JumlahProduk { get; set; }
+        
 
-        public Pelabuhan IdasalNavigation { get; set; }
-        public Kapal IdkapalNavigation { get; set; }
-        public Pelabuhan IdpelabuhanbantuanNavigation { get; set; }
-        public Pelabuhan IdtujuanNavigation { get; set; }
-        public Produk IdprodukNavigation { get; set; }
-        public Listsatuan IdsatuanNavigation { get; set; }
-        public Shipment IdshipmentNavigation { get; set; }
     }
 }

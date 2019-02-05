@@ -37,6 +37,30 @@ jQuery("#_clickProdukToInput").click(function () {
 
 });
 
+jQuery(".proses_jetty_1").click(function () {
+   
+    var idshipment = $(this).attr('id');
+    var nojetty = $(this).attr('nojetty');
+   
+    jQuery.ajax({
+        url: "/Home/Proses_jetty",
+        data: 'idshipment='+idshipment+'&nojetty='+nojetty,
+        type: "POST",
+        //contentType: "application/json; charset=utf-8", // this
+        dataType: "JSON",
+        success: function (msg) {
+            if (msg.success == false) {
+                location.reload();
+                alert("Gagal Karena Jetty 1 Sudah Ada Kapal Berlabuh");
+            } else {
+                
+                location.reload();
+            }
+            
+        }
+    });
+});
+
 jQuery("#arrival_").change(function () {
     var _arrival = jQuery("#arrival_").val();
     var _idproduk = jQuery("#Idproduk").val();
@@ -49,7 +73,7 @@ jQuery("#arrival_").change(function () {
     } else {
         var data = jQuery("#form_simulasi").serialize();
         var listproduk = jQuery("#listProdukToInput").serialize();
-        console.log(data);    
+         
         jQuery.ajax({
             type: "POST",
             data: { data, listproduk },

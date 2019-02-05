@@ -10,5 +10,6 @@ namespace pas_pertamina.Models
         public List<PortSchedule> PortSchedules { get; set; }
         public List<PortActivityJetty1> portActivityJetty1s { get; set; }
         public List<PortActivityJetty2> portActivityJetty2s { get; set; }
+        public List<Listwaiting> listwaitings { get; set; }
     }
 }

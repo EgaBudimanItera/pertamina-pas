@@ -6,6 +6,7 @@
 }
 <br />
 @{string _akses = Context.Session.GetString("Akses"); }
+
 <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
     <ol class="carousel-indicators">
         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -78,7 +79,7 @@
                                     <div class="col-md-12">
                                         @{ if (_akses == "Petugas BBM" || _akses == "Petugas LPG")
                                             {
-                                                <a href="#" class="btn btn-success btn-sm proses_jetty_1" id="@portschedule.Idshipment" idjetty="@portschedule.Nojetty" onclick="return confirm('Apakah anda yakin?')">
+                                                <a href="#" class="btn btn-success btn-sm proses_jetty_1" id="@portschedule.Idshipment" nojetty="@portschedule.Nojetty" onclick="return confirm('Apakah anda yakin?')">
                                                     Port Activity
                                                 </a>
                                             }
@@ -89,7 +90,7 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="table-responsive">
-                                            <table class="table table-striped table-bordered" cellspacing="0" width="100%" role="grid" aria-describedby="dataTable_info" style="width: 100%">
+                                            <table class="table table-striped table-bordered" cellspacing="0"  role="grid" aria-describedby="dataTable_info" style="width: 100%">
                                                 <thead>
                                                     <tr role="row">
                                                         <th>Arrival</th>
@@ -126,13 +127,362 @@
                     </div>
                 </div>
             </div>
+
             <div class="row" style="border: thin solid #fff">
                 <div class="col-md-12">
                     <div class="bgc-white bd bdrs-3 p-20 mB-20">
                         <h3 style="margin-top: 0px">Port Activity</h3>
+                        <hr style="overflow: visible; /* For IE */height: 10px;border-style: solid;border-color: black;border-width: 1px 0 0 0;border-radius: 20px;" />
+                        <div id="dataTable_wrapper" class="dataTables_wrapper">
+                            <div class="row">
+                                @foreach (var AcJetty1 in Model.portActivityJetty1s)
+                                {
+                                    <div class="col-md-12">
+                                        @AcJetty1.NamaKapal From @AcJetty1.NamaAsalPelabuhan (@AcJetty1.Produk) @AcJetty1.Proses
+                                    </div>
+                                    <div class="col-md-12">
+                                        Antrian : @AcJetty1.Antrian , Jetty : @AcJetty1.Nojetty
+                                    </div>
+                                    <div class="col-md-12">
+                                        @if (_akses == "Petugas BBM" || _akses == "Petugas LPG")
+                                        {
+                                            <a asp-controller="Home" asp-action="Batal_jetty" asp-route-id="@AcJetty1.Idshipment" class="btn btn-success btn-sm" onclick="return confirm('Apakah anda yakin?')">
+                                                Kembalikan ke port schedule
+                                            </a>
+                                            <a asp-controller="Home" asp-action="Selesai_shipment" asp-route-id="@AcJetty1.Idshipment" class="btn btn-info btn-sm" onclick="return confirm('Apakah anda yakin?')">
+                                                Selesaikan Port Activity
+                                            </a>
+                                        }
+
+
+                                    </div>
+                                    <div class="col-md-12">
+                                        &nbsp;
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered" cellspacing="0"  role="grid" aria-describedby="dataTable_info" style="width: 100%">
+                                                <thead>
+                                                    @{
+                                                        if (_akses == "Petugas BBM" || _akses == "Petugas LPG")
+                                                        {
+                                                            <tr role="row">
+                                                                <th>
+                                                                    Arrival 
+                                                                    <br />
+                                                                    <button class="btn btn-info btn-sm" onclick="updatewaktu(@AcJetty1.Idshipment,'arrival',@AcJetty1.Nojetty)">
+                                                                        Update Waktu
+                                                                    </button>
+                                                                </th>
+                                                                <th>
+                                                                    Berthed
+                                                                    <br />
+                                                                    <button class="btn btn-info btn-sm" onclick="updatewaktu(@AcJetty1.Idshipment,'berthed',@AcJetty1.Nojetty)">
+                                                                        Update Waktu
+                                                                    </button>
+                                                                </th>
+                                                                <th>
+                                                                    Comm
+                                                                    <br />
+                                                                    <button class="btn btn-info btn-sm" onclick="updatewaktu(@AcJetty1.Idshipment,'comm',@AcJetty1.Nojetty)">
+                                                                        Update Waktu
+                                                                    </button>
+                                                                </th>
+                                                                <th>
+                                                                    Comp
+                                                                    <br />
+                                                                    <button class="btn btn-info btn-sm" onclick="updatewaktu(@AcJetty1.Idshipment,'comp',@AcJetty1.Nojetty)">
+                                                                        Update Waktu
+                                                                    </button>
+                                                                </th>
+                                                                <th>
+                                                                    Unberthed
+                                                                    <br />
+                                                                    <button class="btn btn-info btn-sm" onclick="updatewaktu(@AcJetty1.Idshipment,'unberthed',@AcJetty1.Nojetty)">
+                                                                        Update Waktu
+                                                                    </button>
+                                                                </th>
+                                                                <th>
+                                                                    Departure
+                                                                    <br />
+                                                                    <button class="btn btn-info btn-sm" onclick="updatewaktu(@AcJetty1.Idshipment,'departure',@AcJetty1.Nojetty)">
+                                                                        Update Waktu
+                                                                    </button>
+                                                                </th>
+                                                                <th>Tujuan
+                                                                <br />
+                                                                </th>
+                                                                <th>IPT
+                                                                <br />
+                                                                </th>
+                                                            </tr>
+                                                        }
+                                                        else
+                                                        {
+                                                            <tr role="row">
+                                                                <th>Arrival</th>
+                                                                <th>Berthed</th>
+                                                                <th>Comm</th>
+                                                                <th>Comp</th>
+                                                                <th>Unberthed</th>
+                                                                <th>Departure</th>
+                                                                <th>Tujuan</th>
+                                                                <th>IPT</th>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </thead>
+                                                <tbody>
+                                                    @{
+                                                        if (_akses == "Petugas BBM" || _akses == "Petugas LPG")
+                                                        {
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control arrival" id="_arrival_" asp-for="@AcJetty1.Arrival" onchange="GetWaktu(@AcJetty1.Idshipment,'arrival',@AcJetty1.Nojetty,@AcJetty1.JumlahProduk)">
+                                                                    
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" class="form-control arrival" id="_berthed_" asp-for="@AcJetty1.Berthed">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" class="form-control arrival" id="_comm_" asp-for="@AcJetty1.Comm">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" class="form-control arrival" id="_comp_" asp-for="@AcJetty1.Comp">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" class="form-control arrival" id="_unberthed_" asp-for="@AcJetty1.Unberthed">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" class="form-control arrival" id="_departure_" asp-for="@AcJetty1.Departure">
+                                                                </td>
+                                                                <td>@AcJetty1.NamaTujuanPelabuhan</td>
+                                                                <td style="color: green">@AcJetty1.Ipt</td>
+                                                            </tr>
+                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            <tr>
+                                                                <td>
+                                                                    @AcJetty1.Arrival
+                                                                </td>
+                                                                <td>
+                                                                    @AcJetty1.Berthed
+                                                                </td>
+                                                                <td>
+                                                                    @AcJetty1.Comm
+                                                                </td>
+                                                                <td>
+                                                                    @AcJetty1.Comp
+                                                                </td>
+                                                                <td>
+                                                                    @AcJetty1.Unberthed
+                                                                </td>
+                                                                <td>
+                                                                    @AcJetty1.Departure
+                                                                </td>
+                                                                <td>@AcJetty1.NamaTujuanPelabuhan</td>
+                                                                <td>@AcJetty1.Ipt</td>
+                                                            </tr>
+                                                        }
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <tr>
+                                                    <td>
+                                                        arrival - berthed<br />
+                                                        <select class="form-control" id="_waiting11_">
+                                                            <option value="">Pilih Status Waiting</option>
+                                                           @foreach (var list in Model.listwaitings)
+                                                            {
+                                                               var s = AcJetty1.waiting1;
+                                                               var k = list.Idlistwaiting;
+                                                                                
+                                                               if (s == k)
+                                                               {
+                                                                   <option value="@list.Idlistwaiting" selected="selected">@list.Namalistwaiting </option>
+                                                               }
+                                                               else
+                                                               {
+                                                                   <option value="@list.Idlistwaiting" >@list.Namalistwaiting </option>
+                                                               }
+                                                            }
+                                                        </select>
+                                                        
+                                                        <br />
+                                                        <button class="btn btn-warning btn-sm" onclick="prosesubahstatuswaiting(@AcJetty1.Idshipment,'_waiting11_',@AcJetty1.Nojetty)">Simpan</button>
+                                                    </td>
+                                                    <td>
+                                                        berthed - comm<br />
+                                                        <select class="form-control" id="_waiting12_">
+                                                           <option value="">Pilih Status Waiting</option>
+                                                           @foreach (var list in Model.listwaitings)
+                                                            {
+                                                               var s = AcJetty1.waiting2;
+                                                               var k = list.Idlistwaiting;
+
+                                                               if (s == k)
+                                                               {
+                                                                   <option value="@list.Idlistwaiting" selected="selected">@list.Namalistwaiting </option>
+                                                               }
+                                                               else
+                                                               {
+                                                                   <option value="@list.Idlistwaiting">@list.Namalistwaiting </option>
+                                                               }
+                                                            }
+                                                        </select>
+                                                        <br />
+                                                        <button class="btn btn-warning btn-sm" onclick="prosesubahstatuswaiting(@AcJetty1.Idshipment,'_waiting12_',@AcJetty1.Nojetty)">Simpan</button>
+                                                    </td>
+                                                    <td>
+                                                        comm - comp<br />
+                                                        <select class="form-control" id="_waiting13_">
+                                                            <option value="">Pilih Status Waiting</option>
+                                                           @foreach (var list in Model.listwaitings)
+                                                            {
+                                                                var s = AcJetty1.waiting3;
+                                                                var k = list.Idlistwaiting;
+
+                                                                if (s == k)
+                                                                {
+                                                                  <option value="@list.Idlistwaiting" selected="selected">@list.Namalistwaiting </option>
+                                                                }
+                                                                else
+                                                                {
+                                                                  <option value="@list.Idlistwaiting">@list.Namalistwaiting </option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                        <br />
+                                                        <button class="btn btn-warning btn-sm" onclick="prosesubahstatuswaiting(@AcJetty1.Idshipment,'_waiting13_',@AcJetty1.Nojetty)">Simpan</button>
+                                                    </td>
+                                                    <td>
+                                                        comp - unberthed<br />
+                                                        <select class="form-control" id="_waiting14_">
+                                                           <option value="">Pilih Status Waiting</option>
+                                                           @foreach (var list in Model.listwaitings)
+                                                            {
+                                                               var s = AcJetty1.waiting4;
+                                                               var k = list.Idlistwaiting;
+
+                                                                if (s == k)
+                                                                {
+                                                                   <option value="@list.Idlistwaiting" selected="selected">@list.Namalistwaiting </option>
+                                                                }
+                                                                else
+                                                                {
+                                                                   <option value="@list.Idlistwaiting">@list.Namalistwaiting </option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                        <br />
+                                                        <button class="btn btn-warning btn-sm" onclick="prosesubahstatuswaiting(@AcJetty1.Idshipment,'_waiting14_',@AcJetty1.Nojetty)">Simpan</button>
+                                                    </td>
+                                                    <td>
+                                                        unberthed - departure<br />
+                                                        <select class="form-control" id="_waiting15_">
+                                                            <option value="">Pilih Status Waiting</option>
+                                                              @foreach (var list in Model.listwaitings)                   
+                                                               {
+                                                                  var s = AcJetty1.waiting5;
+                                                                  var k = list.Idlistwaiting;
+
+                                                                  if (s == k)
+                                                                  {
+                                                                    <option value="@list.Idlistwaiting" selected="selected">@list.Namalistwaiting </option>
+                                                                  }
+                                                                  else
+                                                                  {
+                                                                    <option value="@list.Idlistwaiting">@list.Namalistwaiting </option>
+                                                                  }                     
+                                                               }
+                                                        </select>
+                                                        <br />
+                                                        <button class="btn btn-warning btn-sm" onclick="prosesubahstatuswaiting(@AcJetty1.Idshipment,'_waiting15_',@AcJetty1.Nojetty)">Simpan</button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <hr style="overflow: visible; /* For IE */height: 15px;border-style: solid;border-color: black;border-width: 1px 0 0 0;border-radius: 20px;" />
+                                    </div>
+                                }
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </main>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        function updatewaktu(id, proses, nojetty) {
+            var _Arrival = $('#_arrival_').val();
+            var _Berthed = $('#_berthed_').val();
+            var _Comm = $('#_comm_').val();
+            var _Comp = $('#_comp_').val();
+            var _Unberthed = $('#_unberthed_').val();
+            var _Departure = $('#_departure_').val();
+            console.log(id, proses, nojetty, _Arrival, _Berthed, _Comm, _Comp, _Unberthed, _Departure);
+            
+            $.ajax({
+                url: "/Home/Update_Waktu",
+                data: 'idshipment=' + id + '&nojetty=' + nojetty + '&proses=' + proses +
+                    '&arrival=' + _Arrival + '&berthed=' + _Berthed + '&comm=' + _Comm + '&comp=' + _Comp + '&unberthed=' + _Unberthed +
+                    '&departure=' + _Departure,
+                type: "POST",
+                dataType: 'JSON',
+                success: function (msg) {
+                    console.log(msg);
+                    if (msg.status == 'sukses') {
+                        alert('berhasil diupdate');
+                        location.reload();
+                    } else if (msg.status == 'gagal') {
+                        alert('gagal diupdate');
+                    }
+                }
+            });
+        }
+
+        function prosesubahstatuswaiting(id, proses, nojetty) {
+            var _Proses = $('#' + proses).val();
+            console.log(id, proses, nojetty, _Proses);
+            $.ajax({
+                url: "/Home/Update_Status_Waiting",
+                data: 'idshipment=' + id + '&nojetty=' + nojetty + '&proses=' + proses + '&waiting=' + _Proses,
+                type: "POST",
+                dataType: 'JSON',
+                success: function (msg) {
+                    console.log(msg);
+                    if (msg.status == 'sukses') {
+                        alert('berhasil diupdate');
+                        location.reload();
+                    } else if (msg.status == 'gagal') {
+                        alert('gagal diupdate');
+                    }
+                }
+            });
+        }
+
+        function GetWaktu(id, proses, nojetty, jumlahproduk) {
+            var _Arrival = $('#_arrival_').val();
+            var _Berthed = $('#_berthed_').val();
+            var _Comm = $('#_comm_').val();
+            var _Comp = $('#_comp_').val();
+            var _Unberthed = $('#_unberthed_').val();
+            var _Departure = $('#_departure_').val();
+            console.log(id, proses, nojetty, jumlahproduk, _Arrival, _Berthed, _Comm, _Comp, _Unberthed, _Departure);
+        }
+        
+    </script>
+}
+

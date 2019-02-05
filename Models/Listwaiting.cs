@@ -14,5 +14,11 @@ namespace pas_pertamina.Models
         public string DeletedBy { get; set; }
         public DateTime? DeletedTime { get; set; }
         public string SoftDelete { get; set; }
+
+        public PortActivityJetty1 idwaitingnavigation1 { get; set; }
+        public PortActivityJetty1 idwaitingnavigation2 { get; set; }
+        public PortActivityJetty1 idwaitingnavigation3 { get; set; }
+        public PortActivityJetty1 idwaitingnavigation4 { get; set; }
+        public PortActivityJetty1 idwaitingnavigation5 { get; set; }
     }
 }
