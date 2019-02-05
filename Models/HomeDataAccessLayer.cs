@@ -81,13 +81,14 @@ namespace pas_pertamina.Models
         CultureInfo enUS = new CultureInfo("en-US");
         public List<PortActivityJetty1> GetPortActivityJetty1s(string idpel)
         {
+            int nojetty = 1;
             string Queryjetty1 = "SELECT s.*,CONVERT(TIME,CONVERT(datetime,departure)-CONVERT(datetime,arrival)) as ipthitung,namakapal,(select namapelabuhan from pelabuhan plasal where s.idasal=plasal.idlistpelabuhan) as namaasal," +
                                        "(select namapelabuhan from pelabuhan pltujuan where s.idtujuan = pltujuan.idlistpelabuhan) as namatujuan," +
                                        "STUFF((SELECT ',' + namaproduk + '  ' + convert(varchar(20), jumlah), '  ' + nama_satuan FROM detailshipment " +
                                        "join produk on(detailshipment.idproduk = produk.idproduk) join listsatuan on(detailshipment.idsatuan = listsatuan.id_listsatuan) " +
                                        "where detailshipment.idshipment = s.idshipment FOR XML PATH('')),1,1,'') as produk, "+
                                        "(select sum(jumlah) from detailshipment where detailshipment.idshipment = s.idshipment) as jumlahproduk " +
-                                       "FROM shipment s join kapal k on(s.idkapal = k.idkapal) join pelabuhan pl on(s.idpelabuhanbantuan= pl.idlistpelabuhan) where status= 'Proses' and nojetty='1' and idpelabuhanbantuan='" + idpel + "'";
+                                       "FROM shipment s join kapal k on(s.idkapal = k.idkapal) join pelabuhan pl on(s.idpelabuhanbantuan= pl.idlistpelabuhan) where status= 'Proses' and nojetty='"+nojetty+"' and idpelabuhanbantuan='" + idpel + "'";
             List<PortActivityJetty1> _activityJetty1s = new List<PortActivityJetty1>();
             using (SqlConnection con = new SqlConnection(connectionString))
             {
@@ -102,13 +103,14 @@ namespace pas_pertamina.Models
                         //target format 2019/02/02 19:50
 
                         DateTime a = reader.GetDateTime(reader.GetOrdinal("arrival"));
-                        string format = "yyyy/MM/dd HH:mm";
+                        /*string format = "yyyy/MM/dd HH:mm";
                         string format2 = "HH:mm";
                         string b = a.ToString(format);
                         string arrival_ = reader["arrival"].ToString();
                         DateTime _arr = DateTime.ParseExact(arrival_, "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None);
                         string arrival__ = _arr.ToString("yyyy/MM/dd HH:mm", CultureInfo.InvariantCulture);
                         DateTime __arr = DateTime.ParseExact(arrival__, "yyyy/MM/dd HH:mm", enUS, DateTimeStyles.None);
+                        */                    
                         TimeSpan ipt_ = (DateTime.ParseExact(reader["departure"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None) - DateTime.ParseExact(reader["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None));
                         string _ipt = string.Format("{0}:{1:00}", (int)ipt_.TotalHours, ipt_.Minutes);
                         IFormatProvider culture = new CultureInfo("en-US");
@@ -139,6 +141,7 @@ namespace pas_pertamina.Models
                                waiting4 = Int32.Parse(reader["waiting4"].ToString()),
                                waiting5 = Int32.Parse(reader["waiting5"].ToString()),
                                JumlahProduk=Int32.Parse(reader["jumlahproduk"].ToString()),
+                               Antrian=Int32.Parse(reader["antrian"].ToString()),
                            }
                         );
 
@@ -152,12 +155,15 @@ namespace pas_pertamina.Models
 
         public List<PortActivityJetty2> GetPortActivityJetty2s(string idpel)
         {
+            int nojetty = 2;
+            int idpel_ = Int32.Parse(idpel);
             string Queryjetty2 = "SELECT s.*,CONVERT(TIME,CONVERT(datetime,departure)-CONVERT(datetime,arrival)) as ipthitung,namakapal,(select namapelabuhan from pelabuhan plasal where s.idasal=plasal.idlistpelabuhan) as namaasal," +
-                                       "(select namapelabuhan from pelabuhan pltujuan where s.idtujuan = pltujuan.idlistpelabuhan) as namatujuan," +
-                                       "STUFF((SELECT ',' + namaproduk + '  ' + convert(varchar(20), jumlah), '  ' + nama_satuan FROM detailshipment " +
-                                       "join produk on(detailshipment.idproduk = produk.idproduk) join listsatuan on(detailshipment.idsatuan = listsatuan.id_listsatuan) " +
-                                       "where detailshipment.idshipment = s.idshipment FOR XML PATH('')),1,1,'') as produk " +
-                                       "FROM shipment s join kapal k on(s.idkapal = k.idkapal) join pelabuhan pl on(s.idpelabuhanbantuan= pl.idlistpelabuhan) where status= 'Proses' and nojetty='2'  and idpelabuhanbantuan='" + idpel + "'";
+                                 "(select namapelabuhan from pelabuhan pltujuan where s.idtujuan = pltujuan.idlistpelabuhan) as namatujuan," +
+                                 "STUFF((SELECT ',' + namaproduk + '  ' + convert(varchar(20), jumlah), '  ' + nama_satuan FROM detailshipment " +
+                                 "join produk on(detailshipment.idproduk = produk.idproduk) join listsatuan on(detailshipment.idsatuan = listsatuan.id_listsatuan) " +
+                                 "where detailshipment.idshipment = s.idshipment FOR XML PATH('')),1,1,'') as produk, " +
+                                 "(select sum(jumlah) from detailshipment where detailshipment.idshipment = s.idshipment) as jumlahproduk " +
+                                 "FROM shipment s join kapal k on(s.idkapal = k.idkapal) join pelabuhan pl on(s.idpelabuhanbantuan= pl.idlistpelabuhan) where status= 'Proses' and nojetty='"+nojetty+"' and idpelabuhanbantuan='" + idpel_ + "'";
             List<PortActivityJetty2> _activityJetty2s = new List<PortActivityJetty2>();
             using (SqlConnection con = new SqlConnection(connectionString))
             {
@@ -168,10 +174,20 @@ namespace pas_pertamina.Models
                 {
                     while (reader.Read())
                     {
+                        //format skr 25/01/2019 13:00:00
+                        //target format 2019/02/02 19:50
+
                         DateTime a = reader.GetDateTime(reader.GetOrdinal("arrival"));
-                        string format = "dd/MM/yyyy HH:mm";
+                        string format = "yyyy/MM/dd HH:mm";
                         string format2 = "HH:mm";
                         string b = a.ToString(format);
+                        string arrival_ = reader["arrival"].ToString();
+                        DateTime _arr = DateTime.ParseExact(arrival_, "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None);
+                        string arrival__ = _arr.ToString("yyyy/MM/dd HH:mm", CultureInfo.InvariantCulture);
+                        DateTime __arr = DateTime.ParseExact(arrival__, "yyyy/MM/dd HH:mm", enUS, DateTimeStyles.None);
+                        TimeSpan ipt_ = (DateTime.ParseExact(reader["departure"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None) - DateTime.ParseExact(reader["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None));
+                        string _ipt = string.Format("{0}:{1:00}", (int)ipt_.TotalHours, ipt_.Minutes);
+                        IFormatProvider culture = new CultureInfo("en-US");
                         _activityJetty2s.Add(
                            new PortActivityJetty2
                            {
@@ -183,15 +199,23 @@ namespace pas_pertamina.Models
                                NamaKapal = reader["namakapal"].ToString(),
                                NamaAsalPelabuhan = reader["namaasal"].ToString(),
                                Produk = reader["produk"].ToString(),
-                               Arrival = DateTime.ParseExact(reader["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy HH:mm"),
-                               Berthed = reader.GetDateTime(reader.GetOrdinal("berthed")).ToString(format),
-                               Comm = reader.GetDateTime(reader.GetOrdinal("comm")).ToString(format),
-                               Comp = reader.GetDateTime(reader.GetOrdinal("comp")).ToString(format),
-                               Unberthed = reader.GetDateTime(reader.GetOrdinal("unberthed")).ToString(format),
-                               Departure = reader.GetDateTime(reader.GetOrdinal("departure")).ToString(format),
-                               Ipt = reader["ipthitung"].ToString(),
+
+                               Arrival = DateTime.ParseExact(reader["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
+                               Berthed = DateTime.ParseExact(reader["berthed"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
+                               Comm = DateTime.ParseExact(reader["comm"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
+                               Comp = DateTime.ParseExact(reader["comp"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
+                               Unberthed = DateTime.ParseExact(reader["unberthed"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
+                               Departure = DateTime.ParseExact(reader["departure"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
+                               Ipt = _ipt,
                                NamaTujuanPelabuhan = reader["namatujuan"].ToString(),
                                Proses = reader["proses"].ToString(),
+                               waiting1 = Int32.Parse(reader["waiting1"].ToString()),
+                               waiting2 = Int32.Parse(reader["waiting2"].ToString()),
+                               waiting3 = Int32.Parse(reader["waiting3"].ToString()),
+                               waiting4 = Int32.Parse(reader["waiting4"].ToString()),
+                               waiting5 = Int32.Parse(reader["waiting5"].ToString()),
+                               JumlahProduk = Int32.Parse(reader["jumlahproduk"].ToString()),
+                               Antrian = Int32.Parse(reader["antrian"].ToString()),
                            }
                         );
 
@@ -199,7 +223,7 @@ namespace pas_pertamina.Models
                     reader.Close();
                 }
                 con.Close();
-            }
+            };
             return _activityJetty2s;
         }
 

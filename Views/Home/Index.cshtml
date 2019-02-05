@@ -90,7 +90,7 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="table-responsive">
-                                            <table class="table table-striped table-bordered" cellspacing="0"  role="grid" aria-describedby="dataTable_info" style="width: 100%">
+                                            <table class="table table-striped table-bordered" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%">
                                                 <thead>
                                                     <tr role="row">
                                                         <th>Arrival</th>
@@ -127,12 +127,13 @@
                     </div>
                 </div>
             </div>
-
+            <!--Region Port Activity Jetty 1-->
             <div class="row" style="border: thin solid #fff">
                 <div class="col-md-12">
                     <div class="bgc-white bd bdrs-3 p-20 mB-20">
-                        <h3 style="margin-top: 0px">Port Activity</h3>
+                        <h3 style="margin-top: 0px">Port Activity Jetty 1</h3>
                         <hr style="overflow: visible; /* For IE */height: 10px;border-style: solid;border-color: black;border-width: 1px 0 0 0;border-radius: 20px;" />
+
                         <div id="dataTable_wrapper" class="dataTables_wrapper">
                             <div class="row">
                                 @foreach (var AcJetty1 in Model.portActivityJetty1s)
@@ -161,14 +162,14 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="table-responsive">
-                                            <table class="table table-striped table-bordered" cellspacing="0"  role="grid" aria-describedby="dataTable_info" style="width: 100%">
+                                            <table class="table table-striped table-bordered" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%">
                                                 <thead>
                                                     @{
                                                         if (_akses == "Petugas BBM" || _akses == "Petugas LPG")
                                                         {
                                                             <tr role="row">
                                                                 <th>
-                                                                    Arrival 
+                                                                    Arrival
                                                                     <br />
                                                                     <button class="btn btn-info btn-sm" onclick="updatewaktu(@AcJetty1.Idshipment,'arrival',@AcJetty1.Nojetty)">
                                                                         Update Waktu
@@ -209,11 +210,13 @@
                                                                         Update Waktu
                                                                     </button>
                                                                 </th>
-                                                                <th>Tujuan
-                                                                <br />
+                                                                <th>
+                                                                    Tujuan
+                                                                    <br />
                                                                 </th>
-                                                                <th>IPT
-                                                                <br />
+                                                                <th>
+                                                                    IPT
+                                                                    <br />
                                                                 </th>
                                                             </tr>
                                                         }
@@ -239,7 +242,7 @@
                                                             <tr>
                                                                 <td>
                                                                     <input type="text" class="form-control arrival" id="_arrival_" asp-for="@AcJetty1.Arrival" onchange="GetWaktu(@AcJetty1.Idshipment,'arrival',@AcJetty1.Nojetty,@AcJetty1.JumlahProduk)">
-                                                                    
+
                                                                 </td>
                                                                 <td>
                                                                     <input type="text" class="form-control arrival" id="_berthed_" asp-for="@AcJetty1.Berthed">
@@ -259,7 +262,7 @@
                                                                 <td>@AcJetty1.NamaTujuanPelabuhan</td>
                                                                 <td style="color: green">@AcJetty1.Ipt</td>
                                                             </tr>
-                                                            
+
                                                         }
                                                         else
                                                         {
@@ -298,42 +301,42 @@
                                                         arrival - berthed<br />
                                                         <select class="form-control" id="_waiting11_">
                                                             <option value="">Pilih Status Waiting</option>
-                                                           @foreach (var list in Model.listwaitings)
+                                                            @foreach (var list in Model.listwaitings)
                                                             {
-                                                               var s = AcJetty1.waiting1;
-                                                               var k = list.Idlistwaiting;
-                                                                                
-                                                               if (s == k)
-                                                               {
-                                                                   <option value="@list.Idlistwaiting" selected="selected">@list.Namalistwaiting </option>
-                                                               }
-                                                               else
-                                                               {
-                                                                   <option value="@list.Idlistwaiting" >@list.Namalistwaiting </option>
-                                                               }
+                                                                var s = AcJetty1.waiting1;
+                                                                var k = list.Idlistwaiting;
+
+                                                                if (s == k)
+                                                                {
+                                                                    <option value="@list.Idlistwaiting" selected="selected">@list.Namalistwaiting </option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@list.Idlistwaiting">@list.Namalistwaiting </option>
+                                                                }
                                                             }
                                                         </select>
-                                                        
+
                                                         <br />
                                                         <button class="btn btn-warning btn-sm" onclick="prosesubahstatuswaiting(@AcJetty1.Idshipment,'_waiting11_',@AcJetty1.Nojetty)">Simpan</button>
                                                     </td>
                                                     <td>
                                                         berthed - comm<br />
                                                         <select class="form-control" id="_waiting12_">
-                                                           <option value="">Pilih Status Waiting</option>
-                                                           @foreach (var list in Model.listwaitings)
+                                                            <option value="">Pilih Status Waiting</option>
+                                                            @foreach (var list in Model.listwaitings)
                                                             {
-                                                               var s = AcJetty1.waiting2;
-                                                               var k = list.Idlistwaiting;
+                                                                var s = AcJetty1.waiting2;
+                                                                var k = list.Idlistwaiting;
 
-                                                               if (s == k)
-                                                               {
-                                                                   <option value="@list.Idlistwaiting" selected="selected">@list.Namalistwaiting </option>
-                                                               }
-                                                               else
-                                                               {
-                                                                   <option value="@list.Idlistwaiting">@list.Namalistwaiting </option>
-                                                               }
+                                                                if (s == k)
+                                                                {
+                                                                    <option value="@list.Idlistwaiting" selected="selected">@list.Namalistwaiting </option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@list.Idlistwaiting">@list.Namalistwaiting </option>
+                                                                }
                                                             }
                                                         </select>
                                                         <br />
@@ -343,18 +346,18 @@
                                                         comm - comp<br />
                                                         <select class="form-control" id="_waiting13_">
                                                             <option value="">Pilih Status Waiting</option>
-                                                           @foreach (var list in Model.listwaitings)
+                                                            @foreach (var list in Model.listwaitings)
                                                             {
                                                                 var s = AcJetty1.waiting3;
                                                                 var k = list.Idlistwaiting;
 
                                                                 if (s == k)
                                                                 {
-                                                                  <option value="@list.Idlistwaiting" selected="selected">@list.Namalistwaiting </option>
+                                                                    <option value="@list.Idlistwaiting" selected="selected">@list.Namalistwaiting </option>
                                                                 }
                                                                 else
                                                                 {
-                                                                  <option value="@list.Idlistwaiting">@list.Namalistwaiting </option>
+                                                                    <option value="@list.Idlistwaiting">@list.Namalistwaiting </option>
                                                                 }
                                                             }
                                                         </select>
@@ -364,19 +367,19 @@
                                                     <td>
                                                         comp - unberthed<br />
                                                         <select class="form-control" id="_waiting14_">
-                                                           <option value="">Pilih Status Waiting</option>
-                                                           @foreach (var list in Model.listwaitings)
+                                                            <option value="">Pilih Status Waiting</option>
+                                                            @foreach (var list in Model.listwaitings)
                                                             {
-                                                               var s = AcJetty1.waiting4;
-                                                               var k = list.Idlistwaiting;
+                                                                var s = AcJetty1.waiting4;
+                                                                var k = list.Idlistwaiting;
 
                                                                 if (s == k)
                                                                 {
-                                                                   <option value="@list.Idlistwaiting" selected="selected">@list.Namalistwaiting </option>
+                                                                    <option value="@list.Idlistwaiting" selected="selected">@list.Namalistwaiting </option>
                                                                 }
                                                                 else
                                                                 {
-                                                                   <option value="@list.Idlistwaiting">@list.Namalistwaiting </option>
+                                                                    <option value="@list.Idlistwaiting">@list.Namalistwaiting </option>
                                                                 }
                                                             }
                                                         </select>
@@ -387,20 +390,20 @@
                                                         unberthed - departure<br />
                                                         <select class="form-control" id="_waiting15_">
                                                             <option value="">Pilih Status Waiting</option>
-                                                              @foreach (var list in Model.listwaitings)                   
-                                                               {
-                                                                  var s = AcJetty1.waiting5;
-                                                                  var k = list.Idlistwaiting;
+                                                            @foreach (var list in Model.listwaitings)
+                                                            {
+                                                                var s = AcJetty1.waiting5;
+                                                                var k = list.Idlistwaiting;
 
-                                                                  if (s == k)
-                                                                  {
+                                                                if (s == k)
+                                                                {
                                                                     <option value="@list.Idlistwaiting" selected="selected">@list.Namalistwaiting </option>
-                                                                  }
-                                                                  else
-                                                                  {
+                                                                }
+                                                                else
+                                                                {
                                                                     <option value="@list.Idlistwaiting">@list.Namalistwaiting </option>
-                                                                  }                     
-                                                               }
+                                                                }
+                                                            }
                                                         </select>
                                                         <br />
                                                         <button class="btn btn-warning btn-sm" onclick="prosesubahstatuswaiting(@AcJetty1.Idshipment,'_waiting15_',@AcJetty1.Nojetty)">Simpan</button>
@@ -415,9 +418,11 @@
                                 }
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
+            <!-- End Region Port Activity Jetty 1-->
         </div>
     </div>
 </main>

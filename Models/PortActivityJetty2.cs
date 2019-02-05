@@ -18,13 +18,26 @@ namespace pas_pertamina.Models
         public int? Idtujuan { get; set; }
         public string NamaTujuanPelabuhan { get; set; }
         public string Proses { get; set; }
+        public int waiting1 { get; set; }
+        public int waiting2 { get; set; }
+        public int waiting3 { get; set; }
+        public int waiting4 { get; set; }
+        public int waiting5 { get; set; }
 
-        public string Arrival { get; set; }
-        public string Berthed { get; set; }
-        public string Comm { get; set; }
-        public string Comp { get; set; }
-        public string Unberthed { get; set; }
-        public string Departure { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
+        public DateTime? Arrival { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
+        public DateTime Berthed { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
+        public DateTime Comm { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
+        public DateTime Comp { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
+        public DateTime Unberthed { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
+        public DateTime Departure { get; set; }
+        [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
+        public string Ipt { get; set; }
 
         public string Status { get; set; }
         public int? Antrian { get; set; }
@@ -33,6 +46,6 @@ namespace pas_pertamina.Models
         public string Prosesbantuan { get; set; }
         public int Idpelabuhanbantuan { get; set; }
         public string Produk { get; set; }
-        public string Ipt { get; set; }
+        public int JumlahProduk { get; set; }
     }
 }
