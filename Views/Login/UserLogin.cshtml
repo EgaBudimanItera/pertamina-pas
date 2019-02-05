@@ -34,23 +34,18 @@
 <body>
     <div class="limiter">
         <div class="container-login100">
-            <div class="wrap-login100 p-t-50 p-b-0">
-                <form asp-action="UserLogin" class="login100-form validate-form">
-                    <span class="login100-form-title p-t-20 p-b-45">
+            <div class="wrap-login100">
+                <form asp-action="UserLogin" class="login100-form validate-form p-l-55 p-r-55 p-t-178">
+                    <span class="login100-form-title">
                         Pertamina
                     </span>
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                  
-                    <div class="wrap-input100 validate-input m-b-10">
+                    <div class="wrap-input100 validate-input m-b-16">
                         <label asp-for="Namauser" class="control-label"></label>
                         <input asp-for="Namauser" class="form-control" />
                         <span asp-validation-for="Namauser" class="text-danger"></span>
                     </div>
-                    <div class="wrap-input100 validate-input m-b-10">
+                    <div class="wrap-input100 validate-input m-b-16">
                         <label asp-for="Password" class="control-label"></label>
                         <input asp-for="Password" class="form-control" />
                         <span asp-validation-for="Password" class="text-danger"></span>
