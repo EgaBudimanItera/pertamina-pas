@@ -2,11 +2,11 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-
+var NUMPRODUCT = 0;
 
 //Simulasi
-jQuery("#_clickProdukToInput").click(function () {
-
+jQuery("#_clickProdukToInput").click(function (e) {
+    e.preventDefault();
     jQuery("#listProdukToInput").show();
     var idproduk = jQuery("#Idproduk").val();
     var namaproduk = jQuery("#Idproduk option:selected").text();
@@ -26,39 +26,21 @@ jQuery("#_clickProdukToInput").click(function () {
         return;
     }
 
+    var productInput = '<div class="row"><div class="col-md-12"> ' +
+        '<div class="col-md-3" style="background:#5cb85c;border-top-left-radius:10px;border-bottom-left-radius:10px;padding:4px">' +
+        '<input class="form-control" type="hidden" name="produk[' + NUMPRODUCT + '].produk" value="' + idproduk + '">' +
+        '<input type="text" readonly class="form-control" value="' + namaproduk + '">' +
+        '</div>' +
+        '<div class="col-md-3" style="background:#5cb85c;border-top-right-radius:10px;border-bottom-right-radius:10px;padding:4px">' +
+        '<input type="text" class="form-control" name="produk[' + NUMPRODUCT + '].jumlah" value="' + jumlah + '">' +
+        '</div>' +
+        '<div class="col-md-1" style="padding:4px"><button type="button" id="cekProyeksi" class="btn btn-danger">x</button></div>' +
+        '</div ></div > ';
     jQuery("#listProdukToInput").append(
-        "<div class='row'>" +
-        "<input type='hidden' name='_idproduk' value=" + idproduk + " />" +
-        "<input type='text' readonly name='namaproduk' value=" + namaproduk + " />" +
-        "<input type='text' readonly name='jumlah' value=" + jumlah + " />" +
-        "<input type='text' readonly name='satuan' value=" + satuan + " />" +
-        "</div>"
+        productInput
     );
+    NUMPRODUCT = NUMPRODUCT + 1;
 
-});
-
-jQuery(".proses_jetty_1").click(function () {
-   
-    var idshipment = $(this).attr('id');
-    var nojetty = $(this).attr('nojetty');
-   
-    jQuery.ajax({
-        url: "/Home/Proses_jetty",
-        data: 'idshipment='+idshipment+'&nojetty='+nojetty,
-        type: "POST",
-        //contentType: "application/json; charset=utf-8", // this
-        dataType: "JSON",
-        success: function (msg) {
-            if (msg.success == false) {
-                location.reload();
-                alert("Gagal Karena Jetty 1 Sudah Ada Kapal Berlabuh");
-            } else {
-                
-                location.reload();
-            }
-            
-        }
-    });
 });
 
 jQuery("#arrival_").change(function () {
@@ -66,28 +48,99 @@ jQuery("#arrival_").change(function () {
     var _idproduk = jQuery("#Idproduk").val();
     var _jumlah = jQuery("#Jumlah").val();
 
-    
+
     if (_idproduk == "" || _jumlah == "") {
         alert("Silahkan pilih Produk dan Isi Jumlah Dahulu.");
 
     } else {
         var data = jQuery("#form_simulasi").serialize();
-        var listproduk = jQuery("#listProdukToInput").serialize();
-         
+
         jQuery.ajax({
             type: "POST",
-            data: { data, listproduk },
+            data: data,
             url: "/Simulasi/GetWaktu",
-            
-            dataType: "JSON",
+            dataType: "json",
             success: function (msg) {
-                console.log(msg)
                 jQuery("#berthed_").val(msg.berthed);
                 jQuery("#comm").val(msg.comm);
+                jQuery("#comp").val(msg.comp);
+                jQuery("#unberthed").val(msg.unberthed);
+                jQuery("#departure").val(msg.departure);
+
+                var ipt = msg.ipt.split(":");
+                var h = ipt[0];
+                var m = ipt[1];
+                if (ipt[0] < 10) {
+                    h = "0" + ipt[0];
+                }
+                if (ipt[1] < 10) {
+                    m = "0" + ipt[1];
+                }
+                jQuery("#ipt").val(h + ":" + m);
+            },
+            error: function (err) {
             }
         });
     }
 
+})
+
+jQuery("#_clickToProyeksi").click(function (e) {
+    e.preventDefault();
+    var dataform = jQuery('#listProdukToInput :input').serialize();
+    var idasal = jQuery('#Idasal').val();
+    var idtujuan = jQuery('#Idtujuan').val();
+    var idkapal = jQuery('#Idkapal').val();
+    var tgldatang = jQuery("#arrival_").val();
+    var proses = jQuery('#Proses').val();
+    var jamberangkat = jQuery("#departure").val();
+    var tglberthed = jQuery("#berthed_").val();
+
+    if (idkapal == '' || idasal == '' || idtujuan == '') {
+        alert('Kapal, Asal dan Tujuan Harus di Isi.');
+    } else {
+        jQuery("#loader-proyeksi").show();
+        if (proses == "1") {
+            jQuery("#result_proyeksi_stok_asal").hide();
+            jQuery.ajax({
+                url: "/Simulasi/Proyeksistoktujuandischarge",
+                data: dataform + '&idpelabuhan=' + idtujuan + '&tgldatang=' + tgldatang + '&idtujuan=' + idasal + '&idkapal=' + idkapal + '&tglberthed=' + tglberthed,
+                type: 'POST',
+                dataType: 'JSON',
+                success: function (res) {
+                    jQuery("#loader-proyeksi").hide();
+                    jQuery("#result_proyeksi_stok_tujuan").html(res);
+                }
+            })
+        } else if (proses == 0) {
+            jQuery("#loader-proyeksi").hide();
+            jQuery("#result_proyeksi_stok_asal").show();
+            jQuery("#result_proyeksi_stok_tujuan").show();
+
+            jQuery.ajax({
+                url: "/Simulasi/Proyeksistoktujuanloading",
+                data: dataform + '&idpelabuhan=' + idtujuan + '&tgldatang=' + tgldatang + '&idtujuan=' + idasal + '&idkapal=' + idkapal + '&tglberthed=' + tglberthed + '&jamberangkat=' + jamberangkat,
+                type: 'POST',
+                dataType: 'JSON',
+                success: function (res) {
+                    console.log("aaa " + res);
+                    jQuery("#result_proyeksi_stok_tujuan").html(res.content);
+                }
+            })
+
+            jQuery.ajax({
+                url: "/Simulasi/Proyeksistokasalloading",
+                data: dataform + '&idpelabuhan=' + idtujuan + '&tgldatang=' + tgldatang + '&idtujuan=' + idasal + '&idkapal=' + idkapal + '&tglberthed=' + tglberthed,
+                type: 'POST',
+                dataType: 'JSON',
+                success: function (res) {
+                    console.log("bbb " + res);
+                    jQuery("#result_proyeksi_stok_asal").html(res.content);
+                }
+            })
+        }
+
+    }
 })
 
 
@@ -103,14 +156,3 @@ jQuery(function ($) {
         $(this).datetimepicker({});
     });
 });
-
-jQuery(function ($) {
-    $('.form-control.daritanggal').each(function () {
-        var startDate = $(this).data("initial-datetime");
-        $(this).datetimepicker({});
-    });
-});
-
-jQuery.datetimepicker.setLocale('de');
-
-

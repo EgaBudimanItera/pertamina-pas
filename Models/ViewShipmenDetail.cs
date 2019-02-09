@@ -16,8 +16,8 @@ namespace pas_pertamina.Models
         public int? Idtujuan { get; set; }
         public string Proses { get; set; }
         [Display(Name = "Arrival")]
-       
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:MM}", ApplyFormatInEditMode = true)]
+
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:MM:ss}", ApplyFormatInEditMode = true)]
         public DateTime? Arrival { get; set; }
         public DateTime? Berthed { get; set; }
         public DateTime? Comm { get; set; }
@@ -43,6 +43,9 @@ namespace pas_pertamina.Models
         public int? Idsatuan { get; set; }
         public string ipt { get; set; }
 
+        [NotMapped]
+        public string[] idprodukapp { get; set; }
+
         public Pelabuhan IdasalNavigation { get; set; }
         public Kapal IdkapalNavigation { get; set; }
         public Pelabuhan IdpelabuhanbantuanNavigation { get; set; }
@@ -55,8 +58,8 @@ namespace pas_pertamina.Models
     public class ViewProduk
     {
         [Key]
-        public int _idproduk { get; set; }
-        
-        public int jumlah { get; set; }
+        public int? produk { get; set; }
+        public int? jumlah { get; set; }
     }
+
 }
