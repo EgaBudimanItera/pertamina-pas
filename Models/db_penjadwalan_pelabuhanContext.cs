@@ -33,7 +33,7 @@ namespace pas_pertamina.Models
         public virtual DbSet<Userlogin> Userlogin { get; set; }
         public virtual DbSet<ViewShipmenDetail> ViewShipmenDetail { get; set; }
         public virtual DbSet<PortActivityJetty1> PortActivityJetty1s { get; set; }
-
+        public virtual DbSet<JadwalMonitoringCari> JadwalMonitoringCaris { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -980,6 +980,10 @@ namespace pas_pertamina.Models
                     .HasConstraintName("FK_userlogin_pelabuhan");
             });
         }
+        
+        public DbSet<pas_pertamina.Models.JadwalMonitoringCari> JadwalMonitoringCari { get; set; }
+        
+        public DbSet<pas_pertamina.Models.CetakMonitoring> CetakMonitoring { get; set; }
 
         
     }

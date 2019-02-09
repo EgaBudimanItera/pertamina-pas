@@ -33,6 +33,7 @@ namespace pas_pertamina.Models
         public ICollection<Estimasiwaktu> Estimasiwaktu { get; set; }
         public ICollection<Rute> RuteIdasalNavigation { get; set; }
         public ICollection<Rute> RuteIdtujuanNavigation { get; set; }
+        public ICollection<JadwalMonitoringCari> jadwalMonitoringCaris { get; set; }
         public ICollection<Shipment> ShipmentIdasalNavigation { get; set; }
         public ICollection<Shipment> ShipmentIdpelabuhanbantuanNavigation { get; set; }
         public ICollection<Shipment> ShipmentIdtujuanNavigation { get; set; }

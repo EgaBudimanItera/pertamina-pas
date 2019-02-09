@@ -1,0 +1,82 @@
+﻿@model IEnumerable<pas_pertamina.Models.CetakMonitoring>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>CetakJadwalMonitoring</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        td.garis {
+            border-bottom: 1pt solid black;
+        }
+    </style>
+</head>
+<body>
+    JADWAL MONITORING KEGIATAN DERMAGA
+    <br />
+
+
+    <table width="100%" border="1px">
+        <thead>
+            <tr>
+                
+                <td rowspan="2">Tanggal</td>
+                <td colspan="2">ON PROCESS</td>
+                <td colspan="2">BERTHING PLANNING</td>
+            </tr>
+            <tr>
+                <td>Jetty 1</td>
+                <td>Jetty 2</td>
+                <td>Jetty 1</td>
+                <td>Jetty 2</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var prosesjetty in Model)
+            {
+            <tr>
+                <td>
+                    @prosesjetty.tgl
+                </td>
+                <td>
+                    @foreach (var proses in prosesjetty.cetakMonitoring1s)
+                    {
+                        @proses.NamaKapal
+                    }
+                </td>
+                <td>
+                    @foreach (var proses in prosesjetty.cetakMonitoring2s)
+                    {
+                        @proses.NamaKapal
+                    }
+                </td>
+                <td>
+                    @foreach (var proses in prosesjetty.cetakMonitoring3s)
+                    {
+                        @proses.NamaKapal
+                    }
+                </td>
+                <td>
+                    @foreach (var proses in prosesjetty.cetakMonitoring4s)
+                    {
+                        @proses.NamaKapal
+                    }
+                </td>
+            </tr>
+                
+               
+            }
+           
+
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,64 @@
+﻿@model pas_pertamina.Models.JadwalMonitoringCari
+
+@{
+    ViewData["Title"] = "JadwalMonitoring";
+}
+
+<ol class="breadcrumb">
+    <li><a href="#">Laporan</a></li>
+    <li><a href="#">Jadwal Monitoring</a></li>
+    <li class="active">Pilih Kriteria</li>
+</ol>
+<h3 class="header-form">Pilih Kriteria Pencarian  <i class="fa fa-eye pull-right"></i> </h3>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CetakJadwalMonitoring">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="idpelabuhan" class="control-label">Pelabuhan</label>
+                <select asp-for="idpelabuhan" class="form-control" id="idpelabuhan" asp-items="ViewBag.Idkapal"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="DariTanggal" class="control-label">Tanggal</label>
+                <input type="text" class="form-control" id="daritanggal" asp-for="DariTanggal">
+                <span asp-validation-for="DariTanggal" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="HinggaTanggal" class="control-label">Tanggal</label>
+                <input type="text" class="form-control" id="hinggatanggal" asp-for="HinggaTanggal">
+                <span asp-validation-for="HinggaTanggal" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-info"> <i class="fa fa-save"></i> Cetak</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        jQuery('#daritanggal').datetimepicker({
+
+            timepicker: false,
+            format: 'Y-m-d'
+        });
+        jQuery('#hinggatanggal').datetimepicker({
+
+            timepicker: false,
+            format: 'Y-m-d'
+        });
+        function cetak() {
+            var idpelabuhan = $("#idpelabuhan").val();
+            var daritanggal = $("#daritanggal").val();
+            var hinggatanggal = $("#hinggatanggal").val();
+            alert(idpelabuhan + ' ' + daritanggal + ' ' + hinggatanggal);
+        }
+    </script>
+}
+

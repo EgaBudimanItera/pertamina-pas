@@ -576,3 +576,5 @@ G:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\pas_pertamina.pdb
 G:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\pas_pertamina.csproj.CopyComplete
 G:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Login\UserLogin.g.cshtml.cs
 D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Login\UserLogin.g.cshtml.cs
+D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Laporan\JadwalMonitoring.g.cshtml.cs
+D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Laporan\CetakJadwalMonitoring.g.cshtml.cs

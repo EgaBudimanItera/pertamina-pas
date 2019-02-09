@@ -103,3 +103,14 @@ jQuery(function ($) {
         $(this).datetimepicker({});
     });
 });
+
+jQuery(function ($) {
+    $('.form-control.daritanggal').each(function () {
+        var startDate = $(this).data("initial-datetime");
+        $(this).datetimepicker({});
+    });
+});
+
+jQuery.datetimepicker.setLocale('de');
+
+
