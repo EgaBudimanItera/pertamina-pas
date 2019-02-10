@@ -26,7 +26,7 @@ jQuery("#_clickProdukToInput").click(function (e) {
         return;
     }
 
-    var productInput = '<div class="row"><div class="col-md-12"> ' +
+    var productInput = '<div class="row"><div class="col-md-12"> '+
         '<div class="col-md-3" style="background:#5cb85c;border-top-left-radius:10px;border-bottom-left-radius:10px;padding:4px">' +
         '<input class="form-control" type="hidden" name="produk[' + NUMPRODUCT + '].produk" value="' + idproduk + '">' +
         '<input type="text" readonly class="form-control" value="' + namaproduk + '">' +
@@ -34,7 +34,7 @@ jQuery("#_clickProdukToInput").click(function (e) {
         '<div class="col-md-3" style="background:#5cb85c;border-top-right-radius:10px;border-bottom-right-radius:10px;padding:4px">' +
         '<input type="text" class="form-control" name="produk[' + NUMPRODUCT + '].jumlah" value="' + jumlah + '">' +
         '</div>' +
-        '<div class="col-md-1" style="padding:4px"><button type="button" id="cekProyeksi" class="btn btn-danger">x</button></div>' +
+        '<div class="col-md-1" style="padding:4px"><button type="button" id="cekProyeksi" class="btn btn-danger">x</button></div>'+
         '</div ></div > ';
     jQuery("#listProdukToInput").append(
         productInput
@@ -48,13 +48,13 @@ jQuery("#arrival_").change(function () {
     var _idproduk = jQuery("#Idproduk").val();
     var _jumlah = jQuery("#Jumlah").val();
 
-
+    
     if (_idproduk == "" || _jumlah == "") {
         alert("Silahkan pilih Produk dan Isi Jumlah Dahulu.");
 
     } else {
         var data = jQuery("#form_simulasi").serialize();
-
+        
         jQuery.ajax({
             type: "POST",
             data: data,
@@ -98,10 +98,11 @@ jQuery("#_clickToProyeksi").click(function (e) {
 
     if (idkapal == '' || idasal == '' || idtujuan == '') {
         alert('Kapal, Asal dan Tujuan Harus di Isi.');
-    } else {
+    }else {
         jQuery("#loader-proyeksi").show();
         if (proses == "1") {
             jQuery("#result_proyeksi_stok_asal").hide();
+            jQuery("#result_proyeksi_stok_tujuan").show();
             jQuery.ajax({
                 url: "/Simulasi/Proyeksistoktujuandischarge",
                 data: dataform + '&idpelabuhan=' + idtujuan + '&tgldatang=' + tgldatang + '&idtujuan=' + idasal + '&idkapal=' + idkapal + '&tglberthed=' + tglberthed,
@@ -109,11 +110,10 @@ jQuery("#_clickToProyeksi").click(function (e) {
                 dataType: 'JSON',
                 success: function (res) {
                     jQuery("#loader-proyeksi").hide();
-                    jQuery("#result_proyeksi_stok_tujuan").html(res);
+                    jQuery("#result_proyeksi_stok_tujuan").html(res.content);
                 }
             })
         } else if (proses == 0) {
-            jQuery("#loader-proyeksi").hide();
             jQuery("#result_proyeksi_stok_asal").show();
             jQuery("#result_proyeksi_stok_tujuan").show();
 
@@ -123,7 +123,7 @@ jQuery("#_clickToProyeksi").click(function (e) {
                 type: 'POST',
                 dataType: 'JSON',
                 success: function (res) {
-                    console.log("aaa " + res);
+                    jQuery("#loader-proyeksi").hide();
                     jQuery("#result_proyeksi_stok_tujuan").html(res.content);
                 }
             })
@@ -134,13 +134,13 @@ jQuery("#_clickToProyeksi").click(function (e) {
                 type: 'POST',
                 dataType: 'JSON',
                 success: function (res) {
-                    console.log("bbb " + res);
+                    jQuery("#loader-proyeksi").hide();
                     jQuery("#result_proyeksi_stok_asal").html(res.content);
                 }
             })
         }
 
-    }
+    }   
 })
 
 
