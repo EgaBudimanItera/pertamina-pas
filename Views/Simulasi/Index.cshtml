@@ -163,6 +163,190 @@
                     <div id="result_proyeksi_stok_tujuan"></div>
                 </div>
                 <hr />
+
+                <br />
+                <h4>Pilih Pelabuhan yang akan ditampilkan</h4>
+                <form action="" method="GET">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <select name="idpelabuhanbantuan" id="idpelabuhanbi" class="form-control" asp-items="ViewBag.Idasal">
+                                    <option value="">Pilih Pelabuhan</option>
+                                </select>
+
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-warning btn-sm">Tampilkan</button>
+                                <a asp-controller="Simulasi" asp-action="Index" class="btn btn-danger btn-sm" onclick="return confirm('Data yang akan ditampilkan adalah data berdasar pelabuhan user login?')">Reset</a>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </form>
+                <br />
+                <h4>Simulasi Antrian</h4>
+                <input type="hidden" value="@Model.Idpelabuhanbantuan">
+                <div class="col-md-2">
+                    <select name="idjetty" id="idjettyupdate" class="form-control">
+                        <option value="">Pilih jetty</option>
+                        <option value="1">jetty 1</option>
+                        <option value="2">jetty 2</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-success btn-sm" id="updateantriansimulasi">Update Antrian</button>
+                    <button class="btn btn-warning btn-sm" id="resetantrian">Reset Antrian</button>
+
+                </div>
+                <br><br>
+                <h4>Simpan Simulasi Antrian</h4>
+                <button class="btn btn-danger btn-sm" id="simpansimulasi">Simpan Simulasi Antrian</button>
+                <br />
+                @foreach (var isi in Model.Isi)
+                {
+
+                    <h4>Status : @isi.Proses</h4>
+                    <text>Posisi Kapal ini berada di: @isi.NamaPelabuhanBantuan ; @isi.NamaKapal  From : @isi.NamaAsalPelabuhan (@isi.Produk)</text>
+                    <br />
+                    <text>
+                        Antrian :@isi.Antrian , Update Antrian : @isi.UpdateAntrian
+                    </text>
+                    <br />
+                    <br />
+
+                    string a = "formloading" + isi.Idshipment.ToString();
+                    string id = isi.Idshipment.ToString();
+                    string hidearrival = "hidearrival" + isi.Idshipment.ToString();
+                    string hideberthed = "hideberthed" + isi.Idshipment.ToString();
+                    string hidecomm = "hidecomm" + isi.Idshipment.ToString();
+                    string hidecomp = "hidecomp" + isi.Idshipment.ToString();
+                    string hideunberthed = "hideunberthed" + isi.Idshipment.ToString();
+                    string hidedeparture = "hidedeparture" + isi.Idshipment.ToString();
+                    string hideipt = "hideipt" + isi.Idshipment.ToString();
+                    string hide = "hide" + isi.Idshipment.ToString();
+                    string show = "showwaktu" + isi.Idshipment.ToString();
+                    string idshipmenteditwaktu = "idshipmenteditwaktu" + isi.Idshipment.ToString();
+                    string waktuarrivaledit = "waktuarrivaledit" + isi.Idshipment.ToString();
+                    string waktuberthededit = "waktuberthededit" + isi.Idshipment.ToString();
+                    string waktucommedit = "waktucommedit" + isi.Idshipment.ToString();
+                    string waktucompedit = "waktucompedit" + isi.Idshipment.ToString();
+                    string waktuunberthededit = "waktuunberthededit" + isi.Idshipment.ToString();
+                    string waktudepartureedit = "waktudepartureedit" + isi.Idshipment.ToString();
+                    string btnupdate = "btnupdate" + isi.Idshipment.ToString();
+                    string btnbatal = "btnbatal" + isi.Idshipment.ToString();
+                    string btnedit = "btnedit" + isi.Idshipment.ToString();
+                    string divbantuan = "divbantuan" + isi.Idshipment.ToString();
+                    string divbantuan2 = "divbantuan2" + isi.Idshipment.ToString();
+                    string iptedit = "iptedit" + isi.Idshipment.ToString();
+
+                    <form asp-action="UpdateAntrian2">
+                        @if (isi.Status == "Simulasi")
+                        {
+                            <a class="btn btn-danger btn-sm" onclick="return confirm('Apakah anda yakin?')">Hapus</a>
+                            <a class="btn btn-success btn-sm" onclick="EditWaktuSimulasi(@isi.Idshipment)" id="@btnedit">Edit waktu</a>
+                            <a  class="btn btn-warning btn-sm" id="@btnupdate" style="display: none" onclick="return confirm('Apakah anda yakin?')">Update waktu</a>
+                            <a  class="btn btn-primary btn-sm" id="@btnbatal" style="display: none" onclick="BatalUpdate(@isi.Idshipment)">Batal update waktu</a>
+                            <div class="col-md-2"><input type="text" class="form-control" asp-for="UpdateAntrian" value="@isi.UpdateAntrian"></div>
+                            <button type="submit" onclick="return confirm('Apakah anda yakin?')" class="btn btn-primary btn-sm">Update antrian</button>
+                            
+
+                        }
+                    </form>
+                    <br />
+                    <div class="table-responsive">
+
+                        <form id="@a">
+                            <table class="table table-striped table-bordered" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%">
+                                <thead>
+                                    <tr role="row">
+                                        <th>arrival</th>
+                                        <th>berthed</th>
+                                        <th>comm</th>
+                                        <th>comp</th>
+                                        <th>unberthed</th>
+                                        <th>departure</th>
+                                        <th>Tujuan</th>
+                                        <th>IPT</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr id="@id">
+                                        <td>
+                                            <div class="@hide" style="display: none">
+                                                <input type="hidden" name="idshipmenteditwaktu" id="@idshipmenteditwaktu" class="form-control">
+
+                                                <input type="text" name="waktuarrivaledit" id="@waktuarrivaledit" asp-for="@isi.Arrival" class="form-control arrival">
+                                            </div>
+                                            <div class="@show">@isi.Arrival</div>
+                                        </td>
+                                        <td>
+                                            <div class="@hide" style="display: none">
+                                                <input type="text" name="waktuberthededit" id="@waktuberthededit" asp-for="@isi.Berthed" class="form-control arrival">
+                                            </div>
+                                            <div class="@show">@isi.Berthed</div>
+                                        </td>
+                                        <td>
+                                            <div class="@hide" style="display: none">
+                                                <input type="text" name="waktucommedit" id="@waktucommedit" asp-for="@isi.Comm" class="form-control arrival">
+                                            </div>
+                                            <div class="@show">@isi.Comm</div>
+                                        </td>
+                                        <td>
+                                            <div class="@hide" style="display: none">
+                                                <input type="text" name="waktucompedit" id="@waktucompedit" asp-for="@isi.Comp" class="form-control arrival">
+                                            </div>
+                                            <div class="@show">@isi.Comp</div>
+                                        </td>
+                                        <td>
+                                            <div class="@hide" style="display: none">
+                                                <input type="text" name="waktuunberthededit" id="@waktuunberthededit" asp-for="@isi.Unberthed" class="form-control arrival">
+                                            </div>
+                                            <div class="@show">@isi.Unberthed</div>
+                                        </td>
+                                        <td>
+                                            <div class="@hide" style="display: none">
+                                                <input type="text" name="waktudepartureedit" id="@waktudepartureedit" asp-for="@isi.Departure" class="form-control arrival">
+                                            </div>
+                                            <div class="@show">@isi.Departure</div>
+                                        </td>
+                                        <td>
+                                            @isi.NamaTujuanPelabuhan
+                                        </td>
+                                        <td>
+                                            <div class="@hide" style="display: none">
+                                                <input type="text" name="iptedit" id="@iptedit" asp-for="@isi.Ipt" class="form-control">
+                                            </div>
+                                            <div class="@show">@isi.Ipt</div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            @{
+                                if (isi.WaitingCargo != 0)
+                                {
+                                    <text> Status Waiting Cargo : @isi.WaitingCargo x 24 Jam</text>
+                                }
+                                else
+                                {
+                                    <text>  </text>
+                                }
+                                if (isi.WaitingUllage != 0)
+                                {
+                                    <text> Status Waiting Ullage : @isi.WaitingUllage x 24 Jam</text>
+                                }
+                                else
+                                {
+                                    <text>  </text>
+                                }
+                            }
+                        </form>
+
+                    </div>
+
+                    <br />
+                }
             </div>
         </div>
     </div>
@@ -172,4 +356,20 @@
 @section Scripts {
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        function EditWaktuSimulasi(id) {
+            $("#btnedit" + id).hide();
+            $(".showwaktu" + id).hide();
+            $(".hide" + id).show();
+            $("#btnbatal" + id).show();
+            $("#btnupdate" + id).show();
+        }
+        function BatalUpdate(id) {
+            $("#btnedit" + id).show();
+            
+            $("#btnbatal" + id).hide();
+            $("#btnupdate" + id).hide();
+        }
+    </script>
 }
+

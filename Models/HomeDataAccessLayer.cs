@@ -73,6 +73,7 @@ namespace pas_pertamina.Models
                             }
                        );
                     }
+                    reader.Close();
                 }
                 con.Close();
             }

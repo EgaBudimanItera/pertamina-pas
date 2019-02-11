@@ -222,5 +222,81 @@ namespace pas_pertamina.Models
             }
 
         }
+        CultureInfo enUS = new CultureInfo("en-US");
+        public List<IsiShipment> GetListIsiShipment (int idpel)
+        {
+            List<IsiShipment> _IsiList = new List<IsiShipment>();
+            string QueryIsi;
+            if (idpel == 0)
+            {
+                QueryIsi = "SELECT s.*,CONVERT(TIME,CONVERT(datetime,departure)-CONVERT(datetime,arrival)) as ipthitung,namakapal,(select namapelabuhan from pelabuhan plasal where s.idasal=plasal.idlistpelabuhan) as namaasal," +
+                           "(select namapelabuhan from pelabuhan pltujuan where s.idtujuan = pltujuan.idlistpelabuhan) as namatujuan," +
+                           "(select namapelabuhan from pelabuhan pltujuan where s.idpelabuhanbantuan = pltujuan.idlistpelabuhan) as namapelabuhanbantuan," +
+                           "STUFF((SELECT ',' + namaproduk + '  ' + convert(varchar(20), jumlah), '  ' + nama_satuan FROM detailshipment " +
+                           "join produk on(detailshipment.idproduk = produk.idproduk) join listsatuan on(detailshipment.idsatuan = listsatuan.id_listsatuan) " +
+                           "where detailshipment.idshipment = s.idshipment FOR XML PATH('')),1,1,'') as produk, " +
+                           "(select sum(jumlah) from detailshipment where detailshipment.idshipment = s.idshipment) as jumlahproduk " +
+                           "FROM shipment s join kapal k on(s.idkapal = k.idkapal) join pelabuhan pl on(s.idpelabuhanbantuan= pl.idlistpelabuhan) where status!= 'Done' order by antrian asc";
+            }
+            else
+            {
+                QueryIsi = "SELECT s.*,CONVERT(TIME,CONVERT(datetime,departure)-CONVERT(datetime,arrival)) as ipthitung,namakapal,(select namapelabuhan from pelabuhan plasal where s.idasal=plasal.idlistpelabuhan) as namaasal," +
+                                  "(select namapelabuhan from pelabuhan pltujuan where s.idtujuan = pltujuan.idlistpelabuhan) as namatujuan," +
+                                   "(select namapelabuhan from pelabuhan pltujuan where s.idpelabuhanbantuan = pltujuan.idlistpelabuhan) as namapelabuhanbantuan," +
+                                  "STUFF((SELECT ',' + namaproduk + '  ' + convert(varchar(20), jumlah), '  ' + nama_satuan FROM detailshipment " +
+                                  "join produk on(detailshipment.idproduk = produk.idproduk) join listsatuan on(detailshipment.idsatuan = listsatuan.id_listsatuan) " +
+                                  "where detailshipment.idshipment = s.idshipment FOR XML PATH('')),1,1,'') as produk " +
+                                   "(select sum(jumlah) from detailshipment where detailshipment.idshipment = s.idshipment) as jumlahproduk " +
+                                  "FROM shipment s join kapal k on(s.idkapal = k.idkapal) join pelabuhan pl on(s.idpelabuhanbantuan= pl.idlistpelabuhan) where status!= 'Done' and idpelabuhanbantuan='" + idpel + "' order by antrian asc";
+            }
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand(QueryIsi, con);
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        TimeSpan ipt_ = (DateTime.ParseExact(reader["departure"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None) - DateTime.ParseExact(reader["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None));
+                        string _ipt = string.Format("{0}:{1:00}", (int)ipt_.TotalHours, ipt_.Minutes);
+                        IFormatProvider culture = new CultureInfo("en-US");
+                        _IsiList.Add(new IsiShipment {
+                            Idshipment = reader["idshipment"].ToString(),
+                            Noshipment = reader["noshipment"].ToString(),
+                            Idkapal = Int32.Parse(reader["idkapal"].ToString()),
+                            Idpelabuhanbantuan = Int32.Parse(reader["idpelabuhanbantuan"].ToString()),
+                            Nojetty = Int32.Parse(reader["nojetty"].ToString()),
+                            NamaKapal = reader["namakapal"].ToString(),
+                            NamaAsalPelabuhan = reader["namaasal"].ToString(),
+                            NamaPelabuhanBantuan = reader["namapelabuhanbantuan"].ToString(),
+                            Produk = reader["produk"].ToString(),
+                            Status = reader["status"].ToString(),
+                            WaitingCargo = Int32.Parse(reader["waitingcargo"].ToString()),
+                            WaitingUllage = Int32.Parse(reader["waitingullage"].ToString()),
+
+
+                            Arrival = DateTime.ParseExact(reader["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
+                            Berthed = DateTime.ParseExact(reader["berthed"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
+                            Comm = DateTime.ParseExact(reader["comm"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
+                            Comp = DateTime.ParseExact(reader["comp"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
+                            Unberthed = DateTime.ParseExact(reader["unberthed"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
+                            Departure = DateTime.ParseExact(reader["departure"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
+                            Ipt = _ipt,
+                            NamaTujuanPelabuhan = reader["namatujuan"].ToString(),
+                            Proses = reader["proses"].ToString(),
+                           
+                            JumlahProduk = Int32.Parse(reader["jumlahproduk"].ToString()),
+                            Antrian = Int32.Parse(reader["antrian"].ToString()),
+                            UpdateAntrian = Int32.Parse(reader["updateantrian"].ToString()),
+
+                        });
+                    }
+                    reader.Close();
+                }
+                con.Close();
+            }
+            return _IsiList;
+        }
     }
 }

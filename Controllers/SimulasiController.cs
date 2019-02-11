@@ -40,8 +40,9 @@ namespace pas_pertamina.Controllers
         }
 
         // GET: Simulasi
+
         
-        public IActionResult Index()
+        public IActionResult Index(int idpel)
         {
             //var db_penjadwalan_pelabuhanContext = _context.ViewShipmenDetail.Include(v => v.IdkapalNavigation).Include(v => v.IdprodukNavigation).Include(v => v.IdshipmentNavigation);
             //return View(await db_penjadwalan_pelabuhanContext.ToListAsync());
@@ -52,7 +53,9 @@ namespace pas_pertamina.Controllers
             ViewData["Idasal"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Namapelabuhan");
             ViewData["Idtujuan"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Namapelabuhan");
             ViewData["Idsatuan"] = new SelectList(_context.Listsatuan, "IdListsatuan", "NamaSatuan");
-            return View();
+            ViewShipmenDetail _view = new ViewShipmenDetail();
+            _view.Isi = objSimulasi.GetListIsiShipment(idpel);
+            return View(_view);
         }
 
         [HttpPost]

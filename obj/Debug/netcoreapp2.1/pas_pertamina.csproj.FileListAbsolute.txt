@@ -487,10 +487,6 @@ D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Shipments\Delete.g.csht
 D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Shipments\Details.g.cshtml.cs
 D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Shipments\Edit.g.cshtml.cs
 D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Shipments\Index.g.cshtml.cs
-D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Simulasi\Create.g.cshtml.cs
-D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Simulasi\Delete.g.cshtml.cs
-D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Simulasi\Details.g.cshtml.cs
-D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Simulasi\Edit.g.cshtml.cs
 D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Simulasi\Index.g.cshtml.cs
 G:\ASP\pertamina-pas\bin\Debug\netcoreapp2.1\pas_pertamina.deps.json
 G:\ASP\pertamina-pas\bin\Debug\netcoreapp2.1\pas_pertamina.runtimeconfig.json
