@@ -24,10 +24,10 @@ namespace pas_pertamina.Controllers
         }
 
         [HttpPost]
-        public ActionResult Proses_jetty(string idshipment, string nojetty)
+        public ActionResult Proses_Jetty(string idshipment,string nojetty)
         {
             string idpel = HttpContext.Session.GetString("Idpelabuhan");
-            bool status = objSimulasi.ProsesKeJetty(idpel,idshipment);
+            bool status = objSimulasi.ProsesKeJetty(idpel,idshipment,nojetty);
             return Json(new { success = status });
         }
 

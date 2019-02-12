@@ -11,7 +11,7 @@ jQuery("#_clickProdukToInput").click(function (e) {
     var idproduk = jQuery("#Idproduk").val();
     var namaproduk = jQuery("#Idproduk option:selected").text();
     var jumlah = jQuery("#Jumlah").val();
-    var satuan = jQuery("#Idsatuan option:selected").text();
+    var satuan = jQuery("#Idsatuan").val();
 
     if (idproduk == "") {
         alert("Silahkan pilih Produk terlebih dulu.");
@@ -29,6 +29,7 @@ jQuery("#_clickProdukToInput").click(function (e) {
     var productInput = '<div class="row"><div class="col-md-12"> '+
         '<div class="col-md-3" style="background:#5cb85c;border-top-left-radius:10px;border-bottom-left-radius:10px;padding:4px">' +
         '<input class="form-control" type="hidden" name="produk[' + NUMPRODUCT + '].produk" value="' + idproduk + '">' +
+        '<input class="form-control" type="hidden" name="produk[' + NUMPRODUCT + '].satuan" value="' + satuan + '">' +
         '<input type="text" readonly class="form-control" value="' + namaproduk + '">' +
         '</div>' +
         '<div class="col-md-3" style="background:#5cb85c;border-top-right-radius:10px;border-bottom-right-radius:10px;padding:4px">' +
@@ -85,6 +86,43 @@ jQuery("#arrival_").change(function () {
 
 })
 
+
+jQuery("#berthed_").change(function () {
+    var _arrival = jQuery("#arrival_").val();
+    var _idproduk = jQuery("#Idproduk").val();
+    var _jumlah = jQuery("#Jumlah").val();
+    var data = jQuery("#form_simulasi").serialize();
+
+    jQuery.ajax({
+        type: "POST",
+        data: data,
+        url: "/Simulasi/GetWaktu2",
+        dataType: "json",
+        success: function (msg) {
+            jQuery("#comm").val(msg.comm);
+            jQuery("#comp").val(msg.comp);
+            jQuery("#unberthed").val(msg.unberthed);
+            jQuery("#departure").val(msg.departure);
+
+            var ipt = msg.ipt.split(":");
+            var h = ipt[0];
+            var m = ipt[1];
+            if (ipt[0] < 10) {
+                h = "0" + ipt[0];
+            }
+            if (ipt[1] < 10) {
+                m = "0" + ipt[1];
+            }
+            jQuery("#ipt").val(h + ":" + m);
+        },
+        error: function (err) {
+        }
+    });
+    
+    
+
+})
+
 jQuery("#_clickToProyeksi").click(function (e) {
     e.preventDefault();
     var dataform = jQuery('#listProdukToInput :input').serialize();
@@ -100,7 +138,7 @@ jQuery("#_clickToProyeksi").click(function (e) {
         alert('Kapal, Asal dan Tujuan Harus di Isi.');
     }else {
         jQuery("#loader-proyeksi").show();
-        if (proses == "1") {
+        if (proses == "Discharge") {
             jQuery("#result_proyeksi_stok_asal").hide();
             jQuery("#result_proyeksi_stok_tujuan").show();
             jQuery.ajax({
@@ -113,7 +151,7 @@ jQuery("#_clickToProyeksi").click(function (e) {
                     jQuery("#result_proyeksi_stok_tujuan").html(res.content);
                 }
             })
-        } else if (proses == 0) {
+        } else if (proses == "Loading") {
             jQuery("#result_proyeksi_stok_asal").show();
             jQuery("#result_proyeksi_stok_tujuan").show();
 

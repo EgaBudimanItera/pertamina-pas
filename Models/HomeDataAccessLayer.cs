@@ -260,10 +260,10 @@ namespace pas_pertamina.Models
             return _listwaiting;
         }
         
-        public bool ProsesKeJetty(string idpel,string idshipment)
+        public bool ProsesKeJetty(string idpel,string idshipment,string nojetty)
         {
             
-            string Query1 = "SELECT * FROM shipment WHERE nojetty = '1' AND status='Proses' AND idpelabuhanbantuan =" + idpel;
+            string Query1 = "SELECT * FROM shipment WHERE nojetty = '"+nojetty+"' AND status='Proses' AND idpelabuhanbantuan =" + idpel;
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 SqlCommand cmd = new SqlCommand(Query1, con);
@@ -278,7 +278,7 @@ namespace pas_pertamina.Models
                 else
                 {
                     con.Close();
-                    string query2 = "UPDATE shipment set status='proses' where idshipment='" + idshipment + "'";
+                    string query2 = "UPDATE shipment set status='Proses' where idshipment='" + idshipment + "'";
                     SqlCommand cmd2 = new SqlCommand(query2, con);
                     con.Open();
                     cmd2.ExecuteNonQuery();

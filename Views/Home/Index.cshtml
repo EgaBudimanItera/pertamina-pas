@@ -79,7 +79,7 @@
                                     <div class="col-md-12">
                                         @{ if (_akses == "Petugas BBM" || _akses == "Petugas LPG")
                                             {
-                                                <a href="#" class="btn btn-success btn-sm proses_jetty_1" id="@portschedule.Idshipment" nojetty="@portschedule.Nojetty" onclick="return confirm('Apakah anda yakin?')">
+                                                <a href="#" class="btn btn-success btn-sm" id="@portschedule.Idshipment" nojetty="@portschedule.Nojetty" onclick="if(confirm('Apakah anda yakin?')) ProsesJetty(@portschedule.Idshipment,@portschedule.Nojetty)">
                                                     Port Activity
                                                 </a>
                                             }
@@ -726,6 +726,30 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script type="text/javascript">
+        $(document).on('click', '.proses_jetty_1', function (e) {
+            e.preventDefault();
+            var idshipment = $(this).attr('id');
+            var idjetty = $(this).attr('idjetty');
+            $.ajax({
+                url: '<?=base_url()?>welcome/proses_jetty',
+                data: 'idshipment=' + idshipment + '&idjetty=' + idjetty,
+                type: 'POST',
+                success: function (msg) {
+                    location.reload();
+                }
+            });
+        })
+        function ProsesJetty(id,nojetty) {
+            $.ajax({
+                url: "/Home/Proses_Jetty",
+                data: 'idshipment=' + id + '&nojetty=' + nojetty,
+                type: 'POST',
+                dataType: 'JSON',
+                success: function (msg) {
+                    location.reload();
+                }
+            });
+        }
         function updatewaktu(id, proses, nojetty) {
             var _Arrival = $('#_arrival_').val();
             var _Berthed = $('#_berthed_').val();

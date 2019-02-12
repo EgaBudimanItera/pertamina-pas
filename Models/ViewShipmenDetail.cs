@@ -11,18 +11,29 @@ namespace pas_pertamina.Models
     {
         public int Idshipment { get; set; }
         public string Noshipment { get; set; }
+        [Required(ErrorMessage = "Pilih Kapal Yang Akan Digunakan")]
         public int? Idkapal { get; set; }
+        [Required]
         public int? Idasal { get; set; }
+        [Required]
         public int? Idtujuan { get; set; }
+        [Required]
         public string Proses { get; set; }
+        [Required]
         [Display(Name = "Arrival")]
 
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:MM:ss}", ApplyFormatInEditMode = true)]
         public DateTime? Arrival { get; set; }
+        [Required]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:MM:ss}", ApplyFormatInEditMode = true)]
         public DateTime? Berthed { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:MM:ss}", ApplyFormatInEditMode = true)]
         public DateTime? Comm { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:MM:ss}", ApplyFormatInEditMode = true)]
         public DateTime? Comp { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:MM:ss}", ApplyFormatInEditMode = true)]
         public DateTime? Unberthed { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:MM:ss}", ApplyFormatInEditMode = true)]
         public DateTime? Departure { get; set; }
         public int? Waiting1 { get; set; }
         public int? Waiting2 { get; set; }
@@ -31,13 +42,16 @@ namespace pas_pertamina.Models
         public int? Waiting5 { get; set; }
         public string Status { get; set; }
         public int? Antrian { get; set; }
+        [Required]
         public int? Nojetty { get; set; }
         public int? Idbantuan { get; set; }
         public string Prosesbantuan { get; set; }
         public int Idpelabuhanbantuan { get; set; }
         [Key]
         public int Iddetailshipment { get; set; }
+
         public int? Idproduk { get; set; }
+        [Required]
         public List<ViewProduk> produk { get; set; }
         public int? Jumlah { get; set; }
         public int? Idsatuan { get; set; }
@@ -65,6 +79,7 @@ namespace pas_pertamina.Models
         [Key]
         public int? produk { get; set; }
         public int? jumlah { get; set; }
+        public int? satuan { get; set; }
     }
     public class IsiShipment
     {

@@ -42,7 +42,7 @@ namespace pas_pertamina.Controllers
         // GET: Simulasi
 
         
-        public IActionResult Index(int idpel)
+        public IActionResult Index([FromQuery(Name = "idpelabuhanbantuan")] int idpel)
         {
             //var db_penjadwalan_pelabuhanContext = _context.ViewShipmenDetail.Include(v => v.IdkapalNavigation).Include(v => v.IdprodukNavigation).Include(v => v.IdshipmentNavigation);
             //return View(await db_penjadwalan_pelabuhanContext.ToListAsync());
@@ -53,11 +53,13 @@ namespace pas_pertamina.Controllers
             ViewData["Idasal"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Namapelabuhan");
             ViewData["Idtujuan"] = new SelectList(_context.Pelabuhan, "Idlistpelabuhan", "Namapelabuhan");
             ViewData["Idsatuan"] = new SelectList(_context.Listsatuan, "IdListsatuan", "NamaSatuan");
+            ViewData["idpelab"] = idpel;
             ViewShipmenDetail _view = new ViewShipmenDetail();
             _view.Isi = objSimulasi.GetListIsiShipment(idpel);
+            
             return View(_view);
         }
-
+        CultureInfo enUS = new CultureInfo("en-US");
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult GetWaktu(ViewShipmenDetail viewShipmen)
@@ -69,22 +71,105 @@ namespace pas_pertamina.Controllers
             string departure = objSimulasi.Departure(viewShipmen, unberthed);
 
             DateTime? Arrival_ = viewShipmen.Arrival;
-            DateTime Departure_ = DateTime.ParseExact(departure, "yyyy/MM/dd HH:mm", CultureInfo.InvariantCulture);
-
-            TimeSpan IPT = Departure_.Subtract(DateTime.Parse(Arrival_.ToString()));
-
-            return Json(new
+            string Arr = Arrival_.ToString();
+            DateTime Arri = DateTime.ParseExact(Arr, "dd/MM/yyyy HH:mm:ss",enUS,DateTimeStyles.None);
+            Arr = Arri.ToString("yyyy/MM/dd HH:mm");
+            try
             {
-                success = true,
-                arrival = viewShipmen.Arrival,
-                berthed = berthed,
-                comm = comm,
-                comp = comp,
-                unberthed = unberthed,
-                departure = departure,
-                ipt = IPT.Hours + ":" + IPT.Minutes
+                /*Arr= Arrival_.ToString("yyyy/MM/dd HH:mm",
+                                CultureInfo.InvariantCulture);*/
+               
+                DateTime Departure_ = DateTime.ParseExact(departure, "yyyy/MM/dd HH:mm", CultureInfo.InvariantCulture);
+                TimeSpan ipt_ = (DateTime.ParseExact(departure, "yyyy/MM/dd HH:mm", enUS, DateTimeStyles.None) - DateTime.ParseExact(Arr, "yyyy/MM/dd HH:mm", enUS, DateTimeStyles.None));
+                string _ipt = string.Format("{0}:{1:00}", (int)ipt_.TotalHours, ipt_.Minutes);
+                return Json(new
+                {
+                    success = true,
+                    arrival = viewShipmen.Arrival,
+                    berthed = berthed,
+                    comm = comm,
+                    comp = comp,
+                    unberthed = unberthed,
+                    departure = departure,
+                    //ipt = IPT.Hours + ":" + IPT.Minutes
+                    ipt = _ipt,
+                    arr = Arr
 
-            });
+                });
+            }
+            catch(Exception ex)
+            {
+                return Json(new
+                {
+                    success = true,
+                    arrival = viewShipmen.Arrival,
+                    berthed = berthed,
+                    comm = comm,
+                    comp = comp,
+                    unberthed = unberthed,
+                    departure = departure,
+                    //ipt = IPT.Hours + ":" + IPT.Minutes
+                    
+                    arr = Arr
+
+                });
+            }
+
+            
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult GetWaktu2(ViewShipmenDetail viewShipmen)
+        {
+            string berthed = DateTime.Parse(viewShipmen.Berthed.ToString()).ToString("yyyy/MM/dd HH:mm");
+            string comm = objSimulasi.Comm(viewShipmen, berthed);
+            string comp = objSimulasi.Comp(viewShipmen, comm);
+            string unberthed = objSimulasi.Comp(viewShipmen, comp);
+            string departure = objSimulasi.Departure(viewShipmen, unberthed);
+            DateTime? Arrival_ = viewShipmen.Arrival;
+            string Arr = Arrival_.ToString();
+            DateTime Arri = DateTime.ParseExact(Arr, "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None);
+            Arr = Arri.ToString("yyyy/MM/dd HH:mm");
+            try
+            {
+  
+
+                DateTime Departure_ = DateTime.ParseExact(departure, "yyyy/MM/dd HH:mm", CultureInfo.InvariantCulture);
+                TimeSpan ipt_ = (DateTime.ParseExact(departure, "yyyy/MM/dd HH:mm", enUS, DateTimeStyles.None) - DateTime.ParseExact(Arr, "yyyy/MM/dd HH:mm", enUS, DateTimeStyles.None));
+                string _ipt = string.Format("{0}:{1:00}", (int)ipt_.TotalHours, ipt_.Minutes);
+                return Json(new
+                {
+                    success = true,
+                    
+                    berthed = berthed,
+                    comm = comm,
+                    comp = comp,
+                    unberthed = unberthed,
+                    departure = departure,
+                    //ipt = IPT.Hours + ":" + IPT.Minutes
+                    ipt = _ipt,
+                    arr = Arr
+
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = true,
+                   
+                    berthed = berthed,
+                    comm = comm,
+                    comp = comp,
+                    unberthed = unberthed,
+                    departure = departure,
+                    //ipt = IPT.Hours + ":" + IPT.Minutes
+
+                    arr = Arr
+
+                });
+            }
 
         }
         [HttpPost]
@@ -94,7 +179,8 @@ namespace pas_pertamina.Controllers
             int? idpelabuhanbantuan = 0;
             int? idpelabuhanbantuan1 = 0;
             int antrian;
-            if (viewShipmen.Proses == "0")
+            string Query; 
+            if (viewShipmen.Proses == "Loading")
             {
                 idpelabuhanbantuan = viewShipmen.Idasal;
                 idpelabuhanbantuan1 = viewShipmen.Idtujuan;
@@ -119,7 +205,7 @@ namespace pas_pertamina.Controllers
                 command.Connection = con;
                 command.Transaction = transaction;
 
-                command.CommandText = "SELECT * FROM dbo.shipment WHERE nojetty=@idjettynya AND idpelabuhanbantuan=@idpelabuhanbantuannya AND antrian != ''";
+                command.CommandText = "SELECT COUNT(idshipment) AS row_count FROM dbo.shipment WHERE nojetty=@idjettynya AND idpelabuhanbantuan=@idpelabuhanbantuannya AND antrian != ''";
                 command.Parameters.AddWithValue("@idjettynya", viewShipmen.Nojetty);
                 command.Parameters.AddWithValue("@idpelabuhanbantuannya", idpelabuhanbantuan);
                 Int32 rowCount = Convert.ToInt32(command.ExecuteScalar());
@@ -131,12 +217,12 @@ namespace pas_pertamina.Controllers
                     antrian = rowCount + 1;
                 }
 
-
+               
                 try
                 {
-                    command.CommandText = "INSERT INTO dbo.shipment(idkapal,idasal,idtujuan,arrival,berthed,comm,comp,unberthed,departure,proses,idpelabuhanbantuan,nojetty,antrian,antrianupdate,prosesbantuan,waitingullage,waitingcargo) " +
+                    command.CommandText = "INSERT INTO dbo.shipment(idkapal,idasal,idtujuan,arrival,berthed,comm,comp,unberthed,departure,proses,idpelabuhanbantuan,nojetty,antrian,antrianupdate,prosesbantuan,waitingullage,waitingcargo,status,waiting1,waiting2,waiting3,waiting4,waiting5) " +
                     " OUTPUT INSERTED.idshipment " +
-                    "VALUES(@idkapal,@idasal,@idtujuan,@arrival,@berthed,@comm,@comp,@unberthed,@departure,@proses,@idpelabuhanbantuan,@idjetty,@antrian,@antrianupdate,@prosesbantuan,@waitingullage,@waitingcargo)";
+                    "VALUES(@idkapal,@idasal,@idtujuan,@arrival,@berthed,@comm,@comp,@unberthed,@departure,@proses,@idpelabuhanbantuan,@idjetty,@antrian,@antrianupdate,@prosesbantuan,@waitingullage,@waitingcargo,@status,@waiting1,@waiting2,@waiting3,@waiting4,@waiting5)";
 
 
                     command.Parameters.AddWithValue("@idkapal", viewShipmen.Idkapal);
@@ -156,22 +242,29 @@ namespace pas_pertamina.Controllers
                     command.Parameters.AddWithValue("@prosesbantuan", "0");
                     command.Parameters.AddWithValue("@waitingullage", "0");
                     command.Parameters.AddWithValue("@waitingcargo", "0");
+                    command.Parameters.AddWithValue("@status", "Simulasi");
+                    command.Parameters.AddWithValue("@waiting1", "0");
+                    command.Parameters.AddWithValue("@waiting2", "0");
+                    command.Parameters.AddWithValue("@waiting3", "0");
+                    command.Parameters.AddWithValue("@waiting4", "0");
+                    command.Parameters.AddWithValue("@waiting5", "0");
 
                     Int32 newId = (Int32)command.ExecuteScalar();
 
                     int i = 0;
                     foreach (var it in viewShipmen.produk)
                     {
-                        command.CommandText = string.Format("INSERT INTO dbo.detailshipment(idshipment,idproduk,jumlah) VALUES(@idshipment{0},@idproduk{0},@jumlah{0})", i);
+                        command.CommandText = string.Format("INSERT INTO dbo.detailshipment(idshipment,idproduk,jumlah,idsatuan) VALUES(@idshipment{0},@idproduk{0},@jumlah{0},@satuan{0})", i);
                         command.Parameters.AddWithValue("@idshipment" + i, newId);
                         command.Parameters.AddWithValue("@idproduk" + i, it.produk);
                         command.Parameters.AddWithValue("@jumlah" + i, it.jumlah);
+                        command.Parameters.AddWithValue("@satuan" + i, it.satuan);
                         command.ExecuteNonQuery();
                         i = i + 1;
                     }
 
                     transaction.Commit();
-
+                    
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)
@@ -197,13 +290,8 @@ namespace pas_pertamina.Controllers
 
                 }
             }
-
-            return Json(new
-            {
-                success = true,
-                shipment = viewShipmen,
-
-            });
+            
+            
         }
 
         [HttpPost]
@@ -217,7 +305,7 @@ namespace pas_pertamina.Controllers
                 DateTime WaktunyaJalan = DateTime.Now;
                 DateTime WaktuSandar = DateTime.Now;
                 DateTime WaktuSandar2 = DateTime.Now;
-                DateTime WaktunyaBerthed = DateTime.Now;
+                DateTime WaktunyaBerthed = tglberthed;
                 DateTime loop_tanggal;
                 string Query = "SELECT * FROM dbo.rute WHERE idkapal='" + idkapal + "' AND idasal='" + idtujuan + "' AND idtujuan='" + idpelabuhan + "'";
                 SqlCommand cmd;
@@ -312,7 +400,7 @@ namespace pas_pertamina.Controllers
                             html_proyeksi_ullage += "<td>" + ullagereal + "</td>";
                             html_proyeksi_rencana_discharge += "<td>" + stokdischarge + "</td>";
                             html_proyeksi_waiting_ullage_volume += "<td>" + ((stokdischarge - ullagereal < 0) ? 0 : stokdischarge - ullagereal) + "</td>";
-                            html_proyeksi_waiting_ullage_hari += "<td>" + ((stokdischarge - ullagereal / dotreal < 0) ? 0 : stokdischarge - ullagereal / dotreal) + "</td>";
+                            html_proyeksi_waiting_ullage_hari += "<td>" + ((stokdischarge - ullagereal / dotreal < 0) ? 0 : (stokdischarge - ullagereal) / dotreal) + "</td>";
                             mulaiproyeksi = mulaiproyeksi.AddDays(1);
 
                             for (var i = 0; i < 11; i++)
@@ -406,13 +494,13 @@ namespace pas_pertamina.Controllers
                                             {
                                                 if (WaktunyaBerthed.ToString("yyyy-MM-dd") != qTanggal)
                                                 {
-                                                    waiting_ullage_hari = stokdischargeloop - ullage_proyeksi / dotreal;
-                                                    html_proyeksi_waiting_ullage_hari += "<td>" + waiting_ullage_hari + "<input type='hidden' name='waiting_ullage' id='waiting_ullage' value='" + waiting_ullage_hari + "' >" + WaktunyaBerthed.ToString("yyyy-MM-dd") + "-" + qTanggal + "</td>";
+                                                    waiting_ullage_hari = (stokdischargeloop - ullage_proyeksi) / dotreal;
+                                                    html_proyeksi_waiting_ullage_hari += "<td>" + waiting_ullage_hari + "<input type='hidden' name='waiting_ullage' id='waiting_ullage' value='" + waiting_ullage_hari + "' >" + "</td>";
                                                 }
                                                 else
                                                 {
-                                                    waiting_ullage_hari = stokdischargeloop - ullage_proyeksi / dotreal;
-                                                    html_proyeksi_waiting_ullage_hari += "<td>" + waiting_ullage_hari + "<input type='hidden' name='waiting_ullage' id='waiting_ullage' value='" + waiting_ullage_hari + "' ><button>Set Ullage</button>" + WaktunyaBerthed.ToString("yyyy-MM-dd") + "-" + qTanggal + "</td>";
+                                                    waiting_ullage_hari = (stokdischargeloop - ullage_proyeksi) / dotreal;
+                                                    html_proyeksi_waiting_ullage_hari += "<td>" + waiting_ullage_hari + "<input type='hidden' name='waiting_ullage' id='waiting_ullage' value='" + waiting_ullage_hari + "' ><button class='btn btn-primary'>Set Ullage</button>" + "</td>";
                                                 }
                                             }
 
@@ -636,7 +724,7 @@ namespace pas_pertamina.Controllers
                                 html_proyeksi_ullage += "<td>"+ullagereal+"</td>";
                                 html_proyeksi_rencana_discharge += "<td>" + stokdischarge + "</td>";
                                 html_proyeksi_waiting_ullage_volume += "<td>"+ ((stokdischarge - ullagereal < 0)? 0 : stokdischarge - ullagereal) +"</td>";
-                                html_proyeksi_waiting_ullage_hari += "<td>"+((stokdischarge - ullagereal / dotreal < 0)? 0 : stokdischarge - ullagereal / dotreal)+"</td>";
+                                html_proyeksi_waiting_ullage_hari += "<td>"+((stokdischarge - ullagereal / dotreal < 0)? 0 : (stokdischarge - ullagereal) / dotreal)+"</td>";
                                 mulaiproyeksi = mulaiproyeksi.AddDays(1);
 
                                 for (var i=0; i < 11; i++)
@@ -726,13 +814,13 @@ namespace pas_pertamina.Controllers
                                                 {
                                                     if (WaktunyaBerthed.ToString("yyyy-MM-dd") != qTanggal)
                                                     {
-                                                        waiting_ullage_hari = stokdischargeloop - ullage_proyeksi / dotreal;
-                                                        html_proyeksi_waiting_ullage_hari += "<td>" + waiting_ullage_hari + "<input type='hidden' name='waiting_ullage' id='waiting_ullage' value='" + waiting_ullage_hari + "' >" + WaktunyaBerthed.ToString("yyyy-MM-dd") + "-"+qTanggal + "</td>";
+                                                        waiting_ullage_hari = (stokdischargeloop - ullage_proyeksi) / dotreal;
+                                                        html_proyeksi_waiting_ullage_hari += "<td>" + waiting_ullage_hari + "<input type='hidden' name='waiting_ullage' id='waiting_ullage' value='" + waiting_ullage_hari + "' >" + "</td>";
                                                     }
                                                     else
                                                     {
-                                                        waiting_ullage_hari = stokdischargeloop - ullage_proyeksi / dotreal;
-                                                        html_proyeksi_waiting_ullage_hari += "<td>" + waiting_ullage_hari + "<input type='hidden' name='waiting_ullage' id='waiting_ullage' value='" + waiting_ullage_hari + "' ><button>Set Ullage</button>" + WaktunyaBerthed.ToString("yyyy-MM-dd") + "-" + qTanggal + "</td>";
+                                                        waiting_ullage_hari = (stokdischargeloop - ullage_proyeksi) / dotreal;
+                                                        html_proyeksi_waiting_ullage_hari += "<td>" + waiting_ullage_hari + "<input type='hidden' name='waiting_ullage' id='waiting_ullage' value='" + waiting_ullage_hari + "' ><button class='btn btn-primary'>Set Ullage</button>" +  "</td>";
                                                     }
                                                 }
                                                 
@@ -899,7 +987,7 @@ namespace pas_pertamina.Controllers
                             html_proyeksi_rencana_discharge += "<td>" + (stokdischarge - ullagereal) + "</td>";
                             html_minimum_stok += "<td>" + (stokdischarge - ullagereal) + "</td>";
                             html_proyeksi_waiting_cargo_volume += "<td>" + ((stokdischarge - ullagereal < 0) ? 0 : stokdischarge - ullagereal) + "</td>";
-                            html_proyeksi_waiting_cargo_hari += "<td>" + ((stokdischarge - ullagereal / dotreal < 0) ? 0 : stokdischarge - ullagereal / dotreal) + "</td>";
+                            html_proyeksi_waiting_cargo_hari += "<td>" + ((stokdischarge - ullagereal / dotreal < 0) ? 0 : (stokdischarge - ullagereal) / dotreal) + "</td>";
                             mulaiproyeksi = mulaiproyeksi.AddDays(1);
 
                             for (var i = 0; i < 11; i++)
@@ -1020,7 +1108,7 @@ namespace pas_pertamina.Controllers
                                                 html_proyeksi_waiting_cargo_hari += "<td>"+wc+"<input type='hidden' name='waiting_cargo' id='waiting_cargo' value='"+wc+"'></td>";
                                             }else
                                             {
-                                                html_proyeksi_waiting_cargo_hari += "<td>" + wc + "<input type='hidden' name='waiting_cargo' id='waiting_cargo' value='" + wc + "'><button>Set Waiting Cargo</button></td>";
+                                                html_proyeksi_waiting_cargo_hari += "<td>" + wc + "<input type='hidden' name='waiting_cargo' id='waiting_cargo' value='" + wc + "'><button class='btn btn-primary'>Set Cargo</button></td>";
                                             }
                                         }
 
@@ -1085,5 +1173,102 @@ namespace pas_pertamina.Controllers
             public string Berthed_ { get; set; }
            
         }
+
+        [HttpPost]
+        public IActionResult Delete_Shipment(string id)
+        {
+            string b;
+            b = objSimulasi.HapusShipment(id);
+            if (b == "sukses")
+            {
+                return Json(new
+                {
+                    success = true
+                });
+            }
+            else
+            {
+                return Json(new
+                {
+                    success = false,
+                    pesan=b,
+                    id=id
+                });
+            }
+           
+        }
+
+        [HttpPost]
+        public IActionResult Update_Antrian(string id,int antrian)
+        {
+            string b;
+            b = objSimulasi.UpdateAntrian(id,antrian);
+            if (b == "sukses")
+            {
+                return Json(new
+                {
+                    success = true
+                });
+            }
+            else
+            {
+                return Json(new
+                {
+                    success = false,
+                    pesan = b,
+                    id = id
+                });
+            }
+
+        }
+
+        [HttpPost]
+        public IActionResult Update_Antrian_Akhir(string id, int nojetty)
+        {
+            string b;
+            b = objSimulasi.UpdateAntrianAkhir(id, nojetty);
+            if (b == "sukses")
+            {
+                return Json(new
+                {
+                    success = true
+                });
+            }
+            else
+            {
+                return Json(new
+                {
+                    success = false,
+                    pesan = b,
+                    id = id
+                });
+            }
+
+        }
+
+        [HttpPost]
+        public IActionResult Simpan_Simulasi(string id, int nojetty)
+        {
+            string b;
+            b = objSimulasi.SimpanSimulasi(id, nojetty);
+            if (b == "sukses")
+            {
+                return Json(new
+                {
+                    success = true
+                });
+            }
+            else
+            {
+                return Json(new
+                {
+                    success = false,
+                    pesan = b,
+                    id = id
+                });
+            }
+
+        }
+
     }
 }

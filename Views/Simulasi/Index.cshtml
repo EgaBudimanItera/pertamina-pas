@@ -47,8 +47,8 @@
                                 <td>
                                     <select asp-for="Proses" class="form-control">
                                         <option value="">Pilih Proses</option>
-                                        <option value="0">Loading</option>
-                                        <option value="1">Discharge</option>
+                                        <option value="Loading">Loading</option>
+                                        <option value="Discharge">Discharge</option>
                                     </select>
                                 </td>
                                 <td>&nbsp;</td>
@@ -172,7 +172,9 @@
                             <div class="col-md-2">
                                 <select name="idpelabuhanbantuan" id="idpelabuhanbi" class="form-control" asp-items="ViewBag.Idasal">
                                     <option value="">Pilih Pelabuhan</option>
+
                                 </select>
+                               
 
                             </div>
                             <div class="col-md-2">
@@ -189,20 +191,20 @@
                 <h4>Simulasi Antrian</h4>
                 <input type="hidden" value="@Model.Idpelabuhanbantuan">
                 <div class="col-md-2">
-                    <select name="idjetty" id="idjettyupdate" class="form-control">
+                    <select name="nojetty" id="nojettyupdate" class="form-control">
                         <option value="">Pilih jetty</option>
                         <option value="1">jetty 1</option>
                         <option value="2">jetty 2</option>
                     </select>
                 </div>
                 <div class="col-md-4">
-                    <button class="btn btn-success btn-sm" id="updateantriansimulasi">Update Antrian</button>
-                    <button class="btn btn-warning btn-sm" id="resetantrian">Reset Antrian</button>
+                    <button class="btn btn-success btn-sm" id="updateantriansimulasi" onclick="if(confirm('Apakah anda yakin?')) UpdateAntrianAkhir();">Update Antrian</button>
+                    <!-- <button class="btn btn-warning btn-sm" id="resetantrian">Reset Antrian</button>-->
 
                 </div>
                 <br><br>
                 <h4>Simpan Simulasi Antrian</h4>
-                <button class="btn btn-danger btn-sm" id="simpansimulasi">Simpan Simulasi Antrian</button>
+                <button class="btn btn-danger btn-sm" id="simpansimulasi" onclick="SimpanSimulasi()">Simpan Simulasi Antrian</button>
                 <br />
                 @foreach (var isi in Model.Isi)
                 {
@@ -211,7 +213,7 @@
                     <text>Posisi Kapal ini berada di: @isi.NamaPelabuhanBantuan ; @isi.NamaKapal  From : @isi.NamaAsalPelabuhan (@isi.Produk)</text>
                     <br />
                     <text>
-                        Antrian :@isi.Antrian , Update Antrian : @isi.UpdateAntrian
+                        Antrian :@isi.Antrian , Update Antrian : @isi.UpdateAntrian , No Jetty : @isi.Nojetty
                     </text>
                     <br />
                     <br />
@@ -244,13 +246,13 @@
                     <form asp-action="UpdateAntrian2">
                         @if (isi.Status == "Simulasi")
                         {
-                            <a class="btn btn-danger btn-sm" onclick="return confirm('Apakah anda yakin?')">Hapus</a>
-                            <a class="btn btn-success btn-sm" onclick="EditWaktuSimulasi(@isi.Idshipment)" id="@btnedit">Edit waktu</a>
-                            <a  class="btn btn-warning btn-sm" id="@btnupdate" style="display: none" onclick="return confirm('Apakah anda yakin?')">Update waktu</a>
-                            <a  class="btn btn-primary btn-sm" id="@btnbatal" style="display: none" onclick="BatalUpdate(@isi.Idshipment)">Batal update waktu</a>
-                            <div class="col-md-2"><input type="text" class="form-control" asp-for="UpdateAntrian" value="@isi.UpdateAntrian"></div>
-                            <button type="submit" onclick="return confirm('Apakah anda yakin?')" class="btn btn-primary btn-sm">Update antrian</button>
-                            
+                            <a class="btn btn-danger btn-sm" onclick="if(confirm('Apakah anda yakin?')) HapusShipment(@isi.Idshipment);">Hapus</a>
+                            <!--<a class="btn btn-success btn-sm" onclick="EditWaktuSimulasi(@isi.Idshipment)" id="@btnedit">Edit waktu</a>
+                            <a  class="btn btn-warning btn-sm" id="@btnupdate" style="display: none" onclick="if(confirm('Apakah anda yakin?')) UpdateWaktu(@isi.Idshipment);">Update waktu</a>
+        <a  class="btn btn-default btn-sm" id="@btnbatal" style="display: none" onclick="BatalUpdate(@isi.Idshipment)">Batal update waktu</a>-->
+                            <div class="col-md-1"><input type="text" class="form-control" asp-for="UpdateAntrian" id="isiantrian" value="@isi.UpdateAntrian"></div>
+                            <a onclick="if(confirm('Apakah anda yakin?')) UpdateAntrian(@isi.Idshipment);" class="btn btn-primary btn-sm">Update antrian</a>
+
 
                         }
                     </form>
@@ -277,7 +279,7 @@
                                             <div class="@hide" style="display: none">
                                                 <input type="hidden" name="idshipmenteditwaktu" id="@idshipmenteditwaktu" class="form-control">
 
-                                                <input type="text" name="waktuarrivaledit" id="@waktuarrivaledit" asp-for="@isi.Arrival" class="form-control arrival">
+                                                <input type="text" name="waktuarrivaledit" onchange="SetWaktu(@isi.Idshipment)" id="@waktuarrivaledit" asp-for="@isi.Arrival" class="form-control arrival">
                                             </div>
                                             <div class="@show">@isi.Arrival</div>
                                         </td>
@@ -289,25 +291,25 @@
                                         </td>
                                         <td>
                                             <div class="@hide" style="display: none">
-                                                <input type="text" name="waktucommedit" id="@waktucommedit" asp-for="@isi.Comm" class="form-control arrival">
+                                                <input type="text" readonly name="waktucommedit" id="@waktucommedit" asp-for="@isi.Comm" class="form-control arrival">
                                             </div>
                                             <div class="@show">@isi.Comm</div>
                                         </td>
                                         <td>
                                             <div class="@hide" style="display: none">
-                                                <input type="text" name="waktucompedit" id="@waktucompedit" asp-for="@isi.Comp" class="form-control arrival">
+                                                <input type="text" readonly name="waktucompedit" id="@waktucompedit" asp-for="@isi.Comp" class="form-control arrival">
                                             </div>
                                             <div class="@show">@isi.Comp</div>
                                         </td>
                                         <td>
                                             <div class="@hide" style="display: none">
-                                                <input type="text" name="waktuunberthededit" id="@waktuunberthededit" asp-for="@isi.Unberthed" class="form-control arrival">
+                                                <input type="text" readonly name="waktuunberthededit" id="@waktuunberthededit" asp-for="@isi.Unberthed" class="form-control arrival">
                                             </div>
                                             <div class="@show">@isi.Unberthed</div>
                                         </td>
                                         <td>
                                             <div class="@hide" style="display: none">
-                                                <input type="text" name="waktudepartureedit" id="@waktudepartureedit" asp-for="@isi.Departure" class="form-control arrival">
+                                                <input type="text" readonly name="waktudepartureedit" id="@waktudepartureedit" asp-for="@isi.Departure" class="form-control arrival">
                                             </div>
                                             <div class="@show">@isi.Departure</div>
                                         </td>
@@ -316,7 +318,7 @@
                                         </td>
                                         <td>
                                             <div class="@hide" style="display: none">
-                                                <input type="text" name="iptedit" id="@iptedit" asp-for="@isi.Ipt" class="form-control">
+                                                <input type="text" readonly name="iptedit" id="@iptedit" asp-for="@isi.Ipt" class="form-control">
                                             </div>
                                             <div class="@show">@isi.Ipt</div>
                                         </td>
@@ -370,6 +372,87 @@
             $("#btnbatal" + id).hide();
             $("#btnupdate" + id).hide();
         }
+        function HapusShipment(id) {
+           
+            jQuery.ajax({
+                type: "POST",
+                data: id,
+                url: "/Simulasi/Delete_Shipment/"+id,
+                dataType: "json",
+                success: function (msg) {
+                    location.reload();
+                }
+            });
+        }
+        function UpdateAntrian(id) {
+            var _antrian = $('#isiantrian').val();
+            jQuery.ajax({
+                type: "POST",
+                data: "id=" + id + "&antrian=" + _antrian,
+                url: "/Simulasi/Update_Antrian",
+                dataType: "json",
+                success: function (msg) {
+                    location.reload();
+                }
+            });
+        }
+        function UpdateWaktu(id) {
+            alert(id);
+        }
+        function SetWaktu(id) {
+            var _arrival = $("#waktuarrivaledit" + id).val();
+            
+        }
+        function SimpanSimulasi() {
+            var _idpelabuhan = $('#idpelabuhanbi').val();
+            var _nojetty = $('#nojettyupdate').val();
+            if (_idpelabuhan == "") {
+                alert("Pilih Pelabuhan Terlabih dahulu");
+            } else if (_nojetty == "") {
+                alert("Pilih Jetty Yang Ingin di Ubah Antriannya");
+            } else {
+                jQuery.ajax({
+                    type: "POST",
+                    data: "id=" + _idpelabuhan + "&nojetty=" + _nojetty,
+                    url: "/Simulasi/Simpan_Simulasi",
+                    dataType: "json",
+                    success: function (msg) {
+                        location.reload();
+                    }
+                });
+            }
+        }
+
+        function UpdateAntrianAkhir() {
+            var _idpelabuhan = $('#idpelabuhanbi').val();
+            var _nojetty = $('#nojettyupdate').val();
+            if (_idpelabuhan == "") {
+                alert("Pilih Pelabuhan Terlabih dahulu");
+            } else if (_nojetty == "") {
+                alert("Pilih Jetty Yang Ingin di Ubah Antriannya");
+            } else {
+                jQuery.ajax({
+                    type: "POST",
+                    data: "id=" + _idpelabuhan + "&nojetty=" + _nojetty,
+                    url: "/Simulasi/Update_Antrian_Akhir",
+                    dataType: "json",
+                    success: function (msg) {
+                        location.reload();
+                    }
+                });
+            }
+        }
+        $(document).ready(function () {
+            $(function () {
+                var a =@ViewBag.idpelab;
+                if (a == 0) {
+                    a = "";
+                } else {
+                    a = a;
+                }
+                $("#idpelabuhanbi").val(a);
+            });
+        });
     </script>
 }
 

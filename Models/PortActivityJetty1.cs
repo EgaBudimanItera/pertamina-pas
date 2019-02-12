@@ -18,11 +18,11 @@ namespace pas_pertamina.Models
         public int? Idtujuan { get; set; }
         public string NamaTujuanPelabuhan { get; set; }
         public string Proses { get; set; }
-        public int waiting1 { get; set; }
-        public int waiting2 { get; set; }
-        public int waiting3 { get; set; }
-        public int waiting4 { get; set; }
-        public int waiting5 { get; set; }
+        public int? waiting1 { get; set; }
+        public int? waiting2 { get; set; }
+        public int? waiting3 { get; set; }
+        public int? waiting4 { get; set; }
+        public int? waiting5 { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime? Arrival { get; set; }

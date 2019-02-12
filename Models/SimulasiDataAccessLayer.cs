@@ -41,19 +41,18 @@ namespace pas_pertamina.Models
         //proses menghitung jam berthed berdasarkan arrival 
         public string Berthed(ViewShipmenDetail shipmenDetail)
         {
-           
             using (SqlConnection con = new SqlConnection(connectionString))
             {
 
-                if (shipmenDetail.Proses == "0")
+                if (shipmenDetail.Proses == "Loading")
                 {
-                    Query = "select DateAdd (hour,1,departure) as departure from shipment where status='simulasi' and idpelabuhanbantuan='"+
-                        shipmenDetail.Idasal+"' and nojetty='"+shipmenDetail.Nojetty+"' order by departure desc ";
+                    Query = "select DateAdd (hour,1,departure) as departure from shipment where status='Simulasi' and idpelabuhanbantuan='"+
+                        shipmenDetail.Idasal+"' and nojetty='"+shipmenDetail.Nojetty+"' and departure>'"+shipmenDetail.Arrival+"' order by departure desc ";
                 }
-                else if (shipmenDetail.Proses == "1")
+                else if (shipmenDetail.Proses == "Discharge")
                 {
-                    Query = "select top 1 DateAdd (hour,1,departure) as departure from shipment where status='simulasi' and idpelabuhanbantuan='" +
-                        shipmenDetail.Idtujuan + "' and nojetty='" + shipmenDetail.Nojetty + "' order by departure desc ";
+                    Query = "select top 1 DateAdd (hour,1,departure) as departure from shipment where status='Simulasi' and idpelabuhanbantuan='" +
+                        shipmenDetail.Idtujuan + "' and nojetty='" + shipmenDetail.Nojetty + "' and departure>'" + shipmenDetail.Arrival + "' order by departure desc ";
                 }
                 Query2 = "SELECT top 1* FROM estimasiwaktu where idlistket = 1 ";
                 SqlCommand cmd = new SqlCommand(Query, con);
@@ -114,6 +113,7 @@ namespace pas_pertamina.Models
             }
           
         }
+        
        
         //proses menghitung waktu comm berdasarkan berthed
         public string Comm(ViewShipmenDetail shipmenDetail,string Bertheds)
@@ -236,18 +236,19 @@ namespace pas_pertamina.Models
                            "join produk on(detailshipment.idproduk = produk.idproduk) join listsatuan on(detailshipment.idsatuan = listsatuan.id_listsatuan) " +
                            "where detailshipment.idshipment = s.idshipment FOR XML PATH('')),1,1,'') as produk, " +
                            "(select sum(jumlah) from detailshipment where detailshipment.idshipment = s.idshipment) as jumlahproduk " +
-                           "FROM shipment s join kapal k on(s.idkapal = k.idkapal) join pelabuhan pl on(s.idpelabuhanbantuan= pl.idlistpelabuhan) where status!= 'Done' order by antrian asc";
+                           "FROM shipment s join kapal k on(s.idkapal = k.idkapal) join pelabuhan pl on(s.idpelabuhanbantuan= pl.idlistpelabuhan) where status!= 'Done' order by nojetty,antrian asc";
             }
             else
             {
                 QueryIsi = "SELECT s.*,CONVERT(TIME,CONVERT(datetime,departure)-CONVERT(datetime,arrival)) as ipthitung,namakapal,(select namapelabuhan from pelabuhan plasal where s.idasal=plasal.idlistpelabuhan) as namaasal," +
                                   "(select namapelabuhan from pelabuhan pltujuan where s.idtujuan = pltujuan.idlistpelabuhan) as namatujuan," +
                                    "(select namapelabuhan from pelabuhan pltujuan where s.idpelabuhanbantuan = pltujuan.idlistpelabuhan) as namapelabuhanbantuan," +
+                                   "(select sum(jumlah) from detailshipment where detailshipment.idshipment = s.idshipment) as jumlahproduk, " +
                                   "STUFF((SELECT ',' + namaproduk + '  ' + convert(varchar(20), jumlah), '  ' + nama_satuan FROM detailshipment " +
                                   "join produk on(detailshipment.idproduk = produk.idproduk) join listsatuan on(detailshipment.idsatuan = listsatuan.id_listsatuan) " +
                                   "where detailshipment.idshipment = s.idshipment FOR XML PATH('')),1,1,'') as produk " +
-                                   "(select sum(jumlah) from detailshipment where detailshipment.idshipment = s.idshipment) as jumlahproduk " +
-                                  "FROM shipment s join kapal k on(s.idkapal = k.idkapal) join pelabuhan pl on(s.idpelabuhanbantuan= pl.idlistpelabuhan) where status!= 'Done' and idpelabuhanbantuan='" + idpel + "' order by antrian asc";
+                                   
+                                  "FROM shipment s join kapal k on(s.idkapal = k.idkapal) join pelabuhan pl on(s.idpelabuhanbantuan= pl.idlistpelabuhan) where status!= 'Done' and idpelabuhanbantuan='" + idpel + "' order by nojetty,antrian asc";
             }
             using (SqlConnection con = new SqlConnection(connectionString))
             {
@@ -288,7 +289,7 @@ namespace pas_pertamina.Models
                            
                             JumlahProduk = Int32.Parse(reader["jumlahproduk"].ToString()),
                             Antrian = Int32.Parse(reader["antrian"].ToString()),
-                            UpdateAntrian = Int32.Parse(reader["updateantrian"].ToString()),
+                            UpdateAntrian = Int32.Parse(reader["antrianupdate"].ToString()),
 
                         });
                     }
@@ -297,6 +298,121 @@ namespace pas_pertamina.Models
                 con.Close();
             }
             return _IsiList;
+        }
+
+        public string HapusShipment(string id)
+        {
+            string a = "";
+            string QueryHapus = "DELETE FROM shipment where idshipment='"+id+"'";
+            string QueryHapus2 = "DELETE FROM detailshipment where idshipment="+id;
+            try
+            {
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    con.Open();
+                    using (SqlCommand command = new SqlCommand(QueryHapus2, con))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    using (SqlCommand command = new SqlCommand(QueryHapus, con))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    con.Close();
+                    
+                }
+                a = "sukses";
+            }
+            catch(Exception ex)
+            {
+                a = ex.Message;
+            }
+            
+            return a;
+        }
+
+        public string UpdateAntrian(string id,int antrian)
+        {
+            string a = "";
+            string QueryAntrian = "UPDATE shipment set antrianupdate='"+antrian+"' where idshipment='"+id+"'";
+            
+            try
+            {
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    con.Open();
+                    using (SqlCommand command = new SqlCommand(QueryAntrian, con))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                   
+                    con.Close();
+
+                }
+                a = "sukses";
+            }
+            catch (Exception ex)
+            {
+                a = ex.Message;
+            }
+
+            return a;
+        }
+
+        public string UpdateAntrianAkhir(string id, int nojetty)
+        {
+            string a = "";
+            string QueryAntrian="";
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    con.Open();
+                    using (SqlCommand command = new SqlCommand(QueryAntrian, con))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+
+                    con.Close();
+
+                }
+                a = "sukses";
+            }
+            catch (Exception ex)
+            {
+                a = ex.Message;
+            }
+
+            return a;
+        }
+
+        public string SimpanSimulasi(string id, int nojetty)
+        {
+            string a = "";
+            string QueryAntrian = "UPDATE shipment set status='On Shipment' where idpelabuhanbantuan='"+id+"' and nojetty='"+nojetty+"'";
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    con.Open();
+                    using (SqlCommand command = new SqlCommand(QueryAntrian, con))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+
+                    con.Close();
+
+                }
+                a = "sukses";
+            }
+            catch (Exception ex)
+            {
+                a = ex.Message;
+            }
+
+            return a;
         }
     }
 }
