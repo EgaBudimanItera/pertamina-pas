@@ -8,7 +8,10 @@ namespace pas_pertamina.Controllers
     {
        
         HomeDataAccessLayer objSimulasi = new HomeDataAccessLayer();
+        
        
+        [Route("Home")]
+        [Route("Home/Index")]
         public ActionResult Index()
         {
             string idpel = HttpContext.Session.GetString("Idpelabuhan");
