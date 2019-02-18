@@ -25,6 +25,7 @@ namespace pas_pertamina.Models
         string Query;
         string Query2;
         DateTime Arr;//menampung nilai arrival dari textbox
+        DateTime Arrival_;
         DateTime _Berthed;//menampung nilai berthed dari textbox
         DateTime Berthed_;//menampung nilai berthed dari perhitungan arrival-berthed
         DateTime _Comm;
@@ -37,6 +38,12 @@ namespace pas_pertamina.Models
         TimeSpan est;//menampung estimasi waktu dari table
         string result;
         string[] result_;
+        string resultArrivalBertedx;
+        string resultBerthedCommx;
+        string resultCommCompx;
+        string resultCompUnberthedx;
+        string resultUnberthedDeparturex;
+        string resultDepartureTidex;
 
         //proses menghitung jam berthed berdasarkan arrival 
         public string Berthed(ViewShipmenDetail shipmenDetail)
@@ -358,26 +365,225 @@ namespace pas_pertamina.Models
 
             return a;
         }
-
-        public string UpdateAntrianAkhir(string id, int nojetty)
+        
+        public string UpdateAntrianAkhir(string id, int nojetty,string akses)
         {
             string a = "";
-            string QueryAntrian="";
+            string jumlahrow;
+            string jenisproduk = "";
+            string QueryCekSimulasi="SELECT count(idshipment) as jumlah FROM shipment WHERE idpelabuhanbantuan='"+id+"' AND nojetty='"+nojetty+"' AND status='Simulasi'";
 
+            
+           
+            int _Antrian;
+            int _Antrian1;
+            int _Idshipment;
+            int _IdAsal;
+            int _IdTujuan;
+            int _IdKapal;
+            
+            if (akses== "Planner BBM")
+            {
+                jenisproduk = "BBM";
+            }
+            else
+            {
+                jenisproduk = "LPG";
+            }
             try
             {
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
                     con.Open();
-                    using (SqlCommand command = new SqlCommand(QueryAntrian, con))
+                    using (SqlCommand cmd = new SqlCommand(QueryCekSimulasi, con))
                     {
-                        command.ExecuteNonQuery();
-                    }
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                jumlahrow = reader["jumlah"].ToString();
+                                if (jumlahrow == "0")
+                                {
+                                    return "Pesan1"; 
+                                }
+                                
+                            }
+                            reader.Close();
+                        }
+                    };
+                    string QueryCekNoAntrian = "SELECT top 1 antrianupdate,count(*) as hasil FROM shipment join detailshipment on(shipment.idshipment=detailshipment.idshipment) "+
+                                              "join produk on(detailshipment.idproduk = produk.idproduk) where jenisproduk = '"+jenisproduk+ "' group by antrianupdate,idpelabuhanbantuan,nojetty,detailshipment.idproduk having COUNT(*) > 1";
+                    using (SqlCommand cmd = new SqlCommand(QueryCekNoAntrian, con))
+                    {
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            return "Pesan2";
+                        }
+                        else
+                        {
+                            reader.Close();
+                            // 1.updateantrian
+                            string updateantrian1=UpdateAntrianSemua(nojetty, id);
+                            //cari estimasiwaktu
+                            string QueryArrivalBerthed = "select * from estimasiwaktu where idlistket = 1 ";
+                            using (SqlCommand commandsandar1 = new SqlCommand(QueryArrivalBerthed, con))
+                            {
+                                using (SqlDataReader readersandar = commandsandar1.ExecuteReader())
+                                {
+                                    if (readersandar.HasRows)
+                                    {
+                                        while (readersandar.Read())
+                                        {
+                                            resultArrivalBertedx = readersandar["estimasiwaktu"].ToString();
+                                        }
 
+                                    }
+                                    readersandar.Close();
+                                }
+                                    
+                            }
+                            string QueryBerthedComm = "select * from estimasiwaktu where idlistket = 2 ";
+                            using (SqlCommand commandsandar2 = new SqlCommand(QueryBerthedComm, con))
+                            {
+                                using (SqlDataReader readersandar = commandsandar2.ExecuteReader())
+                                {
+                                    if (readersandar.HasRows)
+                                    {
+                                        while (readersandar.Read())
+                                        {
+                                            resultBerthedCommx = readersandar["estimasiwaktu"].ToString();
+                                        }
+
+                                    }
+                                    readersandar.Close();
+                                }
+                                   
+                            }
+                            string QueryCompUnberthed = "select * from estimasiwaktu where idlistket = 4 ";
+                            using (SqlCommand commandsandar4 = new SqlCommand(QueryCompUnberthed, con))
+                            {
+                                using (SqlDataReader readersandar = commandsandar4.ExecuteReader())
+                                {
+                                    if (readersandar.HasRows)
+                                    {
+                                        while (readersandar.Read())
+                                        {
+                                            resultCompUnberthedx = readersandar["estimasiwaktu"].ToString();
+                                        }
+
+                                    }
+                                    readersandar.Close();
+                                }
+                                    
+                            }
+                            string QueryUnberthedDeparture = "select * from estimasiwaktu where idlistket = 5 ";
+                            using (SqlCommand commandsandar5 = new SqlCommand(QueryUnberthedDeparture, con))
+                            {
+                                using (SqlDataReader readersandar = commandsandar5.ExecuteReader())
+                                {
+                                    if (readersandar.HasRows)
+                                    {
+                                        while (readersandar.Read())
+                                        {
+                                            resultUnberthedDeparturex = readersandar["estimasiwaktu"].ToString();
+                                        }
+
+                                    }
+                                    readersandar.Close();
+                                }
+                                    
+                            }
+                            string QueryDepartureTide = "select * from estimasiwaktu where idlistket = 6 ";
+                            using (SqlCommand commandsandar6 = new SqlCommand(QueryDepartureTide, con))
+                            {
+                                using (SqlDataReader readersandar = commandsandar6.ExecuteReader())
+                                {
+                                    if (readersandar.HasRows)
+                                    {
+                                        while (readersandar.Read())
+                                        {
+                                            resultDepartureTidex = readersandar["estimasiwaktu"].ToString();
+                                        }
+
+                                    }
+                                    readersandar.Close();
+                                }
+                                    
+                            }
+                            //2.query select shipment berdasarkan 
+                            //idpelabuhanbantuan =$idpelabuhan dan antrian!=kosong
+                            //and jetty =$idjtty order berdasarkan no antrian terkecil (dimulai dari 1 hingga x)
+                            string QuerySelectShipment = "SELECT * FROM shipment where idpelabuhanbantuan='" + id + "' and antrian!='' and nojetty='" + nojetty + "' order by antrian asc";
+                            using (SqlCommand command = new SqlCommand(QuerySelectShipment, con))
+                            {
+                                using (SqlDataReader readercommand = command.ExecuteReader())
+                                {
+                                    //3. looping no 2
+                                    while (readercommand.Read())
+                                    {
+                                        //4.munculkan arrival
+                                        Arrival_ = DateTime.ParseExact(readercommand["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None);
+                                        _Antrian = Int32.Parse(readercommand["antrian"].ToString());
+                                        _Idshipment = Int32.Parse(readercommand["idshipment"].ToString());
+                                        _IdAsal = Int32.Parse(readercommand["idasal"].ToString());
+                                        _IdTujuan = Int32.Parse(readercommand["idtujuan"].ToString());
+                                        _IdKapal = Int32.Parse(readercommand["idkapal"].ToString());
+
+                                        //5.jika antrian 1
+                                        if (_Antrian == 1)
+                                        {
+                                            result_ = resultArrivalBertedx.Split(':');//conversi jam menit
+                                            string jam = result_[0];
+                                            string menit = result_[1];
+                                            est = new TimeSpan(Convert.ToInt32(jam), Convert.ToInt32(menit), 0);
+                                            Berthed_ = Arrival_.Add(est);
+
+                                        }
+                                        //6.jika antrian lebih dari 1
+                                        else
+                                        {
+                                            _Antrian1 = _Antrian - 1;
+                                            string QuerySandar = "select DateAdd (hour,1,departure) as departure from shipment where idpelabuhanbantuan='" + id + "' and nojetty='" + nojetty + "' and antrian= '" + _Antrian1 + "'";
+                                            
+                                            using (SqlCommand commandsandaran = new SqlCommand(QuerySandar, con))
+                                            {
+                                                
+                                                using (SqlDataReader readersandaran = commandsandaran.ExecuteReader())
+                                                {
+                                                    if (readersandaran.HasRows)
+                                                    {
+                                                        while (readersandaran.Read())
+                                                        {
+                                                            Berthed_ = DateTime.ParseExact(readersandaran["departure"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None);
+                                                        }
+                                                        int hasil = DateTime.Compare(Arrival_, Berthed_);
+                                                        if (hasil < 0)
+                                                        {
+                                                            result_ = resultArrivalBertedx.Split(':');//conversi jam menit
+                                                            string jam = result_[0];
+                                                            string menit = result_[1];
+                                                            est = new TimeSpan(Convert.ToInt32(jam), Convert.ToInt32(menit), 0);
+                                                            Berthed_ = Arrival_.Add(est);
+                                                        }
+                                                        a = Berthed_.ToString("yyyy-MM-dd HH:mm");
+                                                    }
+                                                    readersandaran.Close();
+                                                }
+                                                
+                                            }
+                                            
+                                        }
+                                    }
+                                    readercommand.Close();
+                                }  
+                            } 
+                        }
+                    };
                     con.Close();
-
                 }
-                a = "sukses";
+
             }
             catch (Exception ex)
             {
@@ -386,6 +592,31 @@ namespace pas_pertamina.Models
 
             return a;
         }
+
+        private string UpdateAntrianSemua(int nojetty,string idpelabuhanbantuan)
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    string QueryUpdateAntrian = "UPDATE shipment set antrian=antrianupdate where nojetty='" + nojetty + "' and antrian!='' and idpelabuhanbantuan='"+
+                                            idpelabuhanbantuan+"'";
+                    using (SqlCommand command = new SqlCommand(QueryUpdateAntrian, con))
+                    {
+                        con.Open();
+                        command.ExecuteNonQuery();
+                        con.Close();
+                        return "Pesan5";
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                return ex.Message + "Pesan5";
+            }
+        }
+       
+       
 
         public string SimpanSimulasi(string id, int nojetty)
         {

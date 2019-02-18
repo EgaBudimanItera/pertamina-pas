@@ -1226,12 +1226,54 @@ namespace pas_pertamina.Controllers
         public IActionResult Update_Antrian_Akhir(string id, int nojetty)
         {
             string b;
-            b = objSimulasi.UpdateAntrianAkhir(id, nojetty);
+            string akses = HttpContext.Session.GetString("Akses");
+            b = objSimulasi.UpdateAntrianAkhir(id, nojetty,akses);
             if (b == "sukses")
             {
                 return Json(new
                 {
                     success = true
+                });
+            }
+            else if (b == "Pesan1")
+            {
+                return Json(new {
+                    pesan = b,
+                });
+            }
+            else if (b == "Pesan2")
+            {
+                return Json(new
+                {
+                    pesan = b,
+                });
+            }
+            else if (b == "Pesan3")
+            {
+                return Json(new
+                {
+                    pesan = b,
+                });
+            }
+            else if (b == "Pesan4")
+            {
+                return Json(new
+                {
+                    pesan = b,
+                });
+            }
+            else if (b == "Pesan5")
+            {
+                return Json(new
+                {
+                    pesan = b,
+                });
+            }
+            else if (b == "Pesan6")
+            {
+                return Json(new
+                {
+                    pesan = b,
                 });
             }
             else

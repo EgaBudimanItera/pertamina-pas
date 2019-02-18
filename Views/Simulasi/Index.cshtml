@@ -437,7 +437,16 @@
                     url: "/Simulasi/Update_Antrian_Akhir",
                     dataType: "json",
                     success: function (msg) {
-                        location.reload();
+                        if (msg.pesan == "Pesan1") {
+                            alert("Tidak Bisa Disimulasi Ulang!! Antrian Jetty Sudah Fix Atau Tidak Ada Shipment");
+                        }
+                        if (msg.pesan == "Pesan2") {
+                            alert("Ada Antrian yang Sama !!Periksa Kembali Antrian Shipment");
+                        }
+                        if (msg.pesan == "Pesan4") {
+                            alert("Estimasi Waktu Belum Di set!!");
+                        }
+                        console.log(msg);
                     }
                 });
             }
