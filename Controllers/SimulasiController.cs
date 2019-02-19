@@ -58,6 +58,7 @@ namespace pas_pertamina.Controllers
             _view.Isi = objSimulasi.GetListIsiShipment(idpel);
             
             return View(_view);
+           
         }
         CultureInfo enUS = new CultureInfo("en-US");
         [HttpPost]

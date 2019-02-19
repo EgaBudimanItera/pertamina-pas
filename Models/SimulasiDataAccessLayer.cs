@@ -232,6 +232,7 @@ namespace pas_pertamina.Models
         CultureInfo enUS = new CultureInfo("en-US");
         public List<IsiShipment> GetListIsiShipment (int idpel)
         {
+            DateTime ip;
             List<IsiShipment> _IsiList = new List<IsiShipment>();
             string QueryIsi;
             if (idpel == 0)
@@ -266,7 +267,8 @@ namespace pas_pertamina.Models
                 {
                     while (reader.Read())
                     {
-                        TimeSpan ipt_ = (DateTime.ParseExact(reader["departure"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None) - DateTime.ParseExact(reader["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None));
+                        //TimeSpan ipt_ = (DateTime.ParseExact(reader["departure"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None) - DateTime.ParseExact(reader["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None));
+                        TimeSpan ipt_ = ((DateTime)reader["departure"] - (DateTime)reader["arrival"]);
                         string _ipt = string.Format("{0}:{1:00}", (int)ipt_.TotalHours, ipt_.Minutes);
                         IFormatProvider culture = new CultureInfo("en-US");
                         _IsiList.Add(new IsiShipment {
@@ -283,13 +285,18 @@ namespace pas_pertamina.Models
                             WaitingCargo = Int32.Parse(reader["waitingcargo"].ToString()),
                             WaitingUllage = Int32.Parse(reader["waitingullage"].ToString()),
 
-
-                            Arrival = DateTime.ParseExact(reader["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
-                            Berthed = DateTime.ParseExact(reader["berthed"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
-                            Comm = DateTime.ParseExact(reader["comm"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
-                            Comp = DateTime.ParseExact(reader["comp"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
-                            Unberthed = DateTime.ParseExact(reader["unberthed"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
-                            Departure = DateTime.ParseExact(reader["departure"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
+                            Arrival=(DateTime)reader["arrival"],
+                            Berthed = (DateTime)reader["berthed"],
+                            Comm = (DateTime)reader["comm"],
+                            Comp = (DateTime)reader["comp"],
+                            Unberthed = (DateTime)reader["unberthed"],
+                            Departure = (DateTime)reader["departure"],
+                            //Arrival = DateTime.ParseExact(reader["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
+                            //Berthed = DateTime.ParseExact(reader["berthed"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
+                            //Comm = DateTime.ParseExact(reader["comm"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
+                            //Comp = DateTime.ParseExact(reader["comp"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
+                            //Unberthed = DateTime.ParseExact(reader["unberthed"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
+                            //Departure = DateTime.ParseExact(reader["departure"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                             Ipt = _ipt,
                             NamaTujuanPelabuhan = reader["namatujuan"].ToString(),
                             Proses = reader["proses"].ToString(),
@@ -524,7 +531,8 @@ namespace pas_pertamina.Models
                                     while (readercommand.Read())
                                     {
                                         //4.munculkan arrival
-                                        Arrival_ = DateTime.ParseExact(readercommand["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None);
+                                        //Arrival_ = DateTime.ParseExact(readercommand["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None);
+                                        Arrival_ = (DateTime)reader["arrival"];
                                         _Antrian = Int32.Parse(readercommand["antrian"].ToString());
                                         _Idshipment = Int32.Parse(readercommand["idshipment"].ToString());
                                         _IdAsal = Int32.Parse(readercommand["idasal"].ToString());
