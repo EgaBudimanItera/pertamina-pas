@@ -46,11 +46,12 @@ namespace pas_pertamina.Models
                 {
                     while (reader.Read())
                     {
-                        DateTime a = reader.GetDateTime(reader.GetOrdinal("arrival"));
-                        string format = "dd/MM/yyyy HH:mm";
-                        string format2 = "HH:mm";
-                        string b = a.ToString(format);
-
+                        //DateTime a = reader.GetDateTime(reader.GetOrdinal("arrival"));
+                        //string format = "dd/MM/yyyy HH:mm";
+                        //string format2 = "HH:mm";
+                        //string b = a.ToString(format);
+                        TimeSpan ipt_ = ((DateTime)reader["departure"] - (DateTime)reader["arrival"]);
+                        string _ipt = string.Format("{0}:{1:00}", (int)ipt_.TotalHours, ipt_.Minutes);
                         _portSchedules.Add(
                             new PortSchedule
                             {
@@ -62,14 +63,23 @@ namespace pas_pertamina.Models
                                 NamaKapal = reader["namakapal"].ToString(),
                                 NamaAsalPelabuhan = reader["namaasal"].ToString(),
                                 Produk = reader["produk"].ToString(),
+                                /*
                                 Arrival = DateTime.ParseExact(reader["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy HH:mm"),
                                 Berthed = reader.GetDateTime(reader.GetOrdinal("berthed")).ToString(format),
                                 Comm = reader.GetDateTime(reader.GetOrdinal("comm")).ToString(format),
                                 Comp = reader.GetDateTime(reader.GetOrdinal("comp")).ToString(format),
                                 Unberthed = reader.GetDateTime(reader.GetOrdinal("unberthed")).ToString(format),
                                 Departure = reader.GetDateTime(reader.GetOrdinal("departure")).ToString(format),
-                                Ipt = reader["ipthitung"].ToString(),
+                                */
+                                Arrival = (DateTime)reader["arrival"],
+                                Berthed = (DateTime)reader["berthed"],
+                                Comm = (DateTime)reader["comm"],
+                                Comp = (DateTime)reader["comp"],
+                                Unberthed = (DateTime)reader["unberthed"],
+                                Departure = (DateTime)reader["departure"],
+                                Ipt = _ipt,
                                 NamaTujuanPelabuhan = reader["namatujuan"].ToString(),
+                                Antrian=(Int32)reader["antrian"],
                             }
                        );
                     }
@@ -103,7 +113,7 @@ namespace pas_pertamina.Models
                         //format skr 25/01/2019 13:00:00
                         //target format 2019/02/02 19:50
 
-                        DateTime a = reader.GetDateTime(reader.GetOrdinal("arrival"));
+                        //DateTime a = reader.GetDateTime(reader.GetOrdinal("arrival"));
                         /*string format = "yyyy/MM/dd HH:mm";
                         string format2 = "HH:mm";
                         string b = a.ToString(format);
@@ -111,8 +121,9 @@ namespace pas_pertamina.Models
                         DateTime _arr = DateTime.ParseExact(arrival_, "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None);
                         string arrival__ = _arr.ToString("yyyy/MM/dd HH:mm", CultureInfo.InvariantCulture);
                         DateTime __arr = DateTime.ParseExact(arrival__, "yyyy/MM/dd HH:mm", enUS, DateTimeStyles.None);
-                        */                    
-                        TimeSpan ipt_ = (DateTime.ParseExact(reader["departure"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None) - DateTime.ParseExact(reader["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None));
+                        */
+                        //TimeSpan ipt_ = (DateTime.ParseExact(reader["departure"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None) - DateTime.ParseExact(reader["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None));
+                        TimeSpan ipt_ = ((DateTime)reader["departure"] - (DateTime)reader["arrival"]);
                         string _ipt = string.Format("{0}:{1:00}", (int)ipt_.TotalHours, ipt_.Minutes);
                         IFormatProvider culture = new CultureInfo("en-US");
                         _activityJetty1s.Add(
@@ -126,13 +137,20 @@ namespace pas_pertamina.Models
                                NamaKapal = reader["namakapal"].ToString(),
                                NamaAsalPelabuhan = reader["namaasal"].ToString(),
                                Produk = reader["produk"].ToString(),
-
+                               /*
                                Arrival = DateTime.ParseExact(reader["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                                Berthed = DateTime.ParseExact(reader["berthed"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                                Comm = DateTime.ParseExact(reader["comm"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                                Comp = DateTime.ParseExact(reader["comp"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                                Unberthed = DateTime.ParseExact(reader["unberthed"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                                Departure = DateTime.ParseExact(reader["departure"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
+                               */
+                               Arrival = (DateTime)reader["arrival"],
+                               Berthed = (DateTime)reader["berthed"],
+                               Comm = (DateTime)reader["comm"],
+                               Comp = (DateTime)reader["comp"],
+                               Unberthed = (DateTime)reader["unberthed"],
+                               Departure = (DateTime)reader["departure"],
                                Ipt = _ipt,
                                NamaTujuanPelabuhan = reader["namatujuan"].ToString(),
                                Proses = reader["proses"].ToString(),
@@ -178,15 +196,16 @@ namespace pas_pertamina.Models
                         //format skr 25/01/2019 13:00:00
                         //target format 2019/02/02 19:50
 
-                        DateTime a = reader.GetDateTime(reader.GetOrdinal("arrival"));
-                        string format = "yyyy/MM/dd HH:mm";
-                        string format2 = "HH:mm";
-                        string b = a.ToString(format);
-                        string arrival_ = reader["arrival"].ToString();
-                        DateTime _arr = DateTime.ParseExact(arrival_, "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None);
-                        string arrival__ = _arr.ToString("yyyy/MM/dd HH:mm", CultureInfo.InvariantCulture);
-                        DateTime __arr = DateTime.ParseExact(arrival__, "yyyy/MM/dd HH:mm", enUS, DateTimeStyles.None);
-                        TimeSpan ipt_ = (DateTime.ParseExact(reader["departure"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None) - DateTime.ParseExact(reader["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None));
+                        //DateTime a = reader.GetDateTime(reader.GetOrdinal("arrival"));
+                        //string format = "yyyy/MM/dd HH:mm";
+                        //string format2 = "HH:mm";
+                        //string b = a.ToString(format);
+                        //string arrival_ = reader["arrival"].ToString();
+                        //DateTime _arr = DateTime.ParseExact(arrival_, "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None);
+                        //string arrival__ = _arr.ToString("yyyy/MM/dd HH:mm", CultureInfo.InvariantCulture);
+                        //DateTime __arr = DateTime.ParseExact(arrival__, "yyyy/MM/dd HH:mm", enUS, DateTimeStyles.None);
+                        //TimeSpan ipt_ = (DateTime.ParseExact(reader["departure"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None) - DateTime.ParseExact(reader["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None));
+                        TimeSpan ipt_ = ((DateTime)reader["departure"] - (DateTime)reader["arrival"]);
                         string _ipt = string.Format("{0}:{1:00}", (int)ipt_.TotalHours, ipt_.Minutes);
                         IFormatProvider culture = new CultureInfo("en-US");
                         _activityJetty2s.Add(
@@ -200,13 +219,20 @@ namespace pas_pertamina.Models
                                NamaKapal = reader["namakapal"].ToString(),
                                NamaAsalPelabuhan = reader["namaasal"].ToString(),
                                Produk = reader["produk"].ToString(),
-                               
+                               /*
                                Arrival = DateTime.ParseExact(reader["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                                Berthed = DateTime.ParseExact(reader["berthed"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                                Comm = DateTime.ParseExact(reader["comm"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                                Comp = DateTime.ParseExact(reader["comp"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                                Unberthed = DateTime.ParseExact(reader["unberthed"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                                Departure = DateTime.ParseExact(reader["departure"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
+                               */
+                               Arrival = (DateTime)reader["arrival"],
+                               Berthed = (DateTime)reader["berthed"],
+                               Comm = (DateTime)reader["comm"],
+                               Comp = (DateTime)reader["comp"],
+                               Unberthed = (DateTime)reader["unberthed"],
+                               Departure = (DateTime)reader["departure"],
                                Ipt = _ipt,
                                NamaTujuanPelabuhan = reader["namatujuan"].ToString(),
                                Proses = reader["proses"].ToString(),

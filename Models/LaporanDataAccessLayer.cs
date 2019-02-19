@@ -95,12 +95,20 @@ namespace pas_pertamina.Models
                             Proses = reader["proses"].ToString(),
                             Produk = reader["produk"].ToString(),
                             NamaAsalPelabuhan = reader["namaasal"].ToString(),
+                            Arrival = (DateTime)reader["arrival"],
+                            Berthed = (DateTime)reader["berthed"],
+                            Comm = (DateTime)reader["comm"],
+                            Comp = (DateTime)reader["comp"],
+                            Unberthed = (DateTime)reader["unberthed"],
+                            Departure = (DateTime)reader["departure"],
+                            /*
                             Arrival = DateTime.ParseExact(reader["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                             Berthed = DateTime.ParseExact(reader["berthed"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                             Comm = DateTime.ParseExact(reader["comm"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                             Comp = DateTime.ParseExact(reader["comp"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                             Unberthed = DateTime.ParseExact(reader["unberthed"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                             Departure = DateTime.ParseExact(reader["departure"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
+                            */
                         });
                     }
                     reader.Close();
@@ -136,12 +144,20 @@ namespace pas_pertamina.Models
                             Proses = reader["proses"].ToString(),
                             Produk = reader["produk"].ToString(),
                             NamaAsalPelabuhan = reader["namaasal"].ToString(),
+                            Arrival = (DateTime)reader["arrival"],
+                            Berthed = (DateTime)reader["berthed"],
+                            Comm = (DateTime)reader["comm"],
+                            Comp = (DateTime)reader["comp"],
+                            Unberthed = (DateTime)reader["unberthed"],
+                            Departure = (DateTime)reader["departure"],
+                            /*
                             Arrival = DateTime.ParseExact(reader["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                             Berthed = DateTime.ParseExact(reader["berthed"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                             Comm = DateTime.ParseExact(reader["comm"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                             Comp = DateTime.ParseExact(reader["comp"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                             Unberthed = DateTime.ParseExact(reader["unberthed"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                             Departure = DateTime.ParseExact(reader["departure"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
+                        */
                         });
                     }
                     reader.Close();
@@ -177,12 +193,19 @@ namespace pas_pertamina.Models
                             Proses = reader["proses"].ToString(),
                             Produk = reader["produk"].ToString(),
                             NamaAsalPelabuhan = reader["namaasal"].ToString(),
-                            Arrival = DateTime.ParseExact(reader["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
+                            /*Arrival = DateTime.ParseExact(reader["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                             Berthed = DateTime.ParseExact(reader["berthed"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                             Comm = DateTime.ParseExact(reader["comm"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                             Comp = DateTime.ParseExact(reader["comp"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                             Unberthed = DateTime.ParseExact(reader["unberthed"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
                             Departure = DateTime.ParseExact(reader["departure"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None),
+                            */
+                            Arrival = (DateTime)reader["arrival"],
+                            Berthed = (DateTime)reader["berthed"],
+                            Comm = (DateTime)reader["comm"],
+                            Comp = (DateTime)reader["comp"],
+                            Unberthed = (DateTime)reader["unberthed"],
+                            Departure = (DateTime)reader["departure"],
                         });
                     }
                     reader.Close();
