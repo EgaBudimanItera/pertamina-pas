@@ -379,7 +379,7 @@ namespace pas_pertamina.Models
             string jumlahrow;
             string jenisproduk = "";
             string QueryCekSimulasi="SELECT count(idshipment) as jumlah FROM shipment WHERE idpelabuhanbantuan='"+id+"' AND nojetty='"+nojetty+"' AND status='Simulasi'";
-
+            string _proses;
             
            
             int _Antrian;
@@ -538,7 +538,7 @@ namespace pas_pertamina.Models
                                         _IdAsal = Int32.Parse(readercommand["idasal"].ToString());
                                         _IdTujuan = Int32.Parse(readercommand["idtujuan"].ToString());
                                         _IdKapal = Int32.Parse(readercommand["idkapal"].ToString());
-
+                                        _proses = reader["proses"].ToString();
                                         //5.jika antrian 1
                                         if (_Antrian == 1)
                                         {
@@ -564,7 +564,8 @@ namespace pas_pertamina.Models
                                                     {
                                                         while (readersandaran.Read())
                                                         {
-                                                            Berthed_ = DateTime.ParseExact(readersandaran["departure"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None);
+                                                            //Berthed_ = DateTime.ParseExact(readersandaran["departure"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None);
+                                                            Berthed_ = (DateTime)readersandaran["departure"];
                                                         }
                                                         int hasil = DateTime.Compare(Arrival_, Berthed_);
                                                         if (hasil < 0)
@@ -582,6 +583,23 @@ namespace pas_pertamina.Models
                                                 
                                             }
                                             
+                                        };
+                                        string QueryShipment2 = "SELECT * FROM detailshipment where idshipment='" + _Idshipment + "'";
+                                        if (_proses == "Loading")
+                                        {
+                                            DateTime tglsettanggalset = DateTime.Now;
+
+                                            using (SqlCommand cmdDetShipment = new SqlCommand(QueryShipment2, con))
+                                            {
+                                                using (SqlDataReader readerDetShipment = cmdDetShipment.ExecuteReader())
+                                                {
+
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+
                                         }
                                     }
                                     readercommand.Close();
@@ -599,6 +617,26 @@ namespace pas_pertamina.Models
             }
 
             return a;
+        }
+
+        private class variabelbuatloopingloadingsemuaproduk
+        {
+            DateTime? Arrivalx { get; set; }
+            DateTime? TglRealx { get; set; }
+            int? UllageRealx { get; set; }
+            int? StokDischargex { get; set; }
+            int? DotRealx { get; set; }
+            int? StokRealx { get; set; }
+            int? StokTransitx { get; set; }
+            int? Mutasix { get; set; }
+            int? Proyeksix { get; set; }
+            DateTime TglSetx { get; set; }
+            int? Jumlahx { get; set; }
+            int? IdAsalx { get; set; }
+            int? IdTujuanx { get; set; }
+            int? Nojettyx { get; set; }
+            int? IdKapalx { get; set; }
+            DateTime? TglBerthedx { get; set; }
         }
 
         private string UpdateAntrianSemua(int nojetty,string idpelabuhanbantuan)
