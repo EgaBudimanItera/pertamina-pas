@@ -547,10 +547,6 @@ G:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Shipments\Delete.g.csht
 G:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Shipments\Details.g.cshtml.cs
 G:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Shipments\Edit.g.cshtml.cs
 G:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Shipments\Index.g.cshtml.cs
-G:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Simulasi\Create.g.cshtml.cs
-G:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Simulasi\Delete.g.cshtml.cs
-G:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Simulasi\Details.g.cshtml.cs
-G:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Simulasi\Edit.g.cshtml.cs
 G:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Simulasi\Index.g.cshtml.cs
 G:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Stoks\Create.g.cshtml.cs
 G:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Stoks\Delete.g.cshtml.cs
@@ -574,3 +570,5 @@ G:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Login\UserLogin.g.cshtm
 D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Login\UserLogin.g.cshtml.cs
 D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Laporan\JadwalMonitoring.g.cshtml.cs
 D:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Laporan\CetakJadwalMonitoring.g.cshtml.cs
+G:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Laporan\CetakJadwalMonitoring.g.cshtml.cs
+G:\ASP\pertamina-pas\obj\Debug\netcoreapp2.1\Razor\Views\Laporan\JadwalMonitoring.g.cshtml.cs

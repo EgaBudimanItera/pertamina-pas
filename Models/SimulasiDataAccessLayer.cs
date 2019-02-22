@@ -1,11 +1,13 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace pas_pertamina.Models
 {
@@ -44,6 +46,8 @@ namespace pas_pertamina.Models
         string resultCompUnberthedx;
         string resultUnberthedDeparturex;
         string resultDepartureTidex;
+        int IdProdukx;
+        int Jumlahx;
 
         //proses menghitung jam berthed berdasarkan arrival 
         public string Berthed(ViewShipmenDetail shipmenDetail)
@@ -232,7 +236,7 @@ namespace pas_pertamina.Models
         CultureInfo enUS = new CultureInfo("en-US");
         public List<IsiShipment> GetListIsiShipment (int idpel)
         {
-            DateTime ip;
+            //DateTime ip;
             List<IsiShipment> _IsiList = new List<IsiShipment>();
             string QueryIsi;
             if (idpel == 0)
@@ -379,7 +383,7 @@ namespace pas_pertamina.Models
             string jumlahrow;
             string jenisproduk = "";
             string QueryCekSimulasi="SELECT count(idshipment) as jumlah FROM shipment WHERE idpelabuhanbantuan='"+id+"' AND nojetty='"+nojetty+"' AND status='Simulasi'";
-
+            string _proses;
             
            
             int _Antrian;
@@ -538,7 +542,7 @@ namespace pas_pertamina.Models
                                         _IdAsal = Int32.Parse(readercommand["idasal"].ToString());
                                         _IdTujuan = Int32.Parse(readercommand["idtujuan"].ToString());
                                         _IdKapal = Int32.Parse(readercommand["idkapal"].ToString());
-
+                                        _proses = reader["proses"].ToString();
                                         //5.jika antrian 1
                                         if (_Antrian == 1)
                                         {
@@ -564,7 +568,8 @@ namespace pas_pertamina.Models
                                                     {
                                                         while (readersandaran.Read())
                                                         {
-                                                            Berthed_ = DateTime.ParseExact(readersandaran["departure"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None);
+                                                            //Berthed_ = DateTime.ParseExact(readersandaran["departure"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None);
+                                                            Berthed_ = (DateTime)readersandaran["departure"];
                                                         }
                                                         int hasil = DateTime.Compare(Arrival_, Berthed_);
                                                         if (hasil < 0)
@@ -582,6 +587,165 @@ namespace pas_pertamina.Models
                                                 
                                             }
                                             
+                                        };
+                                        string QueryShipment2 = "SELECT * FROM detailshipment where idshipment='" + _Idshipment + "'";
+                                        int StokAwal, JumlahTotal,StokInTransit,StokLoading;
+                                        if (_proses == "Loading")
+                                        {
+                                            DateTime tglsettanggalset = DateTime.Now;
+                                            using (SqlCommand cmdDetShipment = new SqlCommand(QueryShipment2, con))
+                                            {
+                                                using (SqlDataReader readerDetShipment = cmdDetShipment.ExecuteReader())
+                                                {
+                                                    int Totalx = 0;
+                                                    while (readerDetShipment.Read())
+                                                    {
+                                                        IdProdukx = (Int32)readerDetShipment["idproduk"];
+                                                        Jumlahx = (Int32)readerDetShipment["jumlah"];
+                                                        Totalx = Totalx + Jumlahx;
+                                                        
+                                                        //ambil stokreal dari idproduk dan idpelabuhan =id
+                                                        string QueryStokReal = "SELECT * FROM stok where idlistpelabuhan='"+id+"' and idproduk='"+IdProdukx+"'";
+                                                        using (SqlCommand cmdStokReal=new SqlCommand(QueryStokReal, con))
+                                                        {
+                                                            using (SqlDataReader readerStokReal = cmdStokReal.ExecuteReader())
+                                                            {
+                                                                if (readerStokReal.HasRows)
+                                                                {
+                                                                    string tanggal_sekarang = DateTime.Now.ToString("yyyy-MM-dd");
+                                                                    while (readerStokReal.Read())
+                                                                    {
+                                                                        StokRealx = (Int32)readerStokReal["pumpable"];
+                                                                        SafeStokx = (Int32)readerStokReal["safestok"];
+                                                                        DeadStokx = (Int32)readerStokReal["deadstok"];
+                                                                        DotRealx = (Int32)readerStokReal["dot"];
+                                                                        
+                                                                        string Query1 = "select *,sum(jumlah)as jumlah_total from shipment left join detailshipment on shipment.id=detailshipment.idshipment"+ 
+                                                                                        "where idtujuan = '"+_IdTujuan+"' and date(berthed) = '"+tanggal_sekarang+"' and idproduk = '"+IdProdukx+"'"+
+                                                                                        "group by shipment.id";
+                                                                        
+                                                                        using (SqlCommand cmdQuery1 = new SqlCommand(Query1, con))
+                                                                        {
+                                                                            using (SqlDataReader readerQuery1 = cmdQuery1.ExecuteReader())
+                                                                            {
+                                                                                if (readerQuery1.HasRows)
+                                                                                {
+                                                                                    JumlahTotal = (Int32)readerQuery1["jumlah_total"];
+                                                                                    StokAwal = StokRealx + JumlahTotal;
+                                                                                    StokInTransit = StokAwal;
+                                                                                    StokLoading = JumlahTotal;
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    StokAwal = StokRealx;
+                                                                                    StokInTransit = 0;
+                                                                                    StokLoading = 0;
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        Ullagerealx = SafeStokx - DeadStokx - StokAwal;
+                                                                        Mutasix = DotRealx;
+                                                                        
+                                                                        DateTime MulaiProyeksi = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd"));
+                                                                        DateTime TanggalProyeksi = MulaiProyeksi.AddDays(1);
+                                                                        int SetUllagez = 0;
+                                                                        int StokAfterLoading = 0;
+                                                                        for (var i = 0; i < 11; i++)
+                                                                        {
+                                                                            if (StokAwal > 0)
+                                                                            {
+                                                                                if ((StokAwal - Mutasix) > 0)
+                                                                                {
+                                                                                    if (SetUllagez == 1)
+                                                                                    {
+                                                                                        StokAwal = StokAfterLoading - DotRealx;
+                                                                                    };
+                                                                                    string QueryLoop = "select *,sum(jumlah)as jumlah_total from shipment left join detailshipment on shipment.id=detailshipment.idshipment "+
+                                                                                                        "where idpelabuhanbantuan = '"+id+"' and proses = 'Loading' and date(berthed) = '"+MulaiProyeksi+"' and idproduk = '"+IdProdukx+"'"+
+                                                                                                        "group by shipment.id";
+                                                                                    using (SqlCommand cmdQueryLoop=new SqlCommand())
+                                                                                    {
+                                                                                        using (SqlDataReader readerQueryLoop = cmdQueryLoop.ExecuteReader())
+                                                                                        {
+                                                                                            if (readerQueryLoop.HasRows)
+                                                                                            {
+                                                                                                while (readerQueryLoop.Read())
+                                                                                                {
+                                                                                                    StokLoadingLoopy = (Int32)readerQueryLoop["jumlah_total"];
+                                                                                                }
+                                                                                                readerQueryLoop.Close();
+                                                                                                StokAwalAfterLoadingy = StokAwal - StokLoadingLoopy;
+                                                                                                SetUllagez = 1;
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                StokLoadingLoopy = 0;
+                                                                                                SetUllagez = 0;
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                    if (MulaiProyeksi == Berthed_)
+                                                                                    {
+                                                                                        StokLoadingLoopy = Jumlahx;
+                                                                                        StokAwalAfterLoadingy = StokAwal - Jumlahx;
+                                                                                        SetUllagez = 1;
+                                                                                    }
+                                                                                    Stoky = StokAwal - Mutasix;
+                                                                                    Ketahanany = Stoky / DotRealx;
+                                                                                    DeadStoky = DeadStokx;
+                                                                                    SafeStoky = SafeStokx;
+                                                                                    Ullagey = SafeStoky - DeadStoky - StokAwal + Mutasix;
+
+                                                                                    if(Berthed_ == MulaiProyeksi)
+                                                                                    {
+                                                                                        Int32 minimstok = StokLoadingLoopy * 3;
+                                                                                        Int32 abc = 0;
+                                                                                        Int32 wbc = Stoky - StokLoadingLoopy;
+
+                                                                                        if(StokLoadingLoopy == 0)
+                                                                                        {
+                                                                                            abc = 0;
+                                                                                        }else
+                                                                                        {
+                                                                                            if((Stoky - minimstok) < 0)
+                                                                                            {
+                                                                                                abc = Math.Abs(wbc);
+                                                                                            }else
+                                                                                            {
+                                                                                                abc = 0;
+                                                                                            }
+                                                                                        }
+                                                                                        Int32 wc = abc / DotRealx;
+                                                                                        if(wc <= 0)
+                                                                                        {
+                                                                                            WaitingCargoy = 0;
+                                                                                        }else
+                                                                                        {
+                                                                                            WaitingCargoy = wc;
+                                                                                        }
+
+                                                                                    }
+
+                                                                                   
+                                                                                    StokAwal = Stoky;
+                                                                                    MulaiProyeksi = MulaiProyeksi.AddDays(1);
+                                                                                }
+                                                                            }
+                                                                            
+                                                                        }
+
+                                                                    }
+                                                                }
+                                                                
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+
                                         }
                                     }
                                     readercommand.Close();
@@ -600,6 +764,78 @@ namespace pas_pertamina.Models
 
             return a;
         }
+        int StokRealx,SafeStokx,DeadStokx,DotRealx,Ullagerealx,Mutasix;
+        DateTime Tanggaly;
+        int StokLoadingLoopy;
+        int StokAwalAfterLoadingy;
+        
+        int Stoky;
+        float Ketahanany;
+        int DeadStoky;
+        int SafeStoky;
+        int Ullagey;
+        int WaitingCargoy = 0;
+
+        public string Commx(string Bertheds,int waiting)
+        {
+            
+            
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string QueryCommx = "SELECT top 1* FROM estimasiwaktu where idlistket = 2 ";
+                SqlCommand cmdCommx = new SqlCommand(QueryCommx, con);
+                con.Open();
+                SqlDataReader readerCommx = cmdCommx.ExecuteReader();
+                while (readerCommx.Read())
+                {
+                    result = readerCommx["estimasiwaktu"].ToString();
+                }
+                _Berthed = DateTime.ParseExact(Bertheds, "yyyy/MM/dd HH:mm", CultureInfo.InvariantCulture);
+                result_ = result.Split(':');//conversi jam menit
+                string jam = result_[0]+(waiting*24);
+                string menit = result_[1];
+                est = new TimeSpan(Convert.ToInt32(jam), Convert.ToInt32(menit), 0);
+                Comm_ = _Berthed.Add(est);
+                return Comm_.ToString("yyyy/MM/dd HH:mm");
+            }
+        }
+
+        public string Compx(ViewShipmenDetail shipmenDetail, string Comms)
+        {
+            //get flowrate kapal berdasarkan ID Kapalnya
+            string QUeryflowrate = "SELECT * FROM kapal where idkapal='" + shipmenDetail.Idkapal + "'";
+            string FlowrateKapal = "";
+            float hitung = 0;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmdflowrate = new SqlCommand(QUeryflowrate, con);
+                con.Open();
+                SqlDataReader readerflowrate = cmdflowrate.ExecuteReader();
+                while (readerflowrate.Read())
+                {
+                    FlowrateKapal = readerflowrate["flowrate"].ToString(); ;
+                }
+
+                int? jumlah = 0;
+                foreach (var jml in shipmenDetail.produk)
+                {
+                    jumlah = jml.jumlah + jumlah;
+                }
+
+                hitung = float.Parse(jumlah.ToString(), CultureInfo.InvariantCulture.NumberFormat) / float.Parse(FlowrateKapal, CultureInfo.InvariantCulture.NumberFormat);
+
+                hitung = (float)Math.Round(hitung);
+
+                est = new TimeSpan(Convert.ToInt32(hitung), Convert.ToInt32("00"), 0);
+                _Comm = DateTime.ParseExact(Comms, "yyyy/MM/dd HH:mm", CultureInfo.InvariantCulture);
+                Comp_ = _Comm.Add(est);
+                return Comp_.ToString("yyyy/MM/dd HH:mm");
+
+            }
+        }
+
+
+
 
         private string UpdateAntrianSemua(int nojetty,string idpelabuhanbantuan)
         {

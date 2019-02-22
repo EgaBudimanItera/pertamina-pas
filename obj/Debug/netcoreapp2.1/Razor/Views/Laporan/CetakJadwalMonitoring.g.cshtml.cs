@@ -60,7 +60,7 @@ using pas_pertamina.Models;
             WriteLiteral("\r\n<!DOCTYPE html>\r\n\r\n<html>\r\n");
             EndContext();
             BeginContext(114, 289, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "186a762eb8674d3194a98733759adc62", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "154c6aa5dbd941db98036d6b8ebbed0c", async() => {
                 BeginContext(120, 276, true);
                 WriteLiteral(@"
     <meta name=""viewport"" content=""width=device-width"" />
@@ -92,7 +92,7 @@ using pas_pertamina.Models;
             WriteLiteral("\r\n");
             EndContext();
             BeginContext(405, 1662, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "3ff0c48e6b384a98a283cf639c9bfad3", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "b24f4e24a5794393958a0598ff4b9444", async() => {
                 BeginContext(411, 528, true);
                 WriteLiteral(@"
     JADWAL MONITORING KEGIATAN DERMAGA
