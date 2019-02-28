@@ -28,7 +28,7 @@ namespace pas_pertamina.Models
         string Query2;
         DateTime Arr;//menampung nilai arrival dari textbox
         DateTime Arrival_;
-        DateTime _Berthed;//menampung nilai berthed dari textbox
+        DateTime Berthed_h;//menampung nilai berthed dari textbox
         DateTime Berthed_;//menampung nilai berthed dari perhitungan arrival-berthed
         DateTime _Comm;
         DateTime Comm_;//menampung nilai comm dari perhitungan berthed-comm
@@ -139,12 +139,12 @@ namespace pas_pertamina.Models
                 {
                     result = reader2["estimasiwaktu"].ToString();
                 }
-                _Berthed = DateTime.ParseExact(Bertheds,"yyyy/MM/dd HH:mm",CultureInfo.InvariantCulture);
+                Berthed_h = DateTime.ParseExact(Bertheds,"yyyy/MM/dd HH:mm",CultureInfo.InvariantCulture);
                 result_ = result.Split(':');//conversi jam menit
                 string jam = result_[0];
                 string menit = result_[1];
                 est = new TimeSpan(Convert.ToInt32(jam), Convert.ToInt32(menit), 0);
-                Comm_ = _Berthed.Add(est);
+                Comm_ = Berthed_h.Add(est);
                 return Comm_.ToString("yyyy/MM/dd HH:mm");
             }   
         }
@@ -596,7 +596,7 @@ namespace pas_pertamina.Models
                                         };
                                         #region proses susah 4
                                         string QueryShipment2 = "SELECT * FROM detailshipment where idshipment='" + _Idshipment + "'";
-                                        int StokAwal, JumlahTotal,StokInTransit,StokLoading;
+                                        int StokAwal,StokInTransit,StokLoading;
                                         
                                         if (_proses == "Loading")
                                         {
@@ -653,6 +653,7 @@ namespace pas_pertamina.Models
                                                                                     StokAwal = StokRealx;
                                                                                     StokInTransit = 0;
                                                                                     StokLoading = 0;
+                                                                                    JumlahTotal = 0;
                                                                                 }
                                                                             }
                                                                         }
@@ -818,6 +819,11 @@ namespace pas_pertamina.Models
                                                 }
                                             }
                                             #endregion
+                                            #region susah 14
+                                            a=Hasilnya(_Idshipment,_IdTujuan,_IdAsal,_IdKapal,"Loading",Arrival_,Berthed_,val_waiting_cargo2,nojetty,JumlahTotal);
+                                            
+
+                                            #endregion
                                         }
                                         else
                                         {
@@ -857,6 +863,52 @@ namespace pas_pertamina.Models
            
         }
         
+        private string Hasilnya(int IdShipment_h,int IdTujuan_h,int IdAsal_h,int IdKapal_h,string Proses_h,DateTime Arrival_h, DateTime Berthed_hr,int Waiting_h,int NoJetty_h,int Jumlah_h)
+        {
+            string Comm_h = Commx(Berthed_h.ToString("yyyy/MM/dd HH:mm"), Waiting_h);
+            string Comp_h = Compx(Comm_h,IdKapal_h,Jumlah_h);
+            string Unberthed_h = Unberthedx(Comp_h);
+            string Departure_h = Departurex(Unberthed_h);
+            string Berthed_h2 = Berthed_hr.ToString("yyyy/MM/dd HH:mm:ss");
+            DateTime Departurenya = DateTime.ParseExact(Departure_h, "yyyy/MM/dd HH:mm", CultureInfo.InvariantCulture);
+            TimeSpan ipt_ = (Departurenya- Arrival_h);
+            string h = "";
+            string _ipt = string.Format("{0}:{1:00}", (int)ipt_.TotalHours, ipt_.Minutes);
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string QueryUpdate="";
+                if (Proses_h == "Loading")
+                {
+                     QueryUpdate = "Update shipment set berthed='" + Berthed_h2 + "',comm='" + Comm_h + "',comp='" + Comp_h + "',unberthed='" + Unberthed_h + "',departure='" +
+                                   Departure_h + "',waitingcargo='"+Waiting_h+"' where idshipment='" + IdShipment_h + "'";
+                }
+                else
+                {
+                     QueryUpdate = "Update shipment set berthed='" + Berthed_h2 + "',comm='" + Comm_h + "',comp='" + Comp_h + "',unberthed='" + Unberthed_h + "',departure='" +
+                                   Departure_h + "',waitingullage='" + Waiting_h + "' where idshipment='" + IdShipment_h + "'";
+                }
+                using (SqlCommand cmd=new SqlCommand(QueryUpdate,con))
+                {
+                    try
+                    {
+                        con.Open();
+
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                        h = "sukses";
+                    }
+                    catch(Exception ex)
+                    {
+                        h = ex.Message;
+                    }
+
+                    return h;
+                }
+            }
+
+        }
+
         private class AllUllage_x2
         {
             public DateTime Arrival_x2 { get; set; }
@@ -882,7 +934,7 @@ namespace pas_pertamina.Models
         int StokRealx,SafeStokx,DeadStokx,DotRealx,Ullagerealx,Mutasix;
         DateTime Tanggaly;
         int StokLoadingLoopy;
-        int StokAwalAfterLoadingy;
+        int StokAwalAfterLoadingy, JumlahTotal;
         
         int Stoky;
         float Ketahanany;
@@ -890,11 +942,15 @@ namespace pas_pertamina.Models
         int SafeStoky;
         int Ullagey;
         int WaitingCargoy = 0;
-
+        string result_h;
+        string[] result_ha;
+        DateTime Berthed_hi;
+        DateTime Comm_h;
+        DateTime Comp_h;
+        DateTime Departure_h;
+        DateTime Unberthed_h;
         public string Commx(string Bertheds,int waiting)
         {
-            
-            
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 string QueryCommx = "SELECT top 1* FROM estimasiwaktu where idlistket = 2 ";
@@ -903,23 +959,23 @@ namespace pas_pertamina.Models
                 SqlDataReader readerCommx = cmdCommx.ExecuteReader();
                 while (readerCommx.Read())
                 {
-                    result = readerCommx["estimasiwaktu"].ToString();
+                    result_h = readerCommx["estimasiwaktu"].ToString();
                 }
-                _Berthed = DateTime.ParseExact(Bertheds, "yyyy/MM/dd HH:mm", CultureInfo.InvariantCulture);
-                result_ = result.Split(':');//conversi jam menit
-                string jam = result_[0]+(waiting*24);
-                string menit = result_[1];
+                Berthed_hi = DateTime.ParseExact(Bertheds, "yyyy/MM/dd HH:mm", CultureInfo.InvariantCulture);
+                result_ha = result_h.Split(':');//conversi jam menit
+                string jam = result_ha[0]+(waiting*24);
+                string menit = result_ha[1];
                 est = new TimeSpan(Convert.ToInt32(jam), Convert.ToInt32(menit), 0);
-                Comm_ = _Berthed.Add(est);
-                return Comm_.ToString("yyyy/MM/dd HH:mm");
+                Comm_h = Berthed_hi.Add(est);
+                return Comm_h.ToString("yyyy/MM/dd HH:mm");
             }
         }
 
-        public string Compx(ViewShipmenDetail shipmenDetail, string Comms)
+        public string Compx(string Comms,int Idkapal,int Jumlah)
         {
             //get flowrate kapal berdasarkan ID Kapalnya
-            string QUeryflowrate = "SELECT * FROM kapal where idkapal='" + shipmenDetail.Idkapal + "'";
-            string FlowrateKapal = "";
+            string QUeryflowrate = "SELECT * FROM kapal where idkapal='" + Idkapal + "'";
+            int FlowrateKapal;
             float hitung = 0;
             using (SqlConnection con = new SqlConnection(connectionString))
             {
@@ -928,28 +984,74 @@ namespace pas_pertamina.Models
                 SqlDataReader readerflowrate = cmdflowrate.ExecuteReader();
                 while (readerflowrate.Read())
                 {
-                    FlowrateKapal = readerflowrate["flowrate"].ToString(); ;
+                    FlowrateKapal = (Int32)readerflowrate["flowrate"];
+                    hitung = Jumlah / FlowrateKapal;
                 }
 
-                int? jumlah = 0;
-                foreach (var jml in shipmenDetail.produk)
-                {
-                    jumlah = jml.jumlah + jumlah;
-                }
+                
 
-                hitung = float.Parse(jumlah.ToString(), CultureInfo.InvariantCulture.NumberFormat) / float.Parse(FlowrateKapal, CultureInfo.InvariantCulture.NumberFormat);
+                //hitung = float.Parse(Jumlah.ToString(), CultureInfo.InvariantCulture.NumberFormat) / float.Parse(FlowrateKapal, CultureInfo.InvariantCulture.NumberFormat);
 
                 hitung = (float)Math.Round(hitung);
 
                 est = new TimeSpan(Convert.ToInt32(hitung), Convert.ToInt32("00"), 0);
-                _Comm = DateTime.ParseExact(Comms, "yyyy/MM/dd HH:mm", CultureInfo.InvariantCulture);
-                Comp_ = _Comm.Add(est);
-                return Comp_.ToString("yyyy/MM/dd HH:mm");
+                Comm_h = DateTime.ParseExact(Comms, "yyyy/MM/dd HH:mm", CultureInfo.InvariantCulture);
+                Comp_h = Comm_h.Add(est);
+                return Comp_h.ToString("yyyy/MM/dd HH:mm");
 
             }
         }
 
-        
+        //proses menghitung jam berthed berdasarkan arrival 
+        public string Unberthedx(string Comps)
+        {
+            
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                Query2 = "SELECT top 1* FROM estimasiwaktu where idlistket = 4 ";
+                SqlCommand cmd2 = new SqlCommand(Query2, con);
+                con.Open();
+                SqlDataReader reader2 = cmd2.ExecuteReader();
+                while (reader2.Read())
+                {
+                    result_h = reader2["estimasiwaktu"].ToString();
+                }
+                Comp_h = DateTime.ParseExact(Comps, "yyyy/MM/dd HH:mm", CultureInfo.InvariantCulture);
+                result_ha = result_h.Split(':');//conversi jam menit
+                string jam = result_ha[0];
+                string menit = result_ha[1];
+                est = new TimeSpan(Convert.ToInt32(jam), Convert.ToInt32(menit), 0);
+                Unberthed_h = Comp_h.Add(est);
+                return Unberthed_h.ToString("yyyy/MM/dd HH:mm");
+            }
+
+        }
+
+        //proses menghitung jam berthed berdasarkan arrival 
+        public string Departurex(string Unbertheds)
+        {
+           
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                Query2 = "SELECT top 1* FROM estimasiwaktu where idlistket = 5 ";
+                SqlCommand cmd2 = new SqlCommand(Query2, con);
+                con.Open();
+                SqlDataReader reader2 = cmd2.ExecuteReader();
+                while (reader2.Read())
+                {
+                    result = reader2["estimasiwaktu"].ToString();
+                }
+                Unberthed_h = DateTime.ParseExact(Unbertheds, "yyyy/MM/dd HH:mm", CultureInfo.InvariantCulture);
+                result_ha = result_h.Split(':');//conversi jam menit
+                string jam = result_ha[0];
+                string menit = result_ha[1];
+                est = new TimeSpan(Convert.ToInt32(jam), Convert.ToInt32(menit), 0);
+                Departure_h = Unberthed_h.Add(est);
+                return Departure_h.ToString("yyyy/MM/dd HH:mm");
+            }
+
+        }
+
 
         private string UpdateAntrianSemua(int nojetty,string idpelabuhanbantuan)
         {
