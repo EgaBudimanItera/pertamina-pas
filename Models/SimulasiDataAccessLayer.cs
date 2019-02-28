@@ -439,6 +439,7 @@ namespace pas_pertamina.Models
                             string updateantrian1=UpdateAntrianSemua(nojetty, id);
                             //cari estimasiwaktu
                             string QueryArrivalBerthed = "select * from estimasiwaktu where idlistket = 1 ";
+                            #region nilai estimasiwaktu
                             using (SqlCommand commandsandar1 = new SqlCommand(QueryArrivalBerthed, con))
                             {
                                 using (SqlDataReader readersandar = commandsandar1.ExecuteReader())
@@ -523,12 +524,15 @@ namespace pas_pertamina.Models
                                 }
                                     
                             }
+                            #endregion
                             //2.query select shipment berdasarkan 
                             //idpelabuhanbantuan =$idpelabuhan dan antrian!=kosong
                             //and jetty =$idjtty order berdasarkan no antrian terkecil (dimulai dari 1 hingga x)
+                            #region proses susah 1
                             string QuerySelectShipment = "SELECT * FROM shipment where idpelabuhanbantuan='" + id + "' and antrian!='' and nojetty='" + nojetty + "' order by antrian asc";
                             using (SqlCommand command = new SqlCommand(QuerySelectShipment, con))
                             {
+                                #region proses susah 2
                                 using (SqlDataReader readercommand = command.ExecuteReader())
                                 {
                                     //3. looping no 2
@@ -556,6 +560,7 @@ namespace pas_pertamina.Models
                                         //6.jika antrian lebih dari 1
                                         else
                                         {
+                                            #region proses susah 3
                                             _Antrian1 = _Antrian - 1;
                                             string QuerySandar = "select DateAdd (hour,1,departure) as departure from shipment where idpelabuhanbantuan='" + id + "' and nojetty='" + nojetty + "' and antrian= '" + _Antrian1 + "'";
                                             
@@ -580,21 +585,28 @@ namespace pas_pertamina.Models
                                                             est = new TimeSpan(Convert.ToInt32(jam), Convert.ToInt32(menit), 0);
                                                             Berthed_ = Arrival_.Add(est);
                                                         }
-                                                        a = Berthed_.ToString("yyyy-MM-dd HH:mm");
+                                                       // a = Berthed_.ToString("yyyy-MM-dd HH:mm");
                                                     }
                                                     readersandaran.Close();
                                                 }
                                                 
                                             }
-                                            
+                                            #endregion
+
                                         };
+                                        #region proses susah 4
                                         string QueryShipment2 = "SELECT * FROM detailshipment where idshipment='" + _Idshipment + "'";
                                         int StokAwal, JumlahTotal,StokInTransit,StokLoading;
+                                        
                                         if (_proses == "Loading")
                                         {
+                                            #region proses susah 5
                                             DateTime tglsettanggalset = DateTime.Now;
+                                            List<AllUllage_x2> variabelbuatloopingloadingsemuaproduk = new List<AllUllage_x2>();
+                                            List<Ullage_x1> Ullage_x1 = new List<Ullage_x1>();
                                             using (SqlCommand cmdDetShipment = new SqlCommand(QueryShipment2, con))
                                             {
+                                                #region proses susah 6
                                                 using (SqlDataReader readerDetShipment = cmdDetShipment.ExecuteReader())
                                                 {
                                                     int Totalx = 0;
@@ -603,11 +615,12 @@ namespace pas_pertamina.Models
                                                         IdProdukx = (Int32)readerDetShipment["idproduk"];
                                                         Jumlahx = (Int32)readerDetShipment["jumlah"];
                                                         Totalx = Totalx + Jumlahx;
-                                                        
+                                                        #region prosses susah 7
                                                         //ambil stokreal dari idproduk dan idpelabuhan =id
                                                         string QueryStokReal = "SELECT * FROM stok where idlistpelabuhan='"+id+"' and idproduk='"+IdProdukx+"'";
                                                         using (SqlCommand cmdStokReal=new SqlCommand(QueryStokReal, con))
                                                         {
+                                                            #region proses susah 8
                                                             using (SqlDataReader readerStokReal = cmdStokReal.ExecuteReader())
                                                             {
                                                                 if (readerStokReal.HasRows)
@@ -623,7 +636,7 @@ namespace pas_pertamina.Models
                                                                         string Query1 = "select *,sum(jumlah)as jumlah_total from shipment left join detailshipment on shipment.id=detailshipment.idshipment"+ 
                                                                                         "where idtujuan = '"+_IdTujuan+"' and date(berthed) = '"+tanggal_sekarang+"' and idproduk = '"+IdProdukx+"'"+
                                                                                         "group by shipment.id";
-                                                                        
+                                                                        #region proses susah 9
                                                                         using (SqlCommand cmdQuery1 = new SqlCommand(Query1, con))
                                                                         {
                                                                             using (SqlDataReader readerQuery1 = cmdQuery1.ExecuteReader())
@@ -643,6 +656,9 @@ namespace pas_pertamina.Models
                                                                                 }
                                                                             }
                                                                         }
+                                                                       
+                                                                        #endregion
+                                                                        #region proses susah 10
                                                                         Ullagerealx = SafeStokx - DeadStokx - StokAwal;
                                                                         Mutasix = DotRealx;
                                                                         
@@ -650,6 +666,7 @@ namespace pas_pertamina.Models
                                                                         DateTime TanggalProyeksi = MulaiProyeksi.AddDays(1);
                                                                         int SetUllagez = 0;
                                                                         int StokAfterLoading = 0;
+                                                                        #region proses susah 11
                                                                         for (var i = 0; i < 11; i++)
                                                                         {
                                                                             if (StokAwal > 0)
@@ -660,6 +677,7 @@ namespace pas_pertamina.Models
                                                                                     {
                                                                                         StokAwal = StokAfterLoading - DotRealx;
                                                                                     };
+                                                                                    #region proses susah 11
                                                                                     string QueryLoop = "select *,sum(jumlah)as jumlah_total from shipment left join detailshipment on shipment.id=detailshipment.idshipment "+
                                                                                                         "where idpelabuhanbantuan = '"+id+"' and proses = 'Loading' and date(berthed) = '"+MulaiProyeksi+"' and idproduk = '"+IdProdukx+"'"+
                                                                                                         "group by shipment.id";
@@ -684,6 +702,10 @@ namespace pas_pertamina.Models
                                                                                             }
                                                                                         }
                                                                                     }
+                                                                                    #endregion
+
+
+                                                                                    #region proses susah 12
                                                                                     if (MulaiProyeksi == Berthed_)
                                                                                     {
                                                                                         StokLoadingLoopy = Jumlahx;
@@ -695,62 +717,119 @@ namespace pas_pertamina.Models
                                                                                     DeadStoky = DeadStokx;
                                                                                     SafeStoky = SafeStokx;
                                                                                     Ullagey = SafeStoky - DeadStoky - StokAwal + Mutasix;
-
-                                                                                    if(Berthed_ == MulaiProyeksi)
-                                                                                    {
-                                                                                        Int32 minimstok = StokLoadingLoopy * 3;
-                                                                                        Int32 abc = 0;
-                                                                                        Int32 wbc = Stoky - StokLoadingLoopy;
-
-                                                                                        if(StokLoadingLoopy == 0)
-                                                                                        {
-                                                                                            abc = 0;
-                                                                                        }else
-                                                                                        {
-                                                                                            if((Stoky - minimstok) < 0)
-                                                                                            {
-                                                                                                abc = Math.Abs(wbc);
-                                                                                            }else
-                                                                                            {
-                                                                                                abc = 0;
-                                                                                            }
-                                                                                        }
-                                                                                        Int32 wc = abc / DotRealx;
-                                                                                        if(wc <= 0)
-                                                                                        {
-                                                                                            WaitingCargoy = 0;
-                                                                                        }else
-                                                                                        {
-                                                                                            WaitingCargoy = wc;
-                                                                                        }
-
-                                                                                    }
-
-                                                                                   
+                                                                                    
+                                                                                    //var arrayproyeksi = Ullage_Xes();
+                                                                                    //List<Ullage_x1> arrayproyeksi = Ullage_Xes(MulaiProyeksi.ToString("yyyy-MM-dd"));
+                                                                                    Ullage_x1.Add(new Ullage_x1 {
+                                                                                        Tanggal_x = MulaiProyeksi,
+                                                                                        StokLoadingLoop_x = Jumlahx,
+                                                                                        Stok_x=Stoky,
+                                                                                        Ketahanan_x=Ketahanany,
+                                                                                        DeadStok_X=DeadStoky,
+                                                                                        SafeStok_x=SafeStoky,
+                                                                                        Ullage_x=Ullagey,
+                                                                                    });
                                                                                     StokAwal = Stoky;
                                                                                     MulaiProyeksi = MulaiProyeksi.AddDays(1);
+                                                                                    #endregion
                                                                                 }
                                                                             }
                                                                             
                                                                         }
-
+                                                                        #endregion
+                                                                        #region proses susah 12
+                                                                        variabelbuatloopingloadingsemuaproduk.Add(new AllUllage_x2 {
+                                                                            Arrival_x2 = Arrival_,
+                                                                            Berthed_x2 = Berthed_,
+                                                                            TanggalReal_x2 = DateTime.Parse(tanggal_sekarang),
+                                                                            UllageReal_x2 = Ullagerealx,
+                                                                            StokUllage_x2 = StokLoading,
+                                                                            DotReal_x2 = DotRealx,
+                                                                            StokReal_x2 = StokRealx,
+                                                                            StokInTransit_x2 = StokInTransit,
+                                                                            Mutasi_x2 = Mutasix,
+                                                                            TanggalSet_x2 = tglsettanggalset,
+                                                                            Jumlah_x2 = Jumlahx,
+                                                                            IdAsal_x2 = _IdAsal,
+                                                                            IdKapal_x2=_IdKapal,
+                                                                            NoJetty_x2=nojetty,
+                                                                            IdTujuan_x2=_IdTujuan,
+                                                                            ArrayProyeksi_x2= Ullage_x1,
+                                                                        });
+                                                                        #endregion
+                                                                        #endregion
                                                                     }
                                                                 }
                                                                 
+                                                            }
+                                                            #endregion
+                                                        }
+                                                        #endregion
+                                                    }
+                                                }
+                                                #endregion
+                                            }
+                                            #endregion
+                                            #region susah 13
+                                            int val_waiting_cargo2 = 0;
+                                            foreach(var loopingke1 in variabelbuatloopingloadingsemuaproduk)
+                                            {
+                                                
+                                                foreach (var loopingke2 in loopingke1.ArrayProyeksi_x2)
+                                                {
+                                                    if (loopingke2 == null)
+                                                    {
+                                                        continue;
+                                                    }
+                                                    else
+                                                    {
+                                                        if (loopingke1.Berthed_x2 == loopingke2.Tanggal_x)
+                                                        {
+                                                            int loadingloop = loopingke2.StokLoadingLoop_x;
+                                                            int minimstok = loopingke2.StokLoadingLoop_x*3;
+                                                            int w = loopingke2.Stok_x - loadingloop;
+                                                            int a_1 = 0;
+                                                            if (loadingloop==0)
+                                                            {
+                                                                a_1 = 0;
+                                                            }
+                                                            else
+                                                            {
+                                                                if (loopingke2.Stok_x-minimstok<0)
+                                                                {
+                                                                    a_1 = Math.Abs(w);
+                                                                }
+                                                                else
+                                                                {
+                                                                    a_1 = 0;
+                                                                }
+                                                            }
+                                                            float wc = a_1 / loopingke1.DotReal_x2;
+                                                            if (wc <= 0)
+                                                            {
+                                                                val_waiting_cargo2 = 0;
+                                                            }
+                                                            else
+                                                            {
+                                                                val_waiting_cargo2 = (int) wc;
                                                             }
                                                         }
                                                     }
                                                 }
                                             }
+                                            #endregion
                                         }
                                         else
                                         {
 
                                         }
+                                        #endregion
                                     }
                                     readercommand.Close();
-                                }  
-                            } 
+                                }
+                                #endregion
+                            }
+                            #endregion
                         }
                     };
                     con.Close();
@@ -764,6 +843,42 @@ namespace pas_pertamina.Models
 
             return a;
         }
+        
+
+        private class Ullage_x1
+        {
+            public DateTime Tanggal_x { get; set; }
+            public int StokLoadingLoop_x { get; set; }
+            public int Stok_x { get; set; }
+            public float Ketahanan_x { get; set; }
+            public int DeadStok_X { get; set; }
+            public int SafeStok_x { get; set; }
+            public int Ullage_x { get; set; }
+           
+        }
+        
+        private class AllUllage_x2
+        {
+            public DateTime Arrival_x2 { get; set; }
+            public DateTime Berthed_x2 { get; set; }
+            public DateTime TanggalReal_x2 { get; set; }
+            public int UllageReal_x2 { get; set; }
+            public int StokUllage_x2 { get; set; }
+            public int DotReal_x2 { get; set; }
+            public int StokReal_x2 { get; set; }
+            public int StokInTransit_x2 { get; set; }
+            public int Mutasi_x2 { get; set; }
+            public List<Ullage_x1> ArrayProyeksi_x2 { get; set; }
+            public DateTime TanggalSet_x2 { get; set; }
+            public int Jumlah_x2 { get; set; }
+            public int IdAsal_x2 { get; set; }
+            public int IdTujuan_x2 { get; set; }
+            public int NoJetty_x2 { get; set; }
+            public int IdKapal_x2 { get; set; }
+
+        }
+       
+
         int StokRealx,SafeStokx,DeadStokx,DotRealx,Ullagerealx,Mutasix;
         DateTime Tanggaly;
         int StokLoadingLoopy;
@@ -834,8 +949,7 @@ namespace pas_pertamina.Models
             }
         }
 
-
-
+        
 
         private string UpdateAntrianSemua(int nojetty,string idpelabuhanbantuan)
         {
