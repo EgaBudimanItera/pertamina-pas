@@ -298,7 +298,6 @@ namespace pas_pertamina.Models
                 if (reader.HasRows)
                 {
                     con.Close();
-                    string pes = "Tidak diizinkan karena masih ada kapal di jetty tersebut";
                     return false;
                 }
                 else

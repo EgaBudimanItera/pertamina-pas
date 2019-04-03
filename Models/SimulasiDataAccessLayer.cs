@@ -7,7 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-
+using System.Diagnostics;
 
 namespace pas_pertamina.Models
 {
@@ -425,419 +425,549 @@ namespace pas_pertamina.Models
                     };
                     string QueryCekNoAntrian = "SELECT top 1 antrianupdate,count(*) as hasil FROM shipment join detailshipment on(shipment.idshipment=detailshipment.idshipment) "+
                                               "join produk on(detailshipment.idproduk = produk.idproduk) where jenisproduk = '"+jenisproduk+ "' group by antrianupdate,idpelabuhanbantuan,nojetty,detailshipment.idproduk having COUNT(*) > 1";
-                    using (SqlCommand cmd = new SqlCommand(QueryCekNoAntrian, con))
+                    try
                     {
-                        SqlDataReader reader = cmd.ExecuteReader();
-                        if (reader.HasRows)
+                        using (SqlCommand cmd = new SqlCommand(QueryCekNoAntrian, con))
                         {
-                            return "Pesan2";
-                        }
-                        else
-                        {
-                            reader.Close();
-                            // 1.updateantrian
-                            string updateantrian1=UpdateAntrianSemua(nojetty, id);
-                            //cari estimasiwaktu
-                            string QueryArrivalBerthed = "select * from estimasiwaktu where idlistket = 1 ";
-                            #region nilai estimasiwaktu
-                            using (SqlCommand commandsandar1 = new SqlCommand(QueryArrivalBerthed, con))
+                            SqlDataReader reader = cmd.ExecuteReader();
+                            if (reader.HasRows)
                             {
-                                using (SqlDataReader readersandar = commandsandar1.ExecuteReader())
-                                {
-                                    if (readersandar.HasRows)
-                                    {
-                                        while (readersandar.Read())
-                                        {
-                                            resultArrivalBertedx = readersandar["estimasiwaktu"].ToString();
-                                        }
-
-                                    }
-                                    readersandar.Close();
-                                }
-                                    
+                                return "Pesan2";
                             }
-                            string QueryBerthedComm = "select * from estimasiwaktu where idlistket = 2 ";
-                            using (SqlCommand commandsandar2 = new SqlCommand(QueryBerthedComm, con))
+                            else
                             {
-                                using (SqlDataReader readersandar = commandsandar2.ExecuteReader())
+                                
+                                // 1.updateantrian
+                                string updateantrian1 = UpdateAntrianSemua(nojetty, id);
+                                //cari estimasiwaktu
+                                string QueryArrivalBerthed = "select * from estimasiwaktu where idlistket = 1 ";
+                                #region nilai estimasiwaktu
+                                
+                                using (SqlCommand commandsandar1 = new SqlCommand(QueryArrivalBerthed, con))
                                 {
-                                    if (readersandar.HasRows)
+                                    using (SqlDataReader readersandar = commandsandar1.ExecuteReader())
                                     {
-                                        while (readersandar.Read())
+                                        if (readersandar.HasRows)
                                         {
-                                            resultBerthedCommx = readersandar["estimasiwaktu"].ToString();
-                                        }
-
-                                    }
-                                    readersandar.Close();
-                                }
-                                   
-                            }
-                            string QueryCompUnberthed = "select * from estimasiwaktu where idlistket = 4 ";
-                            using (SqlCommand commandsandar4 = new SqlCommand(QueryCompUnberthed, con))
-                            {
-                                using (SqlDataReader readersandar = commandsandar4.ExecuteReader())
-                                {
-                                    if (readersandar.HasRows)
-                                    {
-                                        while (readersandar.Read())
-                                        {
-                                            resultCompUnberthedx = readersandar["estimasiwaktu"].ToString();
-                                        }
-
-                                    }
-                                    readersandar.Close();
-                                }
-                                    
-                            }
-                            string QueryUnberthedDeparture = "select * from estimasiwaktu where idlistket = 5 ";
-                            using (SqlCommand commandsandar5 = new SqlCommand(QueryUnberthedDeparture, con))
-                            {
-                                using (SqlDataReader readersandar = commandsandar5.ExecuteReader())
-                                {
-                                    if (readersandar.HasRows)
-                                    {
-                                        while (readersandar.Read())
-                                        {
-                                            resultUnberthedDeparturex = readersandar["estimasiwaktu"].ToString();
-                                        }
-
-                                    }
-                                    readersandar.Close();
-                                }
-                                    
-                            }
-                            string QueryDepartureTide = "select * from estimasiwaktu where idlistket = 6 ";
-                            using (SqlCommand commandsandar6 = new SqlCommand(QueryDepartureTide, con))
-                            {
-                                using (SqlDataReader readersandar = commandsandar6.ExecuteReader())
-                                {
-                                    if (readersandar.HasRows)
-                                    {
-                                        while (readersandar.Read())
-                                        {
-                                            resultDepartureTidex = readersandar["estimasiwaktu"].ToString();
-                                        }
-
-                                    }
-                                    readersandar.Close();
-                                }
-                                    
-                            }
-                            #endregion
-                            //2.query select shipment berdasarkan 
-                            //idpelabuhanbantuan =$idpelabuhan dan antrian!=kosong
-                            //and jetty =$idjtty order berdasarkan no antrian terkecil (dimulai dari 1 hingga x)
-                            #region proses susah 1
-                            string QuerySelectShipment = "SELECT * FROM shipment where idpelabuhanbantuan='" + id + "' and antrian!='' and nojetty='" + nojetty + "' order by antrian asc";
-                            using (SqlCommand command = new SqlCommand(QuerySelectShipment, con))
-                            {
-                                #region proses susah 2
-                                using (SqlDataReader readercommand = command.ExecuteReader())
-                                {
-                                    //3. looping no 2
-                                    while (readercommand.Read())
-                                    {
-                                        //4.munculkan arrival
-                                        //Arrival_ = DateTime.ParseExact(readercommand["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None);
-                                        Arrival_ = (DateTime)reader["arrival"];
-                                        _Antrian = Int32.Parse(readercommand["antrian"].ToString());
-                                        _Idshipment = Int32.Parse(readercommand["idshipment"].ToString());
-                                        _IdAsal = Int32.Parse(readercommand["idasal"].ToString());
-                                        _IdTujuan = Int32.Parse(readercommand["idtujuan"].ToString());
-                                        _IdKapal = Int32.Parse(readercommand["idkapal"].ToString());
-                                        _proses = reader["proses"].ToString();
-                                        //5.jika antrian 1
-                                        if (_Antrian == 1)
-                                        {
-                                            result_ = resultArrivalBertedx.Split(':');//conversi jam menit
-                                            string jam = result_[0];
-                                            string menit = result_[1];
-                                            est = new TimeSpan(Convert.ToInt32(jam), Convert.ToInt32(menit), 0);
-                                            Berthed_ = Arrival_.Add(est);
-
-                                        }
-                                        //6.jika antrian lebih dari 1
-                                        else
-                                        {
-                                            #region proses susah 3
-                                            _Antrian1 = _Antrian - 1;
-                                            string QuerySandar = "select DateAdd (hour,1,departure) as departure from shipment where idpelabuhanbantuan='" + id + "' and nojetty='" + nojetty + "' and antrian= '" + _Antrian1 + "'";
-                                            
-                                            using (SqlCommand commandsandaran = new SqlCommand(QuerySandar, con))
+                                            while (readersandar.Read())
                                             {
-                                                
-                                                using (SqlDataReader readersandaran = commandsandaran.ExecuteReader())
-                                                {
-                                                    if (readersandaran.HasRows)
-                                                    {
-                                                        while (readersandaran.Read())
-                                                        {
-                                                            //Berthed_ = DateTime.ParseExact(readersandaran["departure"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None);
-                                                            Berthed_ = (DateTime)readersandaran["departure"];
-                                                        }
-                                                        int hasil = DateTime.Compare(Arrival_, Berthed_);
-                                                        if (hasil < 0)
-                                                        {
-                                                            result_ = resultArrivalBertedx.Split(':');//conversi jam menit
-                                                            string jam = result_[0];
-                                                            string menit = result_[1];
-                                                            est = new TimeSpan(Convert.ToInt32(jam), Convert.ToInt32(menit), 0);
-                                                            Berthed_ = Arrival_.Add(est);
-                                                        }
-                                                       // a = Berthed_.ToString("yyyy-MM-dd HH:mm");
-                                                    }
-                                                    readersandaran.Close();
-                                                }
-                                                
+                                                resultArrivalBertedx = readersandar["estimasiwaktu"].ToString();
                                             }
-                                            #endregion
 
-                                        };
-                                        #region proses susah 4
-                                        string QueryShipment2 = "SELECT * FROM detailshipment where idshipment='" + _Idshipment + "'";
-                                        int StokAwal,StokInTransit,StokLoading;
-                                        
-                                        if (_proses == "Loading")
+                                        }
+                                        readersandar.Close();
+                                    }
+
+                                }
+                                string QueryBerthedComm = "select * from estimasiwaktu where idlistket = 2 ";
+                                using (SqlCommand commandsandar2 = new SqlCommand(QueryBerthedComm, con))
+                                {
+                                    using (SqlDataReader readersandar = commandsandar2.ExecuteReader())
+                                    {
+                                        if (readersandar.HasRows)
                                         {
-                                            #region proses susah 5
-                                            DateTime tglsettanggalset = DateTime.Now;
-                                            List<AllUllage_x2> variabelbuatloopingloadingsemuaproduk = new List<AllUllage_x2>();
-                                            List<Ullage_x1> Ullage_x1 = new List<Ullage_x1>();
-                                            using (SqlCommand cmdDetShipment = new SqlCommand(QueryShipment2, con))
+                                            while (readersandar.Read())
                                             {
-                                                #region proses susah 6
-                                                using (SqlDataReader readerDetShipment = cmdDetShipment.ExecuteReader())
+                                                resultBerthedCommx = readersandar["estimasiwaktu"].ToString();
+                                            }
+
+                                        }
+                                        readersandar.Close();
+                                    }
+
+                                }
+                                string QueryCompUnberthed = "select * from estimasiwaktu where idlistket = 4 ";
+                                using (SqlCommand commandsandar4 = new SqlCommand(QueryCompUnberthed, con))
+                                {
+                                    using (SqlDataReader readersandar = commandsandar4.ExecuteReader())
+                                    {
+                                        if (readersandar.HasRows)
+                                        {
+                                            while (readersandar.Read())
+                                            {
+                                                resultCompUnberthedx = readersandar["estimasiwaktu"].ToString();
+                                            }
+
+                                        }
+                                        readersandar.Close();
+                                    }
+
+                                }
+                                string QueryUnberthedDeparture = "select * from estimasiwaktu where idlistket = 5 ";
+                                using (SqlCommand commandsandar5 = new SqlCommand(QueryUnberthedDeparture, con))
+                                {
+                                    using (SqlDataReader readersandar = commandsandar5.ExecuteReader())
+                                    {
+                                        if (readersandar.HasRows)
+                                        {
+                                            while (readersandar.Read())
+                                            {
+                                                resultUnberthedDeparturex = readersandar["estimasiwaktu"].ToString();
+                                            }
+
+                                        }
+                                        readersandar.Close();
+                                    }
+
+                                }
+                                string QueryDepartureTide = "select * from estimasiwaktu where idlistket = 6 ";
+                                using (SqlCommand commandsandar6 = new SqlCommand(QueryDepartureTide, con))
+                                {
+                                    using (SqlDataReader readersandar = commandsandar6.ExecuteReader())
+                                    {
+                                        if (readersandar.HasRows)
+                                        {
+                                            while (readersandar.Read())
+                                            {
+                                                resultDepartureTidex = readersandar["estimasiwaktu"].ToString();
+                                            }
+
+                                        }
+                                        readersandar.Close();
+                                    }
+
+                                }
+                                #endregion
+                                try
+                                {
+                                    #region proses susah 1
+                                    string QuerySelectShipment = "SELECT * FROM shipment where idpelabuhanbantuan='" + id + "' and antrian!='' and nojetty='" + nojetty + "' order by antrian asc";
+                                    using (SqlCommand command = new SqlCommand(QuerySelectShipment, con))
+                                    {
+                                        try
+                                        {
+                                            #region proses susah 2
+                                            using (SqlDataReader readercommand = command.ExecuteReader())
+                                            {
+                                                //3. looping no 2
+                                                while (readercommand.Read())
                                                 {
-                                                    int Totalx = 0;
-                                                    while (readerDetShipment.Read())
+                                                    //4.munculkan arrival
+                                                    //Arrival_ = DateTime.ParseExact(readercommand["arrival"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None);
+                                                    Arrival_ = (DateTime)readercommand["arrival"];
+                                                    _Antrian = Int32.Parse(readercommand["antrian"].ToString());
+                                                    _Idshipment = Int32.Parse(readercommand["idshipment"].ToString());
+                                                    _IdAsal = Int32.Parse(readercommand["idasal"].ToString());
+                                                    _IdTujuan = Int32.Parse(readercommand["idtujuan"].ToString());
+                                                    _IdKapal = Int32.Parse(readercommand["idkapal"].ToString());
+                                                    _proses = readercommand["proses"].ToString();
+                                                    //5.jika antrian 1
+                                                    if (_Antrian == 1)
                                                     {
-                                                        IdProdukx = (Int32)readerDetShipment["idproduk"];
-                                                        Jumlahx = (Int32)readerDetShipment["jumlah"];
-                                                        Totalx = Totalx + Jumlahx;
-                                                        #region prosses susah 7
-                                                        //ambil stokreal dari idproduk dan idpelabuhan =id
-                                                        string QueryStokReal = "SELECT * FROM stok where idlistpelabuhan='"+id+"' and idproduk='"+IdProdukx+"'";
-                                                        using (SqlCommand cmdStokReal=new SqlCommand(QueryStokReal, con))
+                                                        result_ = resultArrivalBertedx.Split(':');//conversi jam menit
+                                                        string jam = result_[0];
+                                                        string menit = result_[1];
+                                                        est = new TimeSpan(Convert.ToInt32(jam), Convert.ToInt32(menit), 0);
+                                                        Berthed_ = Arrival_.Add(est);
+
+                                                    }
+                                                    //6.jika antrian lebih dari 1
+                                                    else
+                                                    {
+                                                        try
                                                         {
-                                                            #region proses susah 8
-                                                            using (SqlDataReader readerStokReal = cmdStokReal.ExecuteReader())
+                                                            #region proses susah 3
+                                                            _Antrian1 = _Antrian - 1;
+                                                            string QuerySandar = "select DateAdd (hour,1,departure) as departure from shipment where idpelabuhanbantuan='" + id + "' and nojetty='" + nojetty + "' and antrian= '" + _Antrian1 + "'";
+
+                                                            using (SqlCommand commandsandaran = new SqlCommand(QuerySandar, con))
                                                             {
-                                                                if (readerStokReal.HasRows)
+
+                                                                using (SqlDataReader readersandaran = commandsandaran.ExecuteReader())
                                                                 {
-                                                                    string tanggal_sekarang = DateTime.Now.ToString("yyyy-MM-dd");
-                                                                    while (readerStokReal.Read())
+                                                                    if (readersandaran.HasRows)
                                                                     {
-                                                                        StokRealx = (Int32)readerStokReal["pumpable"];
-                                                                        SafeStokx = (Int32)readerStokReal["safestok"];
-                                                                        DeadStokx = (Int32)readerStokReal["deadstok"];
-                                                                        DotRealx = (Int32)readerStokReal["dot"];
-                                                                        
-                                                                        string Query1 = "select *,sum(jumlah)as jumlah_total from shipment left join detailshipment on shipment.id=detailshipment.idshipment"+ 
-                                                                                        "where idtujuan = '"+_IdTujuan+"' and date(berthed) = '"+tanggal_sekarang+"' and idproduk = '"+IdProdukx+"'"+
-                                                                                        "group by shipment.id";
-                                                                        #region proses susah 9
-                                                                        using (SqlCommand cmdQuery1 = new SqlCommand(Query1, con))
+                                                                        while (readersandaran.Read())
                                                                         {
-                                                                            using (SqlDataReader readerQuery1 = cmdQuery1.ExecuteReader())
-                                                                            {
-                                                                                if (readerQuery1.HasRows)
-                                                                                {
-                                                                                    JumlahTotal = (Int32)readerQuery1["jumlah_total"];
-                                                                                    StokAwal = StokRealx + JumlahTotal;
-                                                                                    StokInTransit = StokAwal;
-                                                                                    StokLoading = JumlahTotal;
-                                                                                }
-                                                                                else
-                                                                                {
-                                                                                    StokAwal = StokRealx;
-                                                                                    StokInTransit = 0;
-                                                                                    StokLoading = 0;
-                                                                                    JumlahTotal = 0;
-                                                                                }
-                                                                            }
+                                                                            //Berthed_ = DateTime.ParseExact(readersandaran["departure"].ToString(), "dd/MM/yyyy HH:mm:ss", enUS, DateTimeStyles.None);
+                                                                            Berthed_ = (DateTime)readersandaran["departure"];
                                                                         }
-                                                                       
-                                                                        #endregion
-                                                                        #region proses susah 10
-                                                                        Ullagerealx = SafeStokx - DeadStokx - StokAwal;
-                                                                        Mutasix = DotRealx;
-                                                                        
-                                                                        DateTime MulaiProyeksi = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd"));
-                                                                        DateTime TanggalProyeksi = MulaiProyeksi.AddDays(1);
-                                                                        int SetUllagez = 0;
-                                                                        int StokAfterLoading = 0;
-                                                                        #region proses susah 11
-                                                                        for (var i = 0; i < 11; i++)
+                                                                        int hasil = DateTime.Compare(Arrival_, Berthed_);
+                                                                        if (hasil < 0)
                                                                         {
-                                                                            if (StokAwal > 0)
-                                                                            {
-                                                                                if ((StokAwal - Mutasix) > 0)
-                                                                                {
-                                                                                    if (SetUllagez == 1)
-                                                                                    {
-                                                                                        StokAwal = StokAfterLoading - DotRealx;
-                                                                                    };
-                                                                                    #region proses susah 11
-                                                                                    string QueryLoop = "select *,sum(jumlah)as jumlah_total from shipment left join detailshipment on shipment.id=detailshipment.idshipment "+
-                                                                                                        "where idpelabuhanbantuan = '"+id+"' and proses = 'Loading' and date(berthed) = '"+MulaiProyeksi+"' and idproduk = '"+IdProdukx+"'"+
-                                                                                                        "group by shipment.id";
-                                                                                    using (SqlCommand cmdQueryLoop=new SqlCommand())
-                                                                                    {
-                                                                                        using (SqlDataReader readerQueryLoop = cmdQueryLoop.ExecuteReader())
-                                                                                        {
-                                                                                            if (readerQueryLoop.HasRows)
-                                                                                            {
-                                                                                                while (readerQueryLoop.Read())
-                                                                                                {
-                                                                                                    StokLoadingLoopy = (Int32)readerQueryLoop["jumlah_total"];
-                                                                                                }
-                                                                                                readerQueryLoop.Close();
-                                                                                                StokAwalAfterLoadingy = StokAwal - StokLoadingLoopy;
-                                                                                                SetUllagez = 1;
-                                                                                            }
-                                                                                            else
-                                                                                            {
-                                                                                                StokLoadingLoopy = 0;
-                                                                                                SetUllagez = 0;
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                    #endregion
-
-
-                                                                                    #region proses susah 12
-                                                                                    if (MulaiProyeksi == Berthed_)
-                                                                                    {
-                                                                                        StokLoadingLoopy = Jumlahx;
-                                                                                        StokAwalAfterLoadingy = StokAwal - Jumlahx;
-                                                                                        SetUllagez = 1;
-                                                                                    }
-                                                                                    Stoky = StokAwal - Mutasix;
-                                                                                    Ketahanany = Stoky / DotRealx;
-                                                                                    DeadStoky = DeadStokx;
-                                                                                    SafeStoky = SafeStokx;
-                                                                                    Ullagey = SafeStoky - DeadStoky - StokAwal + Mutasix;
-                                                                                    
-                                                                                    //var arrayproyeksi = Ullage_Xes();
-                                                                                    //List<Ullage_x1> arrayproyeksi = Ullage_Xes(MulaiProyeksi.ToString("yyyy-MM-dd"));
-                                                                                    Ullage_x1.Add(new Ullage_x1 {
-                                                                                        Tanggal_x = MulaiProyeksi,
-                                                                                        StokLoadingLoop_x = Jumlahx,
-                                                                                        Stok_x=Stoky,
-                                                                                        Ketahanan_x=Ketahanany,
-                                                                                        DeadStok_X=DeadStoky,
-                                                                                        SafeStok_x=SafeStoky,
-                                                                                        Ullage_x=Ullagey,
-                                                                                    });
-                                                                                    StokAwal = Stoky;
-                                                                                    MulaiProyeksi = MulaiProyeksi.AddDays(1);
-                                                                                    #endregion
-                                                                                }
-                                                                            }
-                                                                            
+                                                                            result_ = resultArrivalBertedx.Split(':');//conversi jam menit
+                                                                            string jam = result_[0];
+                                                                            string menit = result_[1];
+                                                                            est = new TimeSpan(Convert.ToInt32(jam), Convert.ToInt32(menit), 0);
+                                                                            Berthed_ = Arrival_.Add(est);
                                                                         }
-                                                                        #endregion
-                                                                        #region proses susah 12
-                                                                        variabelbuatloopingloadingsemuaproduk.Add(new AllUllage_x2 {
-                                                                            Arrival_x2 = Arrival_,
-                                                                            Berthed_x2 = Berthed_,
-                                                                            TanggalReal_x2 = DateTime.Parse(tanggal_sekarang),
-                                                                            UllageReal_x2 = Ullagerealx,
-                                                                            StokUllage_x2 = StokLoading,
-                                                                            DotReal_x2 = DotRealx,
-                                                                            StokReal_x2 = StokRealx,
-                                                                            StokInTransit_x2 = StokInTransit,
-                                                                            Mutasi_x2 = Mutasix,
-                                                                            TanggalSet_x2 = tglsettanggalset,
-                                                                            Jumlah_x2 = Jumlahx,
-                                                                            IdAsal_x2 = _IdAsal,
-                                                                            IdKapal_x2=_IdKapal,
-                                                                            NoJetty_x2=nojetty,
-                                                                            IdTujuan_x2=_IdTujuan,
-                                                                            ArrayProyeksi_x2= Ullage_x1,
-                                                                        });
-                                                                        #endregion
-                                                                        #endregion
+                                                                        // a = Berthed_.ToString("yyyy-MM-dd HH:mm");
                                                                     }
+                                                                    readersandaran.Close();
                                                                 }
-                                                                
+
                                                             }
                                                             #endregion
                                                         }
+                                                        catch (Exception ex)
+                                                        {
+                                                            a = "error Proses susah 3 " + ex.Message;
+                                                        }
+                                                       
+
+                                                    };
+                                                    try
+                                                    {
+                                                        #region proses susah 4
+                                                        string QueryShipment2 = "SELECT * FROM detailshipment where idshipment='" + _Idshipment + "'";
+                                                        int StokAwal, StokInTransit, StokLoading;
+
+                                                        if (_proses == "Loading")
+                                                        {
+                                                            List<AllUllage_x2> variabelbuatloopingloadingsemuaproduk = new List<AllUllage_x2>();
+                                                            try
+                                                            {
+                                                                #region proses susah 5
+                                                                DateTime tglsettanggalset = DateTime.Now;
+                                                                
+                                                                List<Ullage_x1> Ullage_x1 = new List<Ullage_x1>();
+                                                                using (SqlCommand cmdDetShipment = new SqlCommand(QueryShipment2, con))
+                                                                {
+                                                                    try
+                                                                    {
+                                                                        #region proses susah 6
+                                                                        using (SqlDataReader readerDetShipment = cmdDetShipment.ExecuteReader())
+                                                                        {
+                                                                            int Totalx = 0;
+                                                                            while (readerDetShipment.Read())
+                                                                            {
+                                                                                try
+                                                                                {
+                                                                                    #region prosses susah 7
+                                                                                    IdProdukx = (Int32)readerDetShipment["idproduk"];
+                                                                                    Jumlahx = (Int32)readerDetShipment["jumlah"];
+                                                                                    Totalx = Totalx + Jumlahx;
+
+                                                                                    //ambil stokreal dari idproduk dan idpelabuhan =id
+                                                                                    string QueryStokReal = "SELECT * FROM stok where idlistpelabuhan='" + id + "' and idproduk='" + IdProdukx + "'";
+                                                                                    using (SqlCommand cmdStokReal = new SqlCommand(QueryStokReal, con))
+                                                                                    {
+                                                                                        try
+                                                                                        {
+                                                                                            #region proses susah 8
+                                                                                            using (SqlDataReader readerStokReal = cmdStokReal.ExecuteReader())
+                                                                                            {
+                                                                                                if (readerStokReal.HasRows)
+                                                                                                {
+                                                                                                    string tanggal_sekarang = DateTime.Now.ToString("yyyy-MM-dd");
+                                                                                                    while (readerStokReal.Read())
+                                                                                                    {
+                                                                                                        StokRealx = (Int32)readerStokReal["pumpable"];
+                                                                                                        SafeStokx = (Int32)readerStokReal["safestok"];
+                                                                                                        DeadStokx = (Int32)readerStokReal["deadstok"];
+                                                                                                        DotRealx = (Int32)readerStokReal["dot"];
+
+                                                                                                        string Query1 = "select *,sum(jumlah)as jumlah_total from shipment left join detailshipment on shipment.id=detailshipment.idshipment" +
+                                                                                                                        "where idtujuan = '" + _IdTujuan + "' and date(berthed) = '" + tanggal_sekarang + "' and idproduk = '" + IdProdukx + "'" +
+                                                                                                                        "group by shipment.id";
+                                                                                                        StokAwal = 0;
+                                                                                                        StokLoading = 0;
+                                                                                                        StokInTransit = 0;
+                                                                                                        try
+                                                                                                        {
+                                                                                                            #region proses susah 9
+                                                                                                            using (SqlCommand cmdQuery1 = new SqlCommand(Query1, con))
+                                                                                                            {
+                                                                                                                using (SqlDataReader readerQuery1 = cmdQuery1.ExecuteReader())
+                                                                                                                {
+                                                                                                                    if (readerQuery1.HasRows)
+                                                                                                                    {
+                                                                                                                        JumlahTotal = (Int32)readerQuery1["jumlah_total"];
+                                                                                                                        StokAwal = StokRealx + JumlahTotal;
+                                                                                                                        StokInTransit = StokAwal;
+                                                                                                                        StokLoading = JumlahTotal;
+                                                                                                                    }
+                                                                                                                    else
+                                                                                                                    {
+                                                                                                                        StokAwal = StokRealx;
+                                                                                                                        StokInTransit = 0;
+                                                                                                                        StokLoading = 0;
+                                                                                                                        JumlahTotal = 0;
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+
+                                                                                                            #endregion
+                                                                                                        }
+                                                                                                        catch (Exception ex)
+                                                                                                        {
+                                                                                                            a = "error Proses susah 9 " + ex.Message;
+                                                                                                        }
+                                                                                                        
+                                                                                                        #region proses susah 10
+                                                                                                        Ullagerealx = SafeStokx - DeadStokx - StokAwal;
+                                                                                                        Mutasix = DotRealx;
+
+                                                                                                        DateTime MulaiProyeksi = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd"));
+                                                                                                        DateTime TanggalProyeksi = MulaiProyeksi.AddDays(1);
+                                                                                                        int SetUllagez = 0;
+                                                                                                        int StokAfterLoading = 0;
+                                                                                                        try
+                                                                                                        {
+                                                                                                            #region proses susah 11
+                                                                                                            for (var i = 0; i < 11; i++)
+                                                                                                            {
+                                                                                                                if (StokAwal > 0)
+                                                                                                                {
+                                                                                                                    if ((StokAwal - Mutasix) > 0)
+                                                                                                                    {
+                                                                                                                        if (SetUllagez == 1)
+                                                                                                                        {
+                                                                                                                            StokAwal = StokAfterLoading - DotRealx;
+                                                                                                                        };
+                                                                                                                        try
+                                                                                                                        {
+                                                                                                                            #region proses susah 12
+                                                                                                                            string QueryLoop = "select *,sum(jumlah)as jumlah_total from shipment left join detailshipment on shipment.id=detailshipment.idshipment " +
+                                                                                                                                                "where idpelabuhanbantuan = '" + id + "' and proses = 'Loading' and date(berthed) = '" + MulaiProyeksi + "' and idproduk = '" + IdProdukx + "'" +
+                                                                                                                                                "group by shipment.id";
+                                                                                                                            using (SqlCommand cmdQueryLoop = new SqlCommand())
+                                                                                                                            {
+                                                                                                                                using (SqlDataReader readerQueryLoop = cmdQueryLoop.ExecuteReader())
+                                                                                                                                {
+                                                                                                                                    if (readerQueryLoop.HasRows)
+                                                                                                                                    {
+                                                                                                                                        while (readerQueryLoop.Read())
+                                                                                                                                        {
+                                                                                                                                            StokLoadingLoopy = (Int32)readerQueryLoop["jumlah_total"];
+                                                                                                                                        }
+                                                                                                                                        readerQueryLoop.Close();
+                                                                                                                                        StokAwalAfterLoadingy = StokAwal - StokLoadingLoopy;
+                                                                                                                                        SetUllagez = 1;
+                                                                                                                                    }
+                                                                                                                                    else
+                                                                                                                                    {
+                                                                                                                                        StokLoadingLoopy = 0;
+                                                                                                                                        SetUllagez = 0;
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                            #endregion
+                                                                                                                        }
+                                                                                                                        catch (Exception ex)
+                                                                                                                        {
+                                                                                                                            a = "error Proses susah 12 " + ex.Message;
+                                                                                                                        }
+
+
+                                                                                                                        try
+                                                                                                                        {
+                                                                                                                            #region proses susah 13
+                                                                                                                            if (MulaiProyeksi == Berthed_)
+                                                                                                                            {
+                                                                                                                                StokLoadingLoopy = Jumlahx;
+                                                                                                                                StokAwalAfterLoadingy = StokAwal - Jumlahx;
+                                                                                                                                SetUllagez = 1;
+                                                                                                                            }
+                                                                                                                            Stoky = StokAwal - Mutasix;
+                                                                                                                            Ketahanany = Stoky / DotRealx;
+                                                                                                                            DeadStoky = DeadStokx;
+                                                                                                                            SafeStoky = SafeStokx;
+                                                                                                                            Ullagey = SafeStoky - DeadStoky - StokAwal + Mutasix;
+
+                                                                                                                            //var arrayproyeksi = Ullage_Xes();
+                                                                                                                            //List<Ullage_x1> arrayproyeksi = Ullage_Xes(MulaiProyeksi.ToString("yyyy-MM-dd"));
+                                                                                                                            Ullage_x1.Add(new Ullage_x1
+                                                                                                                            {
+                                                                                                                                Tanggal_x = MulaiProyeksi,
+                                                                                                                                StokLoadingLoop_x = Jumlahx,
+                                                                                                                                Stok_x = Stoky,
+                                                                                                                                Ketahanan_x = Ketahanany,
+                                                                                                                                DeadStok_X = DeadStoky,
+                                                                                                                                SafeStok_x = SafeStoky,
+                                                                                                                                Ullage_x = Ullagey,
+                                                                                                                            });
+                                                                                                                            StokAwal = Stoky;
+                                                                                                                            MulaiProyeksi = MulaiProyeksi.AddDays(1);
+                                                                                                                            #endregion
+                                                                                                                        }
+                                                                                                                        catch (Exception ex)
+                                                                                                                        {
+                                                                                                                            a = "error Proses susah 13 " + ex.Message;
+                                                                                                                        }
+                                                                                                                        
+                                                                                                                    }
+                                                                                                                }
+
+                                                                                                            }
+                                                                                                            #endregion
+                                                                                                        }
+                                                                                                        catch (Exception ex)
+                                                                                                        {
+                                                                                                            a = "error Proses susah 11 " + ex.Message;
+                                                                                                        }
+                                                                                                       
+                                                                                                        #region proses susah 14
+                                                                                                        variabelbuatloopingloadingsemuaproduk.Add(new AllUllage_x2
+                                                                                                        {
+                                                                                                            Arrival_x2 = Arrival_,
+                                                                                                            Berthed_x2 = Berthed_,
+                                                                                                            TanggalReal_x2 = DateTime.Parse(tanggal_sekarang),
+                                                                                                            UllageReal_x2 = Ullagerealx,
+                                                                                                            StokUllage_x2 = StokLoading,
+                                                                                                            DotReal_x2 = DotRealx,
+                                                                                                            StokReal_x2 = StokRealx,
+                                                                                                            StokInTransit_x2 = StokInTransit,
+                                                                                                            Mutasi_x2 = Mutasix,
+                                                                                                            TanggalSet_x2 = tglsettanggalset,
+                                                                                                            Jumlah_x2 = Jumlahx,
+                                                                                                            IdAsal_x2 = _IdAsal,
+                                                                                                            IdKapal_x2 = _IdKapal,
+                                                                                                            NoJetty_x2 = nojetty,
+                                                                                                            IdTujuan_x2 = _IdTujuan,
+                                                                                                            ArrayProyeksi_x2 = Ullage_x1,
+                                                                                                        });
+                                                                                                        #endregion
+                                                                                                        #endregion
+                                                                                                    }
+                                                                                                }
+
+                                                                                            }
+                                                                                            #endregion
+                                                                                        }
+                                                                                        catch (Exception ex)
+                                                                                        {
+                                                                                            a = "error Proses susah 8 " + ex.Message;
+                                                                                        }
+                                                                                        
+                                                                                    }
+                                                                                    #endregion
+                                                                                }
+                                                                                catch (Exception ex)
+                                                                                {
+                                                                                    a = "error Proses susah 7 " + ex.Message;
+                                                                                }
+                                                                                
+                                                                            }
+                                                                        }
+                                                                        #endregion
+                                                                    }
+                                                                    catch (Exception ex)
+                                                                    {
+                                                                        a = "error Proses susah 6 " + ex.Message;
+                                                                    }
+                                                                    
+                                                                }
+                                                                #endregion
+                                                            }
+                                                            catch (Exception ex)
+                                                            {
+                                                                a = "error Proses susah 5 " + ex.Message;
+                                                            }
+                                                            int val_waiting_cargo2 = 0;
+                                                            try
+                                                            {
+                                                                #region susah 15
+                                                                
+                                                                foreach (var loopingke1 in variabelbuatloopingloadingsemuaproduk)
+                                                                {
+
+                                                                    foreach (var loopingke2 in loopingke1.ArrayProyeksi_x2)
+                                                                    {
+                                                                        if (loopingke2 == null)
+                                                                        {
+                                                                            continue;
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            if (loopingke1.Berthed_x2 == loopingke2.Tanggal_x)
+                                                                            {
+                                                                                int loadingloop = loopingke2.StokLoadingLoop_x;
+                                                                                int minimstok = loopingke2.StokLoadingLoop_x * 3;
+                                                                                int w = loopingke2.Stok_x - loadingloop;
+                                                                                int a_1 = 0;
+                                                                                if (loadingloop == 0)
+                                                                                {
+                                                                                    a_1 = 0;
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    if (loopingke2.Stok_x - minimstok < 0)
+                                                                                    {
+                                                                                        a_1 = Math.Abs(w);
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        a_1 = 0;
+                                                                                    }
+                                                                                }
+                                                                                float wc = a_1 / loopingke1.DotReal_x2;
+                                                                                if (wc <= 0)
+                                                                                {
+                                                                                    val_waiting_cargo2 = 0;
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    val_waiting_cargo2 = (int)wc;
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                                #endregion
+                                                            }
+                                                            catch (Exception ex)
+                                                            {
+                                                                a = "error Proses susah 15 " + ex.Message;
+                                                            }
+                                                            try
+                                                            {
+                                                                #region susah 16
+                                                                a = Hasilnya(_Idshipment, _IdTujuan, _IdAsal, _IdKapal, "Loading", Arrival_, Berthed_, val_waiting_cargo2, nojetty, JumlahTotal);
+
+
+                                                                #endregion
+                                                            }
+                                                            catch (Exception ex)
+                                                            {
+                                                                a = "error Proses susah 16 " + ex.Message;
+                                                            }
+                                                           
+                                                            
+                                                            
+                                                        }
+                                                        else
+                                                        {
+
+                                                        }
                                                         #endregion
                                                     }
-                                                }
-                                                #endregion
-                                            }
-                                            #endregion
-                                            #region susah 13
-                                            int val_waiting_cargo2 = 0;
-                                            foreach(var loopingke1 in variabelbuatloopingloadingsemuaproduk)
-                                            {
-                                                
-                                                foreach (var loopingke2 in loopingke1.ArrayProyeksi_x2)
-                                                {
-                                                    if (loopingke2 == null)
+                                                    catch (Exception ex)
                                                     {
-                                                        continue;
+                                                        a = "error Proses susah 4 " + ex.Message;
                                                     }
-                                                    else
-                                                    {
-                                                        if (loopingke1.Berthed_x2 == loopingke2.Tanggal_x)
-                                                        {
-                                                            int loadingloop = loopingke2.StokLoadingLoop_x;
-                                                            int minimstok = loopingke2.StokLoadingLoop_x*3;
-                                                            int w = loopingke2.Stok_x - loadingloop;
-                                                            int a_1 = 0;
-                                                            if (loadingloop==0)
-                                                            {
-                                                                a_1 = 0;
-                                                            }
-                                                            else
-                                                            {
-                                                                if (loopingke2.Stok_x-minimstok<0)
-                                                                {
-                                                                    a_1 = Math.Abs(w);
-                                                                }
-                                                                else
-                                                                {
-                                                                    a_1 = 0;
-                                                                }
-                                                            }
-                                                            float wc = a_1 / loopingke1.DotReal_x2;
-                                                            if (wc <= 0)
-                                                            {
-                                                                val_waiting_cargo2 = 0;
-                                                            }
-                                                            else
-                                                            {
-                                                                val_waiting_cargo2 = (int) wc;
-                                                            }
-                                                        }
-                                                    }
+                                                    
                                                 }
+                                                //readercommand.Close();
                                             }
-                                            #endregion
-                                            #region susah 14
-                                            a=Hasilnya(_Idshipment,_IdTujuan,_IdAsal,_IdKapal,"Loading",Arrival_,Berthed_,val_waiting_cargo2,nojetty,JumlahTotal);
-                                            
-
                                             #endregion
                                         }
-                                        else
+                                        catch (Exception ex)
                                         {
-
+                                            a = "error Proses susah 2 " + ex.Message;
+                                            //a = QuerySelectShipment;
                                         }
-                                        #endregion
+                                       
                                     }
-                                    readercommand.Close();
+                                    #endregion
                                 }
-                                #endregion
+                                catch (Exception ex)
+                                {
+                                    a = "error Proses susah 1 " + ex.Message;
+                                }
+                                //2.query select shipment berdasarkan 
+                                //idpelabuhanbantuan =$idpelabuhan dan antrian!=kosong
+                                //and jetty =$idjtty order berdasarkan no antrian terkecil (dimulai dari 1 hingga x)
+                                
                             }
-                            #endregion
-                        }
-                    };
+
+                        };
+                    }
+                    catch(Exception ex)
+                    {
+                        a = "error try 1 " + ex.Message;
+                    }
+                   
                     con.Close();
                 }
 
@@ -941,7 +1071,7 @@ namespace pas_pertamina.Models
         int DeadStoky;
         int SafeStoky;
         int Ullagey;
-        int WaitingCargoy = 0;
+        //int WaitingCargoy = 0;
         string result_h;
         string[] result_ha;
         DateTime Berthed_hi;

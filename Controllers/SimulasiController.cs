@@ -98,7 +98,7 @@ namespace pas_pertamina.Controllers
 
                 });
             }
-            catch(Exception ex)
+            catch
             {
                 return Json(new
                 {
@@ -154,7 +154,7 @@ namespace pas_pertamina.Controllers
 
                 });
             }
-            catch (Exception ex)
+            catch
             {
                 return Json(new
                 {
@@ -1229,7 +1229,7 @@ namespace pas_pertamina.Controllers
             string b;
             string akses = HttpContext.Session.GetString("Akses");
             b = objSimulasi.UpdateAntrianAkhir(id, nojetty,akses);
-            if (b == "sukses")
+            /*if (b == "sukses")
             {
                 return Json(new
                 {
@@ -1285,7 +1285,11 @@ namespace pas_pertamina.Controllers
                     pesan = b,
                     id = id
                 });
-            }
+            }*/
+            return Json(new
+            {
+                pesan = b
+            });
 
         }
 
